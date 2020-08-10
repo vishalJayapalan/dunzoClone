@@ -1,0 +1,95 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+}
+
+.categories-page {
+  margin: 15% 15% 15% 15%;
+}
+
+.categories-container {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  height: 70%;
+}
+
+.category-outer-container {
+  margin-right: 1rem;
+}
+
+.category-container {
+  width: 17rem;
+  height: 7rem;
+  margin-top: 5%;
+  border: solid 1px lightgray;
+  border-radius: 2.5px;
+  box-shadow: 0.5px 0.5px 0.5px;
+  display: flex;
+  padding: 1rem;
+  align-items: center;
+  cursor: pointer;
+}
+.category-image {
+  margin-left: 5%;
+  width: 35%;
+}
+
+.category-name {
+  font-size: 125%;
+  padding: 1rem;
+  /* margin-left: 5%; */
+}
+
+.shops-page {
+  margin: 15% 15% 15% 15%;
+}
+
+.category-name-inshop {
+  padding: 1rem;
+  margin: 5%;
+}
+
+.shops-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  height: 70%;
+}
+
+.shop-outer-container {
+}
+
+.shop-container {
+  width: 27rem;
+  height: 7rem;
+  margin-top: 5%;
+  border: solid 1px lightgray;
+  border-radius: 2.5px;
+  box-shadow: 0.5px 0.5px 0.5px;
+  display: flex;
+  padding: 1rem;
+  align-items: center;
+  cursor: pointer;
+}
+
+.shop-image {
+  margin-left: 5%;
+  width: 35%;
+}
+
+.shop-name {
+  /* font-size: 125%; */
+  padding: 1rem;
+}
