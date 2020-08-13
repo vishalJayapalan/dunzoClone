@@ -2,13 +2,25 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: Gilroy, sans-serif;
+}
+body,
+a,
+button,
+html,
+input,
+select,
+textarea {
+  color: #172b4d;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans,
+    Ubuntu, Droid Sans, Helvetica Neue, sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100%;
@@ -92,4 +104,211 @@ body {
 .shop-name {
   /* font-size: 125%; */
   padding: 1rem;
+}
+
+.items-page {
+  /* display: grid; */
+  height: 100%;
+  width: 100%;
+}
+
+.items-shop-name-container {
+  /* position: fixed; */
+  position: sticky;
+  background-color: darkblue;
+  width: 100%;
+  height: 10%;
+  /* height: 20vh; */
+}
+.items-shop-name {
+  /* position: sticky; */
+  padding: 4%;
+  color: aliceblue;
+}
+
+.items-flex-container {
+  border-radius: 5px;
+  border-width: 5px;
+  border-color: black;
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+  height: 78vh;
+  z-index: 2;
+  /* box-shadow: 2px 2px 2px 2px; */
+  /* border: 1px solid black; */
+  /* display: flex; */
+  /* flex-direction: column; */
+}
+
+.items-grid-container {
+  /* width: 80%; */
+  height: 90%;
+  /* margin-left: 10%;
+  margin-right: 10%; */
+  display: grid;
+  /* background-color: aqua; */
+
+  grid-template-columns: 0.85fr 2.75fr 1.4fr;
+  grid-template-rows: 1fr;
+}
+
+/* .search-item-container {
+  grid-column-start: 1;
+  grid-column-end: 4;
+} */
+.search-item {
+  margin: 1% 20% 1% 20%;
+  padding: 1%;
+  width: 60%;
+  border-radius: 5px;
+}
+
+.subcategory-container {
+  /* position: absolute; */
+  padding: 2.5%;
+  background-color: hsla(0, 64%, 92%, 0.24);
+
+  /* background-color: burlywood; */
+}
+.subcategories-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-right: 2.5%;
+  border: 1px solid black;
+  overflow-y: auto;
+}
+
+.subcategory-button {
+  /* border-width: initial; */
+  border-style: none;
+  /* padding: 0px 12px; */
+  margin: 6px 0px;
+  cursor: pointer;
+  font-weight: 435;
+  font-family: Gilroy, sans-serif;
+  /* line-height: 24px; */
+  background-color: transparent;
+  /* text-transform: capitalize; */
+  /* border-width: initial;
+  border-style: none;
+  border-color: initial;
+  border-image: initial;
+  border-radius: 0px; */
+}
+
+.items-container {
+  border: 1px solid black;
+  overflow-y: auto;
+}
+
+.item-container {
+  display: flex;
+  margin-bottom: 5%;
+  /* justify-content: space-around; */
+  /* height: 10%; */
+  /* border: 1px solid black; */
+}
+.item-image-container {
+  margin-right: 15%;
+}
+.item-name-container {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  margin-right: 5%;
+}
+.item-button-container {
+  /* display: flex; */
+  /* align-items: center; */
+}
+.item-button-add {
+  cursor: pointer;
+  border-radius: 5px;
+  border: none;
+  color: rgb(118, 245, 68);
+  background-color: transparent;
+  /* border-width: initial;
+  border-style: none;
+  border-color: initial;
+  border-image: initial;
+  border-radius: 0px; */
+}
+
+.cart-container {
+  border: 1px solid black;
+}
+
+.cart-buttons-container {
+  display: flex;
+  /* border: 1px solid black; */
+  border-radius: 5px;
+  width: 40px;
+  justify-content: space-around;
+  align-items: center;
+  color: green;
+}
+
+.cart-buttons-container button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.cart-buttons-container button::selection {
+  border: none;
+}
+
+.minus {
+  font-size: 150%;
+  color: red;
+  padding: 10%;
+}
+
+.plus {
+  font-size: 130%;
+  color: green;
+  padding: 10%;
+}
+
+.cart-title-container {
+  display: flex;
+  margin-top: 5%;
+}
+
+.cart-items-count {
+  color: grey;
+}
+
+.cart-item-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5%;
+}
+.cart-item-description {
+  width: 60%;
+}
+
+.cart-items-container {
+  margin-top: 10%;
+  overflow-y: auto;
+  height: 40vh;
+}
+.cart-totalprice-container {
+  margin-top: 7.5%;
+}
+
+.checkout-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10%;
+}
+
+.checkout-button-container button {
+  border: none;
+  background-color: green;
+  color: white;
+  padding: 2%;
+  border-radius: 20px;
 }
