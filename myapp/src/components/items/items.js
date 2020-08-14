@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Item from './item'
 import SubCategoryName from './subCategoryName'
 import Subcategories from './subcategories'
@@ -7,64 +7,19 @@ import Cart from './cart'
 export default function Items (props) {
   const [cart, setCart] = useState([])
   const [cartid, setCartid] = useState(1)
-  const [items, setItems] = useState([
-    {
-      itemid: 1,
-      itemname: 'Bread',
-      subcategory: 'Breakfast & Diary',
-      itemsize: '400 Gms',
-      itemprice: 35
-    },
-    {
-      itemid: 2,
-      itemname: 'Cheese Slices',
-      subcategory: 'Breakfast & Diary',
-      itemsize: '10 Slices',
-      itemprice: 100
-    },
-    {
-      itemid: 3,
-      itemname: 'Eggs',
-      subcategory: 'Breakfast & Diary',
-      itemsize: '6 Eggs',
-      itemprice: 48
-    },
-    {
-      itemid: 4,
-      itemname: 'Milk',
-      subcategory: 'Breakfast & Diary',
-      itemsize: '500 Ml',
-      itemprice: 25
-    },
-    {
-      itemid: 5,
-      itemname: 'Sugar',
-      subcategory: 'Provisions',
-      itemsize: '1 Kg',
-      itemprice: 50
-    },
-    {
-      itemid: 6,
-      itemname: 'Cocunut Milk',
-      subcategory: 'Provisions',
-      itemsize: '50 Ml',
-      itemprice: 85
-    },
-    {
-      itemid: 7,
-      itemname: 'Split Cashew',
-      subcategory: 'Provisions',
-      itemsize: '200 Gms',
-      itemprice: 150
-    },
-    {
-      itemid: 8,
-      itemname: 'Red Rajma',
-      subcategory: 'Provisions',
-      itemsize: '500 Gms',
-      itemprice: 55
-    }
-  ])
+  const [items, setItems] = useState([])
+
+  const fetchItems = async () => {
+    const data = await window.fetch(
+      `http://localhost:5000/items/${props.match.params.shopid}`
+    )
+    const jsonData = await data.json()
+    setItems(jsonData)
+  }
+
+  useEffect(() => {
+    fetchItems()
+  }, [])
 
   function cartQuantityUpdate (updateItem, incOrDec) {
     if (updateItem.cartitemquantity === 1 && incOrDec === '-') {

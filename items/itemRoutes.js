@@ -4,6 +4,6 @@ const router = require('express').Router()
 
 const itemControllers = require('./itemControllers')
 
-router.get('/', itemControllers.getItems)
+router.get('/:shopid', itemControllers.getItems)
 
 module.exports = router
