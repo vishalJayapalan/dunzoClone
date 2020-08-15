@@ -24,9 +24,9 @@ const addItemToCart = async (req, res) => {
   const { itemid, shopname } = req.body
   try {
     const cartItems = await pool.query(
-      `INSERT INTO cart(itemid,shopname,cartitemquantity) VALUES ('${itemid}','${shopname}',1)`
+      `INSERT INTO cart(itemid,shopname,cartitemquantity) VALUES ('${itemid}','${shopname}',1) RETURNING cartid`
     )
-    res.status(201).send({ Msg: 'Added Succesfully' })
+    res.status(201).send(cartItems.rows[0].cartid.toString())
   } catch (err) {
     res.status(500).json({ Msg: 'There was an error please try again later' })
   }

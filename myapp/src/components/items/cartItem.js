@@ -19,7 +19,12 @@ export default function cartItem (props) {
         inCart={props.cartItem}
         cartQuantityUpdate={props.cartQuantityUpdate}
       />
-      <p>₹ {props.cartItem.itemprice * props.cartItem.cartitemquantity}</p>
+      <p>
+        ₹{' '}
+        {(props.cartItem.itemprice * props.cartItem.cartitemquantity).toFixed(
+          2
+        )}
+      </p>
     </div>
   )
 }

@@ -30,7 +30,7 @@ export default function Cart (props) {
       {props.cart.length !== 0 && (
         <div className='cart-totalprice-container'>
           <span>Item Total</span>
-          <span>₹ {totalPrice} </span>
+          <span>₹ {totalPrice.toFixed(2)} </span>
         </div>
       )}
       {props.cart.length !== 0 && (
