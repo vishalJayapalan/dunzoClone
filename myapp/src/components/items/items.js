@@ -1,16 +1,20 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Item from './item'
 import SubCategoryName from './subCategoryName'
 import Subcategories from './subcategories'
 import Cart from './cart'
-import cartItem from './cartItem'
+
+// import { AppContext } from '../context/AppContext'
 
 export default function Items (props) {
+  // const { items, cart, getItems, getCart, addToCart, updateCart } = useContext(
+  //   AppContext
+  // )
+
   const [cart, setCart] = useState([])
-  // const [cartid, setCartid] = useState(1)
   const [items, setItems] = useState([])
 
-  const fetchItems = async () => {
+  const getItems = async () => {
     const data = await window.fetch(
       `http://localhost:5000/items/${props.match.params.shopid}`
     )
@@ -18,18 +22,20 @@ export default function Items (props) {
     setItems(jsonData)
   }
 
-  const fetchCart = async () => {
+  const getCart = async () => {
     const data = await window.fetch(`http://localhost:5000/cart`)
     const jsonData = await data.json()
     setCart(jsonData)
   }
 
   useEffect(() => {
-    fetchItems()
-    fetchCart()
+    // fetchItems()
+    getItems(props.match.params.shopid)
+    getCart()
+    // fetchCart()
   }, [])
 
-  async function cartQuantityUpdate (updateItem, incOrDec) {
+  async function updateCart (updateItem, incOrDec) {
     if (+updateItem.cartitemquantity === 1 && incOrDec === '-') {
       await window.fetch(`http://localhost:5000/cart/${updateItem.cartid}`, {
         method: 'DELETE',
@@ -109,9 +115,10 @@ export default function Items (props) {
       <Item
         key={item.itemid}
         item={item}
-        addToCart={addToCart}
-        cartQuantityUpdate={cartQuantityUpdate}
-        cart={cart}
+        shopname={props.match.params.shopname}
+        addToCart={addToCart} // can remove this
+        updateCart={updateCart} // canremove this
+        cart={cart} // can remove this
       />
     )
   })
@@ -129,7 +136,7 @@ export default function Items (props) {
         <div className='items-grid-container'>
           <div className='subcategories-container'>{subcategories}</div>
           <div className='items-container'>{disp}</div>
-          <Cart cart={cart} cartQuantityUpdate={cartQuantityUpdate} />
+          <Cart cart={cart} updateCart={updateCart} /> {/* can remove this  */}
         </div>
       </div>
     </div>

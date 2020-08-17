@@ -316,3 +316,17 @@ body {
   padding: 2%;
   border-radius: 20px;
 }
+
+.nocart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nocart-container p {
+  color: grey;
+}
+
+.nocart-image {
+  width: 100%;
+}
