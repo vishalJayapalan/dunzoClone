@@ -21,14 +21,20 @@ body: itemid,shopname
 */
 
 const addItemToCart = async (req, res) => {
-  const { itemid, shopname } = req.body
+  const { itemid, itemname, shopname, cartitemquantity } = req.body
   try {
     const cartItems = await pool.query(
-      `INSERT INTO cart(itemid,shopname,cartitemquantity) VALUES ('${itemid}','${shopname}',1) RETURNING cartid`
+      `INSERT INTO cart (itemid,itemname,shopname,cartitemquantity) VALUES ('${itemid}','${itemname}','${shopname}','${cartitemquantity}') RETURNING *`
     )
-    res.status(201).send(cartItems.rows[0].cartid.toString())
+    // console.log(addedCartId)
+    // const cartJoinItem = await pool.query(
+    //   `SELECT * FROM cart JOIN items ON cart.itemid = items.itemid WHERE cartid = ${cartItems}`
+    // )
+    // console.log(cartJoinItem.rows)
+    res.status(201).send(cartItems.rows)
   } catch (err) {
-    res.status(500).json({ Msg: 'There was an error please try again later' })
+    console.log(err)
+    res.status(500).json({ Msg: err })
   }
 }
 
@@ -64,13 +70,18 @@ body: cartitemquantity
 */
 
 const updateCartItem = async (req, res) => {
-  const { cartitemquantity } = req.body
+  let { cartitemquantity, type } = req.body
   const { cartid } = req.params
+  if (type === '+') {
+    cartitemquantity++
+  } else {
+    cartitemquantity--
+  }
   try {
-    await pool.query(
-      `UPDATE cart SET cartitemquantity = ${cartitemquantity} WHERE cartid = ${cartid}`
+    const updatedCartItem = await pool.query(
+      `UPDATE cart SET cartitemquantity = ${cartitemquantity} WHERE cartid = ${cartid} RETURNING *`
     )
-    res.status(200).send({ Msg: 'updated Succesfully' })
+    res.status(200).send(updatedCartItem.rows)
   } catch (err) {
     res.status(500).json({ Msg: 'There was an error please try again later' })
   }

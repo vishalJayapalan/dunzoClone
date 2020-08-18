@@ -1,21 +1,18 @@
-import React from 'react'
+import React, { useContext } from 'react'
+
+import { AppContext } from '../context/AppContext'
 
 export default function CartButton (props) {
-  console.log(props)
+  const { updateCart } = useContext(AppContext)
+
   return (
     <div>
       <div className='cart-buttons-container'>
-        <button
-          className='minus'
-          onClick={() => props.cartQuantityUpdate(props.inCart, '-')}
-        >
+        <button className='minus' onClick={() => updateCart(props.inCart, '-')}>
           -
         </button>
         <div>{props.inCart.cartitemquantity}</div>
-        <button
-          className='plus'
-          onClick={() => props.cartQuantityUpdate(props.inCart, '+')}
-        >
+        <button className='plus' onClick={() => updateCart(props.inCart, '+')}>
           +
         </button>
       </div>

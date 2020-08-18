@@ -4,29 +4,29 @@ import SubCategoryName from './subCategoryName'
 import Subcategories from './subcategories'
 import Cart from './cart'
 
-// import { AppContext } from '../context/AppContext'
+import { AppContext } from '../context/AppContext'
 
 export default function Items (props) {
-  // const { items, cart, getItems, getCart, addToCart, updateCart } = useContext(
-  //   AppContext
-  // )
+  const { items, cart, getItems, getCart, addToCart, updateCart } = useContext(
+    AppContext
+  )
 
-  const [cart, setCart] = useState([])
-  const [items, setItems] = useState([])
+  // const [cart, setCart] = useState([])
+  // const [items, setItems] = useState([])
 
-  const getItems = async () => {
-    const data = await window.fetch(
-      `http://localhost:5000/items/${props.match.params.shopid}`
-    )
-    const jsonData = await data.json()
-    setItems(jsonData)
-  }
+  // const getItems = async () => {
+  //   const data = await window.fetch(
+  //     `http://localhost:5000/items/${props.match.params.shopid}`
+  //   )
+  //   const jsonData = await data.json()
+  //   setItems(jsonData)
+  // }
 
-  const getCart = async () => {
-    const data = await window.fetch(`http://localhost:5000/cart`)
-    const jsonData = await data.json()
-    setCart(jsonData)
-  }
+  // const getCart = async () => {
+  //   const data = await window.fetch(`http://localhost:5000/cart`)
+  //   const jsonData = await data.json()
+  //   setCart(jsonData)
+  // }
 
   useEffect(() => {
     // fetchItems()
@@ -35,60 +35,70 @@ export default function Items (props) {
     // fetchCart()
   }, [])
 
-  async function updateCart (updateItem, incOrDec) {
-    if (+updateItem.cartitemquantity === 1 && incOrDec === '-') {
-      await window.fetch(`http://localhost:5000/cart/${updateItem.cartid}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-type': 'application/json'
-        }
-      })
-      return setCart(
-        cart.filter(cartItem => cartItem.cartid !== updateItem.cartid)
-      )
-    }
+  // async function updateCart (updateItem, incOrDec) {
+  //   if (+updateItem.cartitemquantity === 1 && incOrDec === '-') {
+  //     await window.fetch(`http://localhost:5000/cart/${updateItem.cartid}`, {
+  //       method: 'DELETE',
+  //       headers: {
+  //         'Content-type': 'application/json'
+  //       }
+  //     })
+  //     return setCart(
+  //       cart.filter(cartItem => cartItem.cartid !== updateItem.cartid)
+  //     )
+  //   }
 
-    setCart(
-      cart.map(cartItem => {
-        if (cartItem.cartid === updateItem.cartid) {
-          if (incOrDec === '+') {
-            cartItem.cartitemquantity++
-            return cartItem
-          } else {
-            cartItem.cartitemquantity--
-            return cartItem
-          }
-        }
-        return cartItem
-      })
-    )
-    await window.fetch(`http://localhost:5000/cart/${updateItem.cartid}`, {
-      method: 'PUT',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify({ cartitemquantity: updateItem.cartitemquantity })
-    })
-  }
+  //   setCart(
+  //     cart.map(cartItem => {
+  //       if (cartItem.cartid === updateItem.cartid) {
+  //         if (incOrDec === '+') {
+  //           cartItem.cartitemquantity++
+  //           return cartItem
+  //         } else {
+  //           cartItem.cartitemquantity--
+  //           return cartItem
+  //         }
+  //       }
+  //       return cartItem
+  //     })
+  //   )
+  //   await window.fetch(`http://localhost:5000/cart/${updateItem.cartid}`, {
+  //     method: 'PUT',
+  //     headers: {
+  //       'Content-type': 'application/json'
+  //     },
+  //     body: JSON.stringify({ cartitemquantity: updateItem.cartitemquantity })
+  //   })
+  // }
 
-  async function addToCart (item) {
-    const data = await window.fetch('http://localhost:5000/cart', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify({
-        itemid: item.itemid,
-        shopname: props.match.params.shopname
-      })
-    })
-    const jsonData = await data.json()
-    item.cartid = jsonData
-    item.cartitemquantity = 1
-    item.shopname = props.match.params.shopname
-    setCart([...cart, item])
-    // setCartid(cartid + 1)
-  }
+  // async function addToCart (item) {
+  //   try {
+  //     const data = await window.fetch('http://localhost:5000/cart', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-type': 'application/json'
+  //       },
+  //       body: JSON.stringify({
+  //         itemid: item.itemid,
+  //         itemname: item.itemname,
+  //         shopname: props.match.params.shopname,
+  //         cartitemquantity: 1
+  //       })
+  //     })
+  //     if (!data.ok) {
+  //       throw data
+  //     }
+  //     const jsonData = await data.json()
+  //     console.log(jsonData)
+  //     // item.cartid = jsonData
+  //     item.cartitemquantity = 1
+  //     item.shopname = props.match.params.shopname
+  //     setCart([...cart, item])
+  //     // setCartid(cartid + 1)
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // }
 
   let lastSubCategory = null
   const disp = []

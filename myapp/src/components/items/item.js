@@ -1,13 +1,13 @@
 import React, { useState, useContext } from 'react'
 
-// import { AppContext } from '../context/AppContext'
+import { AppContext } from '../context/AppContext'
 
 import CartButton from './cartButton'
 
 export default function Item (props) {
-  // const { cart, addToCart, updateCart } = useContext(AppContext)
+  const { cart, addToCart, updateCart } = useContext(AppContext)
   let inCart = null
-  props.cart.forEach(cartItem => {
+  cart.forEach(cartItem => {
     if (cartItem.itemid === props.item.itemid) {
       inCart = cartItem
     }
@@ -22,11 +22,11 @@ export default function Item (props) {
       </div>
       <div className='item-button-container'>
         {inCart ? (
-          <CartButton inCart={inCart} updateCart={props.updateCart} />
+          <CartButton inCart={inCart} />
         ) : (
           <button
             className='item-button-add'
-            onClick={() => props.addToCart(props.item, props.shopname)}
+            onClick={() => addToCart(props.item, props.shopname)}
           >
             + Add
           </button>

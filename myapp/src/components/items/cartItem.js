@@ -9,10 +9,7 @@ export default function cartItem (props) {
         <p>{props.cartItem.itemname}</p>
         <p>{props.cartItem.itemsize}</p>
       </div>
-      <CartButton
-        inCart={props.cartItem}
-        cartQuantityUpdate={props.cartQuantityUpdate}
-      />
+      <CartButton inCart={props.cartItem} /> {/* can removeupdateCart */}
       <p>
         ₹{' '}
         {(props.cartItem.itemprice * props.cartItem.cartitemquantity).toFixed(
