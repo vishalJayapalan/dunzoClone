@@ -37,7 +37,6 @@ export default function Cart (props) {
             key={cartItem.cartid}
             cartItem={cartItem}
             // cart={props.cart}
-            updateCart={updateCart}
           />
         ))}
       </div>
