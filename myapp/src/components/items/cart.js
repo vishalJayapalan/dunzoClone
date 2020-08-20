@@ -1,5 +1,7 @@
 import React, { useContext } from 'react'
 
+import { Link } from 'react-router-dom'
+
 import CartItem from './cartItem'
 
 import { AppContext } from '../context/AppContext'
@@ -48,7 +50,9 @@ export default function Cart (props) {
       )}
       {cart.length !== 0 && (
         <div className='checkout-button-container'>
-          <button>Proceed To Checkout</button>
+          <Link to='/checkout'>
+            <button>Proceed To Checkout</button>
+          </Link>
         </div>
       )}
     </div>

@@ -6,6 +6,7 @@ import { AppContextProvider } from './components/context/AppContext'
 import Categories from './components/categories/Categories'
 import Shops from './components/shops/Shops'
 import Items from './components/items/items'
+import Map from './components/map/Map'
 
 function App () {
   return (
@@ -19,6 +20,7 @@ function App () {
               component={Shops}
             />
             <Route path='/' exact component={Categories} />
+            <Route path='/checkout' component={Map} />
             <Route path='/:categoryid/:shopname/:shopid' component={Items} />
           </Switch>
         </Router>
