@@ -1,3 +1,6 @@
 .leaflet-container {
   height: 600px;
 }
+.leaflet-routing-alternatives-container {
+  display: none;
+}

@@ -4,39 +4,81 @@ import Leaflet from 'leaflet'
 // import 'leaflet/dist/leaflet.css'
 import 'leaflet-routing-machine'
 
-export default function Map ({ location }) {
-  console.log(location)
-  const position = [11.874477, 75.370369]
+export default function Map () {
+  const [liveLocation, setLiveLocation] = useState({
+    latitude: '',
+    longitude: ''
+  })
+  const position = [11.858762, 75.404577]
+  const position2 = [11.877094, 75.372391]
   // const position2 = [liveLocation.latitude, liveLocation.longitude]
-  const mapRef = useRef(null)
+  // const mapRef = useRef(null)
+  const leafletIcon = Leaflet.Icon.extend({
+    options: {
+      shadowUrl: 'https://unpkg.com/leaflet@1.6/dist/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [10, 41],
+      popupAnchor: [2, -40]
+    }
+  })
+
+  const secondIcon = new leafletIcon({
+    iconUrl: 'https://unpkg.com/leaflet@1.6/dist/images/marker-icon.png'
+  })
+
+  // Making a map and tiles
+  let mymap
   const map = () => {
-    mapRef.current = Leaflet.map('mapid').setView(position, 13)
+    // mapRef.current = Leaflet.map('mapid').setView(position, 13)
+    mymap = Leaflet.map('mapid').setView(position, 13)
 
-    Leaflet.tileLayer(
-      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-    ).addTo(mapRef.current)
+    Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(mymap)
 
-    Leaflet.marker(position).addTo(mapRef.current)
+    // making two markers and showing popup
+    const marker = Leaflet.marker(position).addTo(mymap)
+    const bikeIcon = Leaflet.marker(position2).addTo(mymap)
+    mymap.on('click', onMapClick) // will show a pop where u clicked with the lat and lng
+    marker.bindPopup('<b>Your Location</b>').openPopup()
+
+    // Leaflet.Control.geocoder().addTo(map)
+
+    // const latlngs = [position, position2]
+    Leaflet.Routing.control({
+      waypoints: [
+        Leaflet.latLng(11.858762, 75.404577),
+        Leaflet.latLng(11.877094, 75.372391)
+      ],
+      routeWhileDragging: true
+      // geocoder: Leaflet.Control.Geocoder.nominatim()
+    }).addTo(mymap)
+
+    //   const polyline = Leaflet.polyline(latlngs, { color: 'red' }).addTo(mymap)
+    //   // zoom the map to the polyline
+    //   mymap.fitBounds(polyline.getBounds())
   }
   useEffect(() => {
     map()
   }, [])
+
+  const popup = Leaflet.popup()
+
+  function onMapClick (e) {
+    popup
+      .setLatLng(e.latlng)
+      .setContent('You clicked the map at ' + e.latlng.toString())
+      .openOn(mymap)
+  }
+
+  // mymap.on('click', onMapClick)
   return (
-    <div classname='checkoutContainer'>
+    <div className='checkoutContainer'>
       <div id='mapid'></div>
     </div>
   )
 }
 
-// import React from 'react'
-
-// import L from 'leaflet'
-// import './Map.css'
-// import 'leaflet/dist/leaflet.css'
-
-// import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
-// export default function CheckOut () {
-//   const position = [11.874477, 75.370369]
 // const icon = L.icon({
 //   iconSize: [25, 41],
 //   iconAnchor: [10, 41],
@@ -44,21 +86,3 @@ export default function Map ({ location }) {
 //   iconUrl: 'https://unpkg.com/leaflet@1.6/dist/images/marker-icon.png',
 //   shadowUrl: 'https://unpkg.com/leaflet@1.6/dist/images/marker-shadow.png'
 // })
-//   const map = (
-//     <Map center={position} zoom={13} style={{ height: '600px' }}>
-//       <TileLayer
-//         url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-//         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-//       />
-//       <Marker position={position}>
-//         <Popup>
-//           A pretty CSS3 popup.
-//           <br />
-//           Easily customizable.
-//         </Popup>
-//       </Marker>
-//     </Map>
-//   )
-
-//   return <div>{map}</div>
-// }
