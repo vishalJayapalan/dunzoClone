@@ -14,7 +14,9 @@ export default function Item (props) {
   })
   return (
     <div className='item-container'>
-      <div className='item-image-container'></div>
+      <div className='item-image-container'>
+        <img src='/images/groceries.jpeg' className='item-image'></img>
+      </div>
       <div className='item-name-container'>
         <p className='item-name'>{props.item.itemname}</p>
         <p>₹ {props.item.itemprice}</p>

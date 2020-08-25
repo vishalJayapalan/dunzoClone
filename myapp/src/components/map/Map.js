@@ -45,10 +45,13 @@ export default function Map () {
     // Leaflet.Control.geocoder().addTo(map)
 
     // const latlngs = [position, position2]
+    // console.log(Leaflet)
     Leaflet.Routing.control({
       waypoints: [
-        Leaflet.latLng(11.858762, 75.404577),
-        Leaflet.latLng(11.877094, 75.372391)
+        // Leaflet.latLng(11.858762, 75.404577),
+        // Leaflet.latLng(11.877094, 75.372391)
+        Leaflet.latLng(position),
+        Leaflet.latLng(position2)
       ],
       routeWhileDragging: true
       // geocoder: Leaflet.Control.Geocoder.nominatim()

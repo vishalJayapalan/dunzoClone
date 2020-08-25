@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import Shop from './shop'
+import Navbar from '../navbar/Navbar'
 
 export default function Shops (props) {
   const { categoryname, categoryid } = props.match.params
@@ -15,12 +16,22 @@ export default function Shops (props) {
     fetchShops()
   }, [])
   return (
-    <div className='shops-page'>
-      <h1 className='category-name-inshop'>{categoryname}</h1>
-      <div className='shops-container'>
-        {shops.map(shop => (
-          <Shop key={shop.shopid} shop={shop} />
-        ))}
+    <div>
+      <Navbar />
+      <div className='category-name-inshop-container'>
+        <img
+          className='category-name-inshop-img'
+          src={`images/${categoryname}.png`}
+          alt='catimg'
+        ></img>
+        <h1 className='category-name-inshop'>{categoryname}</h1>
+      </div>
+      <div className='shops-page'>
+        <div className='shops-container'>
+          {shops.map(shop => (
+            <Shop key={shop.shopid} shop={shop} />
+          ))}
+        </div>
       </div>
     </div>
   )

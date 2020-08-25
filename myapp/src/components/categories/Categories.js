@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Category from './Category'
+import Navbar from '../navbar/Navbar'
 
 export default function Categories () {
   const [categories, setCategories] = useState([])
@@ -15,7 +16,8 @@ export default function Categories () {
 
   return (
     <div className='categories-page'>
-      <h1>What Do you Want To Get Done</h1>
+      <Navbar />
+      <h1 className='category-title'>What Do you Want To Get Done</h1>
       <div className='categories-container'>
         {categories.map(category => (
           <Category key={category.categoryid} category={category} />
