@@ -2,12 +2,13 @@ import React, { useContext } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import CartItem from './cartItem'
+// import CartItem from './cartItem'
+import CartItems from './cartItems'
 
 import { AppContext } from '../context/AppContext'
 
 export default function Cart (props) {
-  const { cart, updateCart } = useContext(AppContext)
+  const { cart } = useContext(AppContext)
 
   let totalPrice = 0
   cart.forEach(element => {
@@ -33,7 +34,8 @@ export default function Cart (props) {
         </div>
       )}
       {cart.length !== 0 && <div>{cart[0].shopname}</div>}
-      <div className='cart-items-container'>
+      <CartItems />
+      {/* <div className='cart-items-container'>
         {cart.map(cartItem => (
           <CartItem
             key={cartItem.cartid}
@@ -41,7 +43,7 @@ export default function Cart (props) {
             // cart={props.cart}
           />
         ))}
-      </div>
+      </div> */}
       {cart.length !== 0 && (
         <div className='cart-totalprice-container'>
           <span>Item Total</span>

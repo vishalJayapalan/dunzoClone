@@ -7,7 +7,7 @@ export default function Navbar () {
       <div></div>
       <div className='nav-cartimg-signin-container'>
         <div className='nav-cart-container'>
-          <img src='images/cart2.png' className='nav-cart-image' />
+          <img src='/images/cart2.png' className='nav-cart-image' />
         </div>
         <span>Sign in</span>
       </div>

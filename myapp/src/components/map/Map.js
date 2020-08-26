@@ -4,7 +4,8 @@ import Leaflet from 'leaflet'
 // import 'leaflet/dist/leaflet.css'
 import 'leaflet-routing-machine'
 
-export default function Map () {
+export default function Map (props) {
+  console.log('LOCation:', props)
   const [liveLocation, setLiveLocation] = useState({
     latitude: '',
     longitude: ''
@@ -13,18 +14,18 @@ export default function Map () {
   const position2 = [11.877094, 75.372391]
   // const position2 = [liveLocation.latitude, liveLocation.longitude]
   // const mapRef = useRef(null)
-  const leafletIcon = Leaflet.Icon.extend({
-    options: {
-      shadowUrl: 'https://unpkg.com/leaflet@1.6/dist/images/marker-shadow.png',
-      iconSize: [25, 41],
-      iconAnchor: [10, 41],
-      popupAnchor: [2, -40]
-    }
-  })
+  // const leafletIcon = Leaflet.Icon.extend({
+  //   options: {
+  //     shadowUrl: 'https://unpkg.com/leaflet@1.6/dist/images/marker-shadow.png',
+  //     iconSize: [25, 41],
+  //     iconAnchor: [10, 41],
+  //     popupAnchor: [2, -40]
+  //   }
+  // })
 
-  const secondIcon = new leafletIcon({
-    iconUrl: 'https://unpkg.com/leaflet@1.6/dist/images/marker-icon.png'
-  })
+  // const secondIcon = new leafletIcon({
+  //   iconUrl: 'https://unpkg.com/leaflet@1.6/dist/images/marker-icon.png'
+  // })
 
   // Making a map and tiles
   let mymap
@@ -54,12 +55,8 @@ export default function Map () {
         Leaflet.latLng(position2)
       ],
       routeWhileDragging: true
-      // geocoder: Leaflet.Control.Geocoder.nominatim()
+      // geocoder: Leaflet.Control.Geocoder.Nominatim()
     }).addTo(mymap)
-
-    //   const polyline = Leaflet.polyline(latlngs, { color: 'red' }).addTo(mymap)
-    //   // zoom the map to the polyline
-    //   mymap.fitBounds(polyline.getBounds())
   }
   useEffect(() => {
     map()
@@ -72,6 +69,23 @@ export default function Map () {
       .setLatLng(e.latlng)
       .setContent('You clicked the map at ' + e.latlng.toString())
       .openOn(mymap)
+  }
+
+  // for getting geolocation
+  function success (position) {
+    const latitude = position.coords.latitude
+    const longitude = position.coords.longitude
+    console.log(latitude, longitude)
+  }
+  function error () {
+    // status.textContent = 'Unable to retrieve your location'
+  }
+
+  if (!navigator.geolocation) {
+    // status.textContent = 'Geolocation is not supported by your browser'
+  } else {
+    // status.textContent = 'Locating…'
+    navigator.geolocation.getCurrentPosition(success, error)
   }
 
   // mymap.on('click', onMapClick)
