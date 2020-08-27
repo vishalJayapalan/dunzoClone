@@ -1,8 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react'
 import './Map.css'
-import Leaflet from 'leaflet'
 // import 'leaflet/dist/leaflet.css'
+
+import Leaflet from 'leaflet'
+import 'leaflet-routing-machine/dist/leaflet-routing-machine.css'
 import 'leaflet-routing-machine'
+
+import Nominatim from 'nominatim-geocoder'
 
 export default function Map (props) {
   console.log('LOCation:', props)
@@ -42,7 +46,21 @@ export default function Map (props) {
     const bikeIcon = Leaflet.marker(position2).addTo(mymap)
     mymap.on('click', onMapClick) // will show a pop where u clicked with the lat and lng
     marker.bindPopup('<b>Your Location</b>').openPopup()
+    const geocoding = async address => {
+      // let res = await fetch(
+      //   `https://nominatim.openstreetmap.org/search/${address}?format=json&addressdetails=1&limit=1&polygon_svg=1`
+      // )
 
+      const geocoder = new Nominatim()
+
+      const latlong = await geocoder.search({ q: address })
+      console.log('latlon', latlong)
+
+      // let result = await res.json()
+      // console.log('location', result[0].lat, result[0].lon)
+    }
+
+    geocoding('kalyan silks,kannur')
     // Leaflet.Control.geocoder().addTo(map)
 
     // const latlngs = [position, position2]
@@ -103,3 +121,5 @@ export default function Map (props) {
 //   iconUrl: 'https://unpkg.com/leaflet@1.6/dist/images/marker-icon.png',
 //   shadowUrl: 'https://unpkg.com/leaflet@1.6/dist/images/marker-shadow.png'
 // })
+
+// https://nominatim.openstreetmap.org/search/kannur?format=json&addressdetails=1&limit=1&polygon_svg=1

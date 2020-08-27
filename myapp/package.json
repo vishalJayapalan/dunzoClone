@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^7.2.1",
     "leaflet": "^1.6.0",
     "leaflet-routing-machine": "^3.2.12",
+    "nominatim-geocoder": "^0.1.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-leaflet": "^2.7.0",
