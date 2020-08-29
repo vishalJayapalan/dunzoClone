@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 
 import { Link } from 'react-router-dom'
 
@@ -8,7 +8,10 @@ import CartItems from './cartItems'
 import { AppContext } from '../context/AppContext'
 
 export default function Cart (props) {
-  const { cart } = useContext(AppContext)
+  const { cart, getCart } = useContext(AppContext)
+  useEffect(() => {
+    getCart()
+  }, [])
 
   let totalPrice = 0
   cart.forEach(element => {
@@ -50,7 +53,7 @@ export default function Cart (props) {
           <span>₹ {totalPrice.toFixed(2)} </span>
         </div>
       )}
-      {cart.length !== 0 && (
+      {cart.length !== 0 && props.showToCheckout && (
         <div className='checkout-button-container'>
           <Link to='/checkout'>
             <button>Proceed To Checkout</button>

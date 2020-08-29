@@ -90,6 +90,7 @@ body {
 
 .category-name-inshop-img {
   margin: 0 0 0 15%;
+  height: 5rem;
   color: white;
 }
 
@@ -132,8 +133,9 @@ body {
 }
 
 .items-page {
-  height: 60vh;
+  height: 72vh;
   width: 100%;
+  background-color: rgb(240, 245, 247);
 }
 
 .items-shop-name-container {
@@ -343,7 +345,8 @@ body {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 2.5%;
+  /* padding: 2.5%; */
+  height: 3em;
   /* margin: 0 0 5% 0; */
   background-color: rgb(23, 30, 48);
   color: white;
@@ -361,4 +364,78 @@ body {
   align-items: center;
   justify-content: space-between;
   width: 10%;
+}
+
+.nav-signin-btn {
+  cursor: pointer;
+}
+
+/* SIGNIN  & SIGNUP*/
+
+.overlay {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+  cursor: pointer;
+}
+
+.signin-container {
+  width: 90%;
+  max-width: 25em;
+  margin: auto;
+  padding-top: 6em;
+}
+
+.form-container {
+  background-color: #fff;
+  padding: 1em;
+  border-radius: 3px;
+  color: black;
+}
+
+.form-row {
+  margin-bottom: 0.5em;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-row label {
+  font-size: 0.9rem;
+}
+
+.form-row input {
+  margin-top: 0.3em;
+  border: 1px solid #dddfe2;
+  padding: 0.5em;
+  font-size: 0.9rem;
+  border-radius: 3px;
+}
+
+.heading {
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 0 0 0.8em 0;
+  margin: 0;
+}
+
+.form-row button {
+  background: #4168b4;
+  border: none;
+  border-radius: 3px;
+  color: white;
+  padding: 0.7em;
+  cursor: pointer;
+}
+
+.signup-container {
+  width: 90%;
+  max-width: 25em;
+  margin: auto;
+  padding-top: 6em;
 }

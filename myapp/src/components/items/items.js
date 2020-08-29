@@ -61,7 +61,7 @@ export default function Items (props) {
         <div className='items-grid-container'>
           <div className='subcategories-container'>{subcategories}</div>
           <div className='items-container'>{disp}</div>
-          <Cart cart={cart} updateCart={updateCart} /> {/* can remove this  */}
+          <Cart showToCheckout={true} /> {/* can remove this  */}
         </div>
       </div>
     </div>
