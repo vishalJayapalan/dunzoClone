@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
-import { AppContextProvider } from './components/context/AppContext'
+import { AppContextProvider } from './components/context/App/AppContext'
 
 import Categories from './components/categories/Categories'
 import Shops from './components/shops/Shops'

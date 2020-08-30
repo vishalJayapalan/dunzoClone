@@ -3,13 +3,15 @@ import './Map.css'
 // import 'leaflet/dist/leaflet.css'
 
 import Leaflet from 'leaflet'
-import 'leaflet-routing-machine/dist/leaflet-routing-machine.css'
+// import 'leaflet-routing-machine/dist/leaflet-routing-machine.css'
 import 'leaflet-routing-machine'
 
 import Nominatim from 'nominatim-geocoder'
 
-export default function Map (props) {
-  console.log('LOCation:', props)
+import Navbar from '../navbar/Navbar'
+
+export default function Map ({ location }) {
+  console.log('LOCation:', location)
   const [liveLocation, setLiveLocation] = useState({
     latitude: '',
     longitude: ''
@@ -60,7 +62,7 @@ export default function Map (props) {
       // console.log('location', result[0].lat, result[0].lon)
     }
 
-    geocoding('kalyan silks,kannur')
+    geocoding('geekskool,bangalore')
     // Leaflet.Control.geocoder().addTo(map)
 
     // const latlngs = [position, position2]
@@ -108,8 +110,48 @@ export default function Map (props) {
 
   // mymap.on('click', onMapClick)
   return (
-    <div className='checkoutContainer'>
-      <div id='mapid'></div>
+    <div className='track-order-page'>
+      <Navbar />
+      <div className='track-order-container'>
+        <div className='track-title-container'>
+          <h3>Track Your Order</h3>
+        </div>
+        <div className='map-delivery-detail'>
+          <div id='mapid' />
+          <div className='delivery-process-details-container'>
+            <div className='order-details'>
+              <input type='checkbox' checked={false} /> <p>Order received</p>
+            </div>
+
+            <div className='order-details'>
+              <input type='checkbox' checked={false} />{' '}
+              <p>Items are being packed</p>
+            </div>
+
+            <div className='order-details'>
+              <input type='checkbox' checked={false} />{' '}
+              <p>Look for a partner</p>
+            </div>
+
+            <div className='order-details'>
+              <input type='checkbox' checked={false} /> <p>Order picked up</p>
+            </div>
+
+            <div className='order-details'>
+              <input type='checkbox' checked={false} /> <p>Delivered</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className='order-details-invoice-container'>
+        <div className='order-address-container'>
+          <h4>Order Details</h4>
+          <p>address1</p>
+          <p>address2</p>
+        </div>
+        <div className='invoice-container'></div>
+      </div>
+      <div className='item-list-container'></div>
     </div>
   )
 }

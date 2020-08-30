@@ -1,5 +1,3 @@
-import cartItem from '../items/cartItem'
-
 export default (state, action) => {
   switch (action.type) {
     case 'GET_ITEMS': {

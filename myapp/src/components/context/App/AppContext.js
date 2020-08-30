@@ -1,14 +1,18 @@
-import React, { useReducer, createContext } from 'react'
+import React, { useReducer, createContext, useState, useEffect } from 'react'
 
 import AppReducer from './AppReducer'
 
 export const AppContext = createContext()
 
-const initialState = { cart: [], items: [] }
+const initialState = {
+  cart: [],
+  items: []
+}
 
 export const AppContextProvider = props => {
   const [state, dispatch] = useReducer(AppReducer, initialState)
-
+  const [showLogin, setShowLogin] = useState(false)
+  const [showRegister, setShowRegister] = useState(false)
   const getItems = async shopid => {
     try {
       const data = await window.fetch(`http://localhost:5000/items/${shopid}`)
@@ -107,7 +111,11 @@ export const AppContextProvider = props => {
         getItems,
         getCart,
         addToCart,
-        updateCart
+        updateCart,
+        showLogin,
+        setShowLogin,
+        showRegister,
+        setShowRegister
       }}
     >
       {props.children}

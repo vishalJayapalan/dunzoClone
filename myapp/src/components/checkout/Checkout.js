@@ -5,6 +5,7 @@ import Navbar from '../navbar/Navbar'
 import './Checkout.css'
 
 import Cart from '../items/cart'
+import Invoice from '../items/invoice.js'
 
 export default function Checkout () {
   return (
@@ -34,13 +35,22 @@ export default function Checkout () {
               />
             </div>
           </div>
-          <Link style={{ textDecoration: 'none' }} to={`/track-order`}>
+          <Link
+            style={{ textDecoration: 'none' }}
+            to={{
+              pathname: `/track-order`,
+              aboutProps: { name: 'test information' }
+            }}
+          >
             <button className='paybtn'>Pay</button>
           </Link>
         </div>
-        <div className='checkout-cart-invoice'>
-          <div className='cart-container'>
+        <div className='checkout-cart-invoice-container'>
+          <div className='checkout-cart-container'>
             <Cart showToCheckout={false} />
+          </div>
+          <div className='checkout-invoice-container'>
+            <Invoice />
           </div>
         </div>
       </div>

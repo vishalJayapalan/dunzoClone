@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 // import CartItem from './cartItem'
 import CartItems from './cartItems'
 
-import { AppContext } from '../context/AppContext'
+import { AppContext } from '../context/App/AppContext'
 
 export default function Cart (props) {
   const { cart, getCart } = useContext(AppContext)
@@ -20,7 +20,7 @@ export default function Cart (props) {
   return (
     <div className='cart-container'>
       <div className='cart-title-container'>
-        <h3>Your Cart</h3>
+        <h3 className='cart-title'>Your Cart</h3>
         {cart.length !== 0 && (
           <span className='cart-items-count'>({cart.length} Items)</span>
         )}
@@ -36,7 +36,9 @@ export default function Cart (props) {
           <p>Add items to get started</p>
         </div>
       )}
-      {cart.length !== 0 && <div>{cart[0].shopname}</div>}
+      {cart.length !== 0 && (
+        <div className='cart-shopname'>{cart[0].shopname}</div>
+      )}
       <CartItems />
       {/* <div className='cart-items-container'>
         {cart.map(cartItem => (

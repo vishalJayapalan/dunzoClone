@@ -1,23 +1,59 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
+
+import { AppContext } from '../context/App/AppContext'
 
 export default function Signup () {
+  const { setShowRegister, setShowLogin } = useContext(AppContext)
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [fullName, setFullName] = useState('')
+  const [fullname, setFullname] = useState('')
+
+  const userRegister = async event => {
+    event.preventDefault()
+    try {
+      const response = await window.fetch('http://localhost:5000/user/', {
+        method: 'POST',
+        body: JSON.stringify({
+          email,
+          fullname,
+          password
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      if (response.ok) {
+        const jsonData = await response.json()
+        setEmail('')
+        setFullname('')
+        setPassword('')
+        // setIsLoggedin(true)
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
   return (
     <div>
       <div className='overlay'>
         <div className='signup-container'>
           <div className='form-container'>
-            <h1 className='heading'>Register</h1>
-            <form>
+            <div className='signupNin-title-container'>
+              <h1 className='heading'>Register</h1>
+              <img
+                src='/images/closeIcon.png'
+                onClick={() => setShowRegister(false)}
+              />
+            </div>
+            <form onSubmit={userRegister}>
               {/* <div className='errorMessage'>{errMsg}</div> */}
               <div className='form-row'>
                 <label>FullName</label>
                 <input
-                  value={fullName}
+                  value={fullname}
                   placeholder='Enter Email'
-                  onChange={e => setEmail(e.target.value)}
+                  onChange={e => setFullname(e.target.value)}
                   required
                   title='enter a valid email address'
                 />
@@ -47,6 +83,16 @@ export default function Signup () {
               </div>
               <div className='form-row'>
                 <button type='submit'>Register</button>
+              </div>
+              <div className='form-footer'>
+                <p
+                  onClick={() => {
+                    setShowLogin(true)
+                    setShowRegister(false)
+                  }}
+                >
+                  If already registered user, click here to Login
+                </p>
               </div>
             </form>
           </div>

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 
-import { AppContext } from '../context/AppContext'
+import { AppContext } from '../context/App/AppContext'
 import CartItem from './cartItem'
 
 export default function CartItems () {

@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useContext } from 'react'
 import Signin from '../signIn&signUp/Signin'
-import SignUp from '../signIn&signUp/Signup'
+import Signup from '../signIn&signUp/Signup'
+
+import { AppContext } from '../context/App/AppContext'
 
 export default function Navbar () {
-  const [showLogin, setShowLogin] = useState(false)
+  const { showLogin, showRegister, setShowLogin } = useContext(AppContext)
   return (
     <div className='nav-container'>
       <span className='app-name'>DunzoClone</span>
@@ -16,7 +18,8 @@ export default function Navbar () {
           Sign in
         </span>
       </div>
-      {showLogin && <SignUp />}
+      {showLogin && <Signin />}
+      {showRegister && <Signup />}
     </div>
   )
 }

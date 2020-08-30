@@ -5,7 +5,7 @@ import Subcategories from './subcategories'
 import Cart from './cart'
 import Navbar from '../navbar/Navbar'
 
-import { AppContext } from '../context/AppContext'
+import { AppContext } from '../context/App/AppContext'
 
 export default function Items (props) {
   const { items, cart, getItems, getCart, addToCart, updateCart } = useContext(

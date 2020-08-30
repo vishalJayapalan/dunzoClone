@@ -1,6 +1,53 @@
 .leaflet-container {
-  height: 600px;
+  padding: 10%;
+  margin: 2%;
+  height: 300px;
+  width: 500px;
+  z-index: 0;
+  pointer-events: none;
 }
-/* .leaflet-routing-alternatives-container {
+.leaflet-routing-alternatives-container {
   display: none;
-} */
+}
+
+.track-order-page {
+  background-color: rgb(240, 245, 247);
+}
+
+.track-order-container {
+  margin: 3em;
+}
+
+.track-title-container {
+  background-color: white;
+  padding: 2%;
+  margin-top: 5%;
+}
+
+.map-delivery-detail {
+  display: flex;
+}
+
+.delivery-process-details-container {
+  margin: 2%;
+  padding: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  background-color: white;
+  border-radius: 5px;
+}
+
+.delivery-process-details-container p {
+  font-size: 125%;
+}
+
+.order-details {
+  display: flex;
+  align-items: center;
+}
+
+.order-details-invoice-container {
+  padding: 2%;
+  margin: 2%;
+}

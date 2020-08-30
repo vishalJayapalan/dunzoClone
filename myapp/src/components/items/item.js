@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 
-import { AppContext } from '../context/AppContext'
+import { AppContext } from '../context/App/AppContext'
 
 import CartButton from './cartButton'
 
