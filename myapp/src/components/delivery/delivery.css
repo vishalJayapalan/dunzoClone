@@ -1,0 +1,15 @@
+.order-page {
+  margin: 2%;
+}
+
+.order-rows-container {
+  display: flex;
+  flex-direction: column;
+  padding: 2%;
+}
+
+.order-row {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 2%;
+}

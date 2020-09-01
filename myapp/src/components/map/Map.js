@@ -10,14 +10,23 @@ import Nominatim from 'nominatim-geocoder'
 
 import Navbar from '../navbar/Navbar'
 
+import io from 'socket.io-client'
+let socket
+const endpoint = 'http://localhost:5000'
+
 export default function Map ({ location }) {
   console.log('LOCation:', location)
   const [liveLocation, setLiveLocation] = useState({
     latitude: '',
     longitude: ''
   })
+  const [deliveryPartnerName, setDeliveryPartnerName] = useState(null)
+
   const position = [11.858762, 75.404577]
   const position2 = [11.877094, 75.372391]
+  const [orderCompleted, setOrderCompleted] = useState(false)
+  const [packingStatus, setPackingStatus] = useState(false)
+  const [orderPickStatus, setOrderPickStatus] = useState(false)
   // const position2 = [liveLocation.latitude, liveLocation.longitude]
   // const mapRef = useRef(null)
   // const leafletIcon = Leaflet.Icon.extend({
@@ -80,7 +89,26 @@ export default function Map ({ location }) {
   }
   useEffect(() => {
     map()
+    setTimeout(() => {
+      setPackingStatus(true)
+      socket = io(endpoint)
+      socket.emit('deliveryPartnerRequired', 'Xpress Mart')
+    }, 5000)
   }, [])
+  useEffect(() => {
+    socket = io(endpoint)
+
+    socket.on('partnerAssigned', partnerName => {
+      console.log(partnerName)
+      setDeliveryPartnerName(partnerName)
+    })
+    socket.on('orderPickedUp', () => {
+      setOrderPickStatus(true)
+    })
+    socket.on('orderDelivered', () => {
+      setOrderCompleted(true)
+    })
+  })
 
   const popup = Leaflet.popup()
 
@@ -120,25 +148,35 @@ export default function Map ({ location }) {
           <div id='mapid' />
           <div className='delivery-process-details-container'>
             <div className='order-details'>
-              <input type='checkbox' checked={false} /> <p>Order received</p>
+              <input type='checkbox' checked={true} /> <p>Order received</p>
             </div>
 
             <div className='order-details'>
-              <input type='checkbox' checked={false} />{' '}
-              <p>Items are being packed</p>
+              <input type='checkbox' checked={packingStatus} />{' '}
+              {!packingStatus ? (
+                <p>Items are being packed</p>
+              ) : (
+                <p>Items Packed</p>
+              )}
             </div>
 
             <div className='order-details'>
-              <input type='checkbox' checked={false} />{' '}
-              <p>Look for a partner</p>
+              <input type='checkbox' checked={deliveryPartnerName} />{' '}
+              {deliveryPartnerName ? (
+                <p>Delivery Partner Assigned</p>
+              ) : (
+                <p>Looking for a partner</p>
+              )}
             </div>
 
             <div className='order-details'>
-              <input type='checkbox' checked={false} /> <p>Order picked up</p>
+              <input type='checkbox' checked={orderPickStatus} />{' '}
+              <p>Order picked up</p>
             </div>
 
             <div className='order-details'>
-              <input type='checkbox' checked={false} /> <p>Delivered</p>
+              <input type='checkbox' checked={orderCompleted} />{' '}
+              <p>Delivered</p>
             </div>
           </div>
         </div>

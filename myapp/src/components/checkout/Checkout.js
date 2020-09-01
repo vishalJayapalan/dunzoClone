@@ -7,7 +7,11 @@ import './Checkout.css'
 import Cart from '../items/cart'
 import Invoice from '../items/invoice.js'
 
+import io from 'socket.io-client'
+let socket
+
 export default function Checkout () {
+  const endpoint = 'http://localhost:5000'
   return (
     <div className='checkout-page'>
       <Navbar />

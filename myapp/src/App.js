@@ -8,6 +8,7 @@ import Shops from './components/shops/Shops'
 import Items from './components/items/items'
 import Checkout from './components/checkout/Checkout'
 import Map from './components/map/Map'
+import Delivery from './components/delivery/delivery'
 
 function App () {
   return (
@@ -22,6 +23,7 @@ function App () {
             />
             <Route path='/' exact component={Categories} />
             <Route path='/checkout' component={Checkout} />
+            <Route path='/delivery' component={Delivery} />
             <Route path='/track-order' component={Map} />
             <Route path='/:categoryid/:shopname/:shopid' component={Items} />
           </Switch>
