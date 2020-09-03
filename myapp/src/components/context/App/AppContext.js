@@ -13,6 +13,8 @@ export const AppContextProvider = props => {
   const [state, dispatch] = useReducer(AppReducer, initialState)
   const [showLogin, setShowLogin] = useState(false)
   const [showRegister, setShowRegister] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [deliveryAddress, setDeliveryAddress] = useState('')
   const getItems = async shopid => {
     try {
       const data = await window.fetch(`http://localhost:5000/items/${shopid}`)
@@ -115,7 +117,11 @@ export const AppContextProvider = props => {
         showLogin,
         setShowLogin,
         showRegister,
-        setShowRegister
+        setShowRegister,
+        isLoggedIn,
+        setIsLoggedIn,
+        deliveryAddress,
+        setDeliveryAddress
       }}
     >
       {props.children}

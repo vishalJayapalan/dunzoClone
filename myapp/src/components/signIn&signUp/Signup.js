@@ -1,9 +1,12 @@
 import React, { useState, useContext } from 'react'
 
 import { AppContext } from '../context/App/AppContext'
+import { setCookie } from '../util/cookies'
 
 export default function Signup () {
-  const { setShowRegister, setShowLogin } = useContext(AppContext)
+  const { setShowRegister, setShowLogin, setIsLoggedIn } = useContext(
+    AppContext
+  )
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -28,6 +31,7 @@ export default function Signup () {
         setEmail('')
         setFullname('')
         setPassword('')
+        setCookie('x-auth-token', jsonData.accessToken)
         // setIsLoggedin(true)
       }
     } catch (err) {

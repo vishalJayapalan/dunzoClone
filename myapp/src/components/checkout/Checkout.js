@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 
 import Navbar from '../navbar/Navbar'
@@ -6,28 +6,47 @@ import './Checkout.css'
 
 import Cart from '../items/cart'
 import Invoice from '../items/invoice.js'
+import { AppContext } from '../context/App/AppContext'
 
 import io from 'socket.io-client'
 let socket
 
 export default function Checkout () {
+  const {
+    showLogin,
+    showRegister,
+    setShowLogin,
+    isLoggedIn,
+    setIsLoggedIn,
+    deliveryAddress,
+    setDeliveryAddress
+  } = useContext(AppContext)
   const endpoint = 'http://localhost:5000'
   return (
     <div className='checkout-page'>
       <Navbar />
       <div className='checkout-container'>
         <div className='checkout-signin-deliveryaddress-paybtn'>
-          <div className='checkout-signin-container'>
-            <div className='checkout-signin-inner-container'>
-              <h2 className='checkout-signin-title'>
-                Sign in to place your order
-              </h2>
-              <p className='checkout-signin-info'>
-                New to dunzoClone? Signup/Signin to get started
-              </p>
-              <button className='checkout-signinBtn'>Sign In</button>
+          {!isLoggedIn && (
+            <div className='checkout-signin-container'>
+              <div className='checkout-signin-inner-container'>
+                <h2 className='checkout-signin-title'>
+                  Sign in to place your order
+                </h2>
+                <p className='checkout-signin-info'>
+                  New to dunzoClone? Signup/Signin to get started
+                </p>
+                <button
+                  className='checkout-signinBtn'
+                  onClick={() => {
+                    setShowLogin(true)
+                  }}
+                >
+                  Sign In
+                </button>
+              </div>
             </div>
-          </div>
+          )}
 
           <div className='checkout-delivery-address-container' disabled={true}>
             <div className='checkout-delivery-address-inner-container'>
@@ -35,7 +54,9 @@ export default function Checkout () {
               <input
                 className='checkout-address-input'
                 placeholder='Enter the delivery address'
-                disabled={true}
+                disabled={!isLoggedIn}
+                value={deliveryAddress}
+                onChange={e => setDeliveryAddress(e.target.value)}
               />
             </div>
           </div>

@@ -2,19 +2,22 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
 module.exports = (req, res, next) => {
-  let accessToken
-  const cookieHeaderString = req.headers.cookie
-  if (cookieHeaderString) {
-    const cookies = cookieHeaderString.split(';')
-    for (const cookie of cookies) {
-      const [key, value] = cookie.split('=')
-      if (key === 'x-auth-token') {
-        accessToken = value
-        break
-      }
-    }
-  }
-
+  // let accessToken
+  // const cookieHeaderString = req.headers.cookie
+  // console.log('middleware', req.headers)
+  // if (cookieHeaderString) {
+  //   const cookies = cookieHeaderString.split(';')
+  //   for (const cookie of cookies) {
+  //     const [key, value] = cookie.split('=')
+  //     if (key === 'x-auth-token') {
+  //       accessToken = value
+  //       break
+  //     }
+  //   }
+  // }
+  const accessToken =
+    req.headers['x-auth-token'] || req.headers['authorization']
+  console.log('accessTokenMiddleware', accessToken)
   try {
     if (!accessToken) {
       res.user = null

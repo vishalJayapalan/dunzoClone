@@ -14,7 +14,12 @@ const cartRoutes = require('./cart/cartRoute')
 const userRoutes = require('./users/userRouter')
 const { json } = require('express')
 
-app.use(cors())
+app.use(
+  cors({
+    origin: true,
+    credentials: true
+  })
+)
 app.use(express.json())
 
 app.use('/items', itemRoutes)

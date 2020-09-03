@@ -1,9 +1,12 @@
 import React, { useState, useContext } from 'react'
 
 import { AppContext } from '../context/App/AppContext'
+import { setCookie } from '../util/cookies'
 
 export default function Signin () {
-  const { setShowLogin, setShowRegister } = useContext(AppContext)
+  const { setShowLogin, setShowRegister, setIsLoggedIn } = useContext(
+    AppContext
+  )
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const userLogin = async event => {
@@ -11,7 +14,9 @@ export default function Signin () {
     try {
       const response = await window.fetch('http://localhost:5000/user/login', {
         method: 'POST',
-        credentials: 'same-origin',
+        // credentials: 'include',
+        // crossDomain: true,
+        // xhrFields: { withCredentials: true },
         body: JSON.stringify({ email, password }),
         headers: {
           'Content-type': 'application/json'
@@ -19,8 +24,12 @@ export default function Signin () {
       })
       if (response.ok) {
         const jsonData = await response.json()
+        console.log(jsonData)
+        setCookie('x-auth-token', jsonData.accessToken)
         setEmail('')
         setPassword('')
+        setShowLogin(false)
+        setIsLoggedIn(true)
       }
     } catch (err) {
       console.log(err)

@@ -6,7 +6,6 @@ const { pool } = require('../util/database')
 
 const registerUser = async (req, res) => {
   let { fullname, email, password } = req.body
-  console.log(fullname, email, password)
   if (!fullname || !email || !password) {
     return res.status(400).json({ msg: 'Please enter all fields ' })
   }
@@ -16,35 +15,28 @@ const registerUser = async (req, res) => {
       `SELECT * FROM users where email='${email}'`
     )
     if (!duplicateUser.rowCount) {
-      console.log(password)
-
       password = await bcrypt.hash(password, 10)
-      console.log(password)
       const newUser = await pool.query(
         `INSERT INTO users (fullname,email,password) VALUES ('${fullname}','${email}','${password}') RETURNING *`
       )
-      console.log(newUser.rows[0])
       const accessToken = jwt.sign(
         { userid: newUser.rows[0].userid },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: 3600 }
       )
-      console.log('token', accessToken)
       return res
         .status(201)
         .cookie('x-auth-token', accessToken, { maxAge: 3600000 })
-        .json(newUser.rows[0].userid)
+        .json({ userid: newUser.rows[0].userid, accessToken })
     }
     return res.status(400).json({ msg: 'Email already exists' })
   } catch (err) {
-    console.log(err)
     return res.status(500).json({ msg: 'Some error occured' })
   }
 }
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body
-  console.log(email, password)
   console.log('cookie', req.headers)
   if (!email || !password)
     return res.status(200).json({ msg: 'Please Enter all fields' })
@@ -62,11 +54,14 @@ const loginUser = async (req, res) => {
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: 3600 }
     )
-    return res
-      .status(201)
-      .cookie('x-auth-token', accessToken, { maxAge: 3600000 })
-      .json(user.rows[0].userid)
-    // .setHeader('Set-Cookie', [`x-auth-token=${accessToken}`])
+    return (
+      res
+        .status(200)
+        .cookie('x-auth-token', accessToken, { maxAge: 3600000 })
+        // .header('Access-Control-Allow-Origin', 'http://localhost:3000/')
+        // .header('Access-Control-Allow-Credentials', 'true')
+        .json({ userid: user.rows[0].userid, accessToken })
+    )
   } catch (err) {
     return res.status(500).json({ msg: 'Some error occured' })
   }
@@ -83,7 +78,7 @@ const getCurrentUser = async (req, res) => {
       return res.status(400).json({ message: 'User not found' })
     }
 
-    return res.status(200).json(user.rows[0])
+    return res.status(200).json({ user: user.rows[0] })
   } catch (err) {
     return res.status(500).json({ message: "Can't find User" })
   }
