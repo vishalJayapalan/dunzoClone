@@ -12,9 +12,9 @@ export default function Navbar () {
     showRegister,
     setShowLogin,
     isLoggedIn,
-    setIsLoggedIn
+    setIsLoggedIn,
+    cart
   } = useContext(AppContext)
-  // const [isLoggedIn, setIsLoggedIn] = useState(false)
   useEffect(() => {
     const token = getCookie('x-auth-token')
     token && setIsLoggedIn(true)
@@ -27,9 +27,15 @@ export default function Navbar () {
       <div className='nav-cartimg-signin-container'>
         <div className='nav-cart-container'>
           <img src='/images/cart2.png' className='nav-cart-image' />
+          {cart.length ? (
+            <div className='nav-cart-count'>{cart.length}</div>
+          ) : (
+            <div />
+          )}
         </div>
         {isLoggedIn ? (
           <span
+            className='nav-signin-btn'
             onClick={() => {
               setIsLoggedIn(false)
               document.cookie =

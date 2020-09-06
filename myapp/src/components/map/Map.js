@@ -54,7 +54,16 @@ export default function Map ({ location }) {
 
     // making two markers and showing popup
     const marker = Leaflet.marker(position).addTo(mymap)
-    const bikeIcon = Leaflet.marker(position2).addTo(mymap)
+    // const storeMarket = Leaflet.marker(position2).addTo(mymap)
+    const bikeIcon = Leaflet.icon({
+      iconSize: [25, 41],
+      iconAnchor: [10, 41],
+      popupAnchor: [2, -40],
+      iconUrl: '/images/bikeImg.jpg',
+      shadowUrl: 'https://unpkg.com/leaflet@1.6/dist/images/marker-shadow.png'
+    })
+    Leaflet.marker([11.877194, 75.375391], { icon: bikeIcon }).addTo(mymap)
+
     mymap.on('click', onMapClick) // will show a pop where u clicked with the lat and lng
     marker.bindPopup('<b>Your Location</b>').openPopup()
     const geocoding = async address => {
@@ -71,7 +80,7 @@ export default function Map ({ location }) {
       // console.log('location', result[0].lat, result[0].lon)
     }
 
-    geocoding('geekskool,bangalore')
+    geocoding('Shoppers Stop,kannur')
     // Leaflet.Control.geocoder().addTo(map)
 
     // const latlngs = [position, position2]
@@ -87,6 +96,7 @@ export default function Map ({ location }) {
       // geocoder: Leaflet.Control.Geocoder.Nominatim()
     }).addTo(mymap)
   }
+
   useEffect(() => {
     map()
     setTimeout(() => {
@@ -148,11 +158,12 @@ export default function Map ({ location }) {
           <div id='mapid' />
           <div className='delivery-process-details-container'>
             <div className='order-details'>
-              <input type='checkbox' checked={true} /> <p>Order received</p>
+              <input type='checkbox' checked={true} readOnly={true} />{' '}
+              <p>Order received</p>
             </div>
 
             <div className='order-details'>
-              <input type='checkbox' checked={packingStatus} />{' '}
+              <input type='checkbox' checked={packingStatus} readOnly={true} />{' '}
               {!packingStatus ? (
                 <p>Items are being packed</p>
               ) : (
@@ -161,7 +172,11 @@ export default function Map ({ location }) {
             </div>
 
             <div className='order-details'>
-              <input type='checkbox' checked={deliveryPartnerName} />{' '}
+              <input
+                type='checkbox'
+                checked={deliveryPartnerName}
+                readOnly={true}
+              />{' '}
               {deliveryPartnerName ? (
                 <p>Delivery Partner Assigned</p>
               ) : (
@@ -170,12 +185,16 @@ export default function Map ({ location }) {
             </div>
 
             <div className='order-details'>
-              <input type='checkbox' checked={orderPickStatus} />{' '}
+              <input
+                type='checkbox'
+                checked={orderPickStatus}
+                readOnly={true}
+              />{' '}
               <p>Order picked up</p>
             </div>
 
             <div className='order-details'>
-              <input type='checkbox' checked={orderCompleted} />{' '}
+              <input type='checkbox' checked={orderCompleted} readOnly={true} />{' '}
               <p>Delivered</p>
             </div>
           </div>

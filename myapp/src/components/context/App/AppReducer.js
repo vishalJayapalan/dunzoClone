@@ -3,6 +3,16 @@ export default (state, action) => {
     case 'GET_ITEMS': {
       return { ...state, items: action.payload }
     }
+    case 'UPDATE_ITEMS': {
+      const updatedItems = action.payload.items
+      const toUpdateItems = action.payload.newItems.reverse()
+      for (const item of toUpdateItems) {
+        const newItem = { ...item }
+        newItem.subcategory = 'Search Results'
+        updatedItems.unshift(newItem)
+      }
+      return { ...state, items: updatedItems }
+    }
     case 'GET_CART': {
       return {
         ...state,

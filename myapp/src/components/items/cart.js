@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from 'react'
 
 import { Link } from 'react-router-dom'
 
-// import CartItem from './cartItem'
 import CartItems from './cartItems'
 
 import { AppContext } from '../context/App/AppContext'

@@ -17,7 +17,7 @@ module.exports = (req, res, next) => {
   // }
   const accessToken =
     req.headers['x-auth-token'] || req.headers['authorization']
-  console.log('accessTokenMiddleware', accessToken)
+  // console.log('accessTokenMiddleware', accessToken)
   try {
     if (!accessToken) {
       res.user = null

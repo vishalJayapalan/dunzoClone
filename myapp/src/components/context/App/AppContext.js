@@ -15,6 +15,7 @@ export const AppContextProvider = props => {
   const [showRegister, setShowRegister] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [deliveryAddress, setDeliveryAddress] = useState('')
+
   const getItems = async shopid => {
     try {
       const data = await window.fetch(`http://localhost:5000/items/${shopid}`)
@@ -27,6 +28,21 @@ export const AppContextProvider = props => {
     } catch (err) {
       dispatch({ type: 'ERROR', payload: err })
     }
+  }
+
+  const updateItems = async (shopid, newItems) => {
+    try {
+      const data = await window.fetch(`http://localhost:5000/items/${shopid}`)
+      if (!data.ok) {
+        throw data
+      }
+      const jsonData = await data.json()
+      dispatch({ type: 'UPDATE_ITEMS', payload: { items: jsonData, newItems } })
+    } catch (err) {
+      dispatch({ type: 'ERROR', payload: err })
+    }
+
+    // dispatch({ type: 'UPDATE_ITEMS', payload: newItems })
   }
 
   const getCart = async () => {
@@ -111,6 +127,7 @@ export const AppContextProvider = props => {
         cart: state.cart,
         items: state.items,
         getItems,
+        updateItems,
         getCart,
         addToCart,
         updateCart,

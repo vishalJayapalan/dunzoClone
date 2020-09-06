@@ -5,7 +5,7 @@ export default function Subcategories (props) {
     <div>
       <a
         className='subcategory-button'
-        href={'#' + props.item.itemid}
+        href={'#' + props.itemId}
         rel='internal'
       >
         {props.subcategory}

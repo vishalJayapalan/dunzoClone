@@ -4,13 +4,21 @@ import SubCategoryName from './subCategoryName'
 import Subcategories from './subcategories'
 import Cart from './cart'
 import Navbar from '../navbar/Navbar'
+import Search from './search'
 
 import { AppContext } from '../context/App/AppContext'
 
 export default function Items (props) {
-  const { items, cart, getItems, getCart, addToCart, updateCart } = useContext(
-    AppContext
-  )
+  const {
+    items,
+    cart,
+    getItems,
+    updateItems,
+    getCart,
+    addToCart,
+    updateCart
+  } = useContext(AppContext)
+  const [rerender, setRerender] = useState(0)
 
   useEffect(() => {
     getItems(props.match.params.shopid)
@@ -25,27 +33,44 @@ export default function Items (props) {
       lastSubCategory = item.subcategory
       disp.push(
         <SubCategoryName
-          key={item.itemid + 'subname'}
-          item={item}
+          key={
+            item.subcategory === 'Search Results'
+              ? item.itemid + 'searchResults'
+              : item.itemid + 'subname'
+          }
+          itemId={item.itemid}
           subcategory={item.subcategory}
         />
       )
       subcategories.push(
         <Subcategories
-          key={item.itemid + 'subcat'}
-          item={item}
+          key={
+            item.subcategory === 'Search Results'
+              ? item.itemid + 'searchResultsCat'
+              : item.itemid + 'subcat'
+          }
+          itemId={item.itemid}
           subcategory={item.subcategory}
         />
       )
     }
     disp.push(
       <Item
-        key={item.itemid}
+        key={
+          item.subcategory === 'Search Results'
+            ? item.itemid + 'searchResultsItem'
+            : item.itemid
+        }
         item={item}
         shopname={props.match.params.shopname}
       />
     )
   })
+
+  const includeSearchResults = newItems => {
+    updateItems(props.match.params.shopid, newItems)
+  }
+  console.log('ONce', disp.length)
   return (
     <div className='items-page'>
       <Navbar />
@@ -54,10 +79,9 @@ export default function Items (props) {
         <h1 className='items-shop-name'>{props.match.params.shopname}</h1>
       </div>
       <div className='items-flex-container'>
-        <div className='search-item-container'>
-          <input className='search-item' placeholder='Search for an item' />
-        </div>
-        <hr />
+        <Search includeSearchResults={includeSearchResults} />
+
+        {/* <hr /> */}
         <div className='items-grid-container'>
           <div className='subcategories-container'>{subcategories}</div>
           <div className='items-container'>{disp}</div>

@@ -4,7 +4,7 @@ const getShops = async (req, res) => {
   const { categoryid } = req.params
   try {
     const shops = await pool.query(
-      `select * from shops JOIN categories_join_shops ON shops.shopid = categories_join_shops.shopid AND categories_join_shops.categoryId =${categoryid};`
+      `select * from shops JOIN categories_join_shops ON shops.shopid = categories_join_shops.shopid AND categories_join_shops.categoryId =${categoryid} ORDER BY shops.shopid;`
     )
     res.status(200).send(shops.rows)
   } catch (err) {

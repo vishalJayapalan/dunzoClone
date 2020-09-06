@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import './delivery.css'
 import io from 'socket.io-client'
+
 let socket
+
 export default function Delivery () {
   const endpoint = 'http://localhost:5000'
   const [requirement, setRequirement] = useState(null)
   const [orderPickStatus, setOrderPickStatus] = useState(false)
   const [orderStatus, setOrderStatus] = useState(false)
+
   useEffect(() => {
     socket = io(endpoint)
+
     // for getting geolocation
     function success (position) {
       const latitude = position.coords.latitude
@@ -26,8 +30,6 @@ export default function Delivery () {
       setInterval(() => {
         navigator.geolocation.getCurrentPosition(success, error)
       }, 5000)
-      // status.textContent = 'Locating…'
-      // navigator.geolocation.getCurrentPosition(success, error)
     }
   }, [])
   useEffect(() => {
