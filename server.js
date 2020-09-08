@@ -12,7 +12,6 @@ const categoryRoutes = require('./categories/categoryRoute')
 const shopRoutes = require('./shops/shopRoute')
 const cartRoutes = require('./cart/cartRoute')
 const userRoutes = require('./users/userRouter')
-const { json } = require('express')
 
 app.use(
   cors({
@@ -33,6 +32,7 @@ io.on('connection', socket => {
   socket.on('liveLocation', liveLocation => {
     const { latitude, longitude } = liveLocation
     console.log(latitude, longitude)
+    socket.broadcast.emit('deliveryLiveLocation', { latitude, longitude })
   })
   socket.on('deliveryPartnerRequired', shopname => {
     console.log(shopname)
@@ -46,7 +46,7 @@ io.on('connection', socket => {
     socket.broadcast.emit('orderPickedUp', 'yahooooo')
   })
   socket.on('orderCompleted', () => {
-    socket.broadcast.emit('orderDelivered', 'yahooooo')
+    socket.broadcast.emit('orderDelivered', 'woohoooo')
   })
   socket.on('disconnect', () => {
     console.log('user disconnected')

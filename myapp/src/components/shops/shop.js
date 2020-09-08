@@ -14,7 +14,10 @@ export default function Shop (props) {
             src='/images/groceries.jpeg'
             alt='**{Eeshvara}**'
           />
-          <p className='shop-name'>{props.shop.shopname}</p>
+          <div className='shop-name-container'>
+            <p className='shop-name'>{props.shop.shopname}</p>
+            <p className='shop-address'>kannur-kerala</p>
+          </div>
         </div>
       </Link>
     </div>

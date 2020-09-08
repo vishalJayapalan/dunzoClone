@@ -25,7 +25,7 @@ export default function Categories () {
   return (
     <div className='categories-page'>
       <Navbar />
-      <h1 className='category-title'>What Do you Want To Get Done</h1>
+      <h1 className='category-title'>What Do you Want To Get Done?</h1>
       <div className='categories-container'>
         {categories.map(category => (
           <Category key={category.categoryid} category={category} />

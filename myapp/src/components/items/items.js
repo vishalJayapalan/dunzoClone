@@ -9,16 +9,7 @@ import Search from './search'
 import { AppContext } from '../context/App/AppContext'
 
 export default function Items (props) {
-  const {
-    items,
-    cart,
-    getItems,
-    updateItems,
-    getCart,
-    addToCart,
-    updateCart
-  } = useContext(AppContext)
-  const [rerender, setRerender] = useState(0)
+  const { items, getItems, updateItems, getCart } = useContext(AppContext)
 
   useEffect(() => {
     getItems(props.match.params.shopid)
@@ -70,7 +61,6 @@ export default function Items (props) {
   const includeSearchResults = newItems => {
     updateItems(props.match.params.shopid, newItems)
   }
-  console.log('ONce', disp.length)
   return (
     <div className='items-page'>
       <Navbar />

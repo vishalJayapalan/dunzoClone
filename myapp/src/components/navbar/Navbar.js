@@ -6,7 +6,7 @@ import { AppContext } from '../context/App/AppContext'
 
 import { getCookie, setCookie } from '../util/cookies'
 
-export default function Navbar () {
+export default function Navbar ({ hideLoginAndLogout }) {
   const {
     showLogin,
     showRegister,
@@ -22,7 +22,7 @@ export default function Navbar () {
 
   return (
     <div className='nav-container'>
-      <span className='app-name'>DunzoClone</span>
+      <span className='app-name'>Donesooo</span>
       <div></div>
       <div className='nav-cartimg-signin-container'>
         <div className='nav-cart-container'>
@@ -33,22 +33,23 @@ export default function Navbar () {
             <div />
           )}
         </div>
-        {isLoggedIn ? (
-          <span
-            className='nav-signin-btn'
-            onClick={() => {
-              setIsLoggedIn(false)
-              document.cookie =
-                'x-auth-token=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;'
-            }}
-          >
-            Logout
-          </span>
-        ) : (
-          <span className='nav-signin-btn' onClick={() => setShowLogin(true)}>
-            Sign in
-          </span>
-        )}
+        {!hideLoginAndLogout &&
+          (isLoggedIn ? (
+            <span
+              className='nav-signin-btn'
+              onClick={() => {
+                setIsLoggedIn(false)
+                document.cookie =
+                  'x-auth-token=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;'
+              }}
+            >
+              Logout
+            </span>
+          ) : (
+            <span className='nav-signin-btn' onClick={() => setShowLogin(true)}>
+              Sign in
+            </span>
+          ))}
       </div>
       {showLogin && <Signin />}
       {showRegister && <Signup />}

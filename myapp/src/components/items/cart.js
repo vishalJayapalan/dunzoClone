@@ -57,7 +57,7 @@ export default function Cart (props) {
       {cart.length !== 0 && props.showToCheckout && (
         <div className='checkout-button-container'>
           <Link to='/checkout'>
-            <button>Proceed To Checkout</button>
+            <button style={{ cursor: 'pointer' }}>Proceed To Checkout</button>
           </Link>
         </div>
       )}

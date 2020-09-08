@@ -24,7 +24,7 @@ export default function Shops (props) {
           src={`/images/${categoryname}.png`}
           alt='catimg'
         ></img>
-        <h1 className='category-name-inshop'>{categoryname}</h1>
+        <h3 className='category-name-inshop'>{categoryname}</h3>
       </div>
       <div className='shops-page'>
         <div className='shops-container'>

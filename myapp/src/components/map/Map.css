@@ -1,10 +1,10 @@
 .leaflet-container {
   padding: 10%;
   margin: 2%;
-  height: 300px;
-  width: 500px;
+  height: 400px;
+  width: 600px;
   z-index: 0;
-  pointer-events: none;
+  /* pointer-events: none; */
 }
 .leaflet-routing-alternatives-container {
   display: none;

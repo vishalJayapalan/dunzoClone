@@ -4,7 +4,6 @@ function getCookie (cookieName) {
   for (let index = 0; index < cookies.length; index++) {
     const cookie = cookies[index].trim()
     if (cookie.startsWith(name)) {
-      console.log(cookie.slice(name.length, cookie.length))
       return cookie.slice(name.length, cookie.length)
     }
   }

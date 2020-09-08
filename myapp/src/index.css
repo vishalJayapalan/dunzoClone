@@ -25,24 +25,22 @@ body {
   -moz-osx-font-smoothing: grayscale;
   height: 100%;
 }
-
 .categories-page {
-  /* margin: 0 15% 15% 15%; */
+  overflow: auto;
 }
 
 .category-title {
-  position: fixed;
-  top: 10%;
-  margin: 5% 0 5% 15%;
+  margin: 5em 0 5% 15%;
 }
 
 .categories-container {
-  position: fixed;
-  top: 35%;
-  margin: 0 15% 15% 15%;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr;
+  margin: 0 13% 15% 13%;
+  /* display: grid; */
+  display: flex;
+  flex-wrap: wrap;
+  /* grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr; */
+  overflow-y: auto;
 }
 
 .category-outer-container {
@@ -50,8 +48,8 @@ body {
 }
 
 .category-container {
-  width: 23rem;
-  height: 7rem;
+  width: 22rem;
+  height: 8rem;
   margin-top: 5%;
   border: solid 1px lightgray;
   border-radius: 2.5px;
@@ -61,6 +59,15 @@ body {
   align-items: center;
   cursor: pointer;
 }
+
+/* MEDIA QUERIES */
+
+@media screen and (max-width: 700px) {
+  .category-container {
+    width: 90%;
+  }
+}
+
 .category-image {
   margin-left: 5%;
   width: 30%;
@@ -80,9 +87,9 @@ body {
 
 .category-name-inshop-container {
   /* position: fixed; */
-  width: 100%;
+  width: 100vw;
   /* top: 10%; */
-  margin: 5% 0 0 0;
+  margin: 3em 0 0 0;
   background-color: rgb(23, 30, 48);
   display: flex;
   align-items: center;
@@ -90,13 +97,15 @@ body {
 
 .category-name-inshop-img {
   margin: 0 0 0 15%;
-  height: 5rem;
+  /* height: 5rem; */
   color: white;
+  border-radius: 5px;
 }
 
 .category-name-inshop {
   padding: 4%;
   color: aliceblue;
+  font-size: 200%;
 }
 
 .shops-container {
@@ -115,12 +124,15 @@ body {
   height: 9rem;
   margin-top: 5%;
   border: solid 1px lightgray;
-  border-radius: 2.5px;
-  box-shadow: 0.5px 0.5px 0.5px;
+
   display: flex;
   padding: 1rem;
   align-items: center;
   cursor: pointer;
+}
+.shop-container:hover {
+  border-radius: 2.5px;
+  box-shadow: 0.5px 0.5px 0.5px;
 }
 
 .shop-image {
@@ -128,8 +140,16 @@ body {
   width: 35%;
 }
 
-.shop-name {
+.shop-name-container {
   padding: 1rem;
+}
+
+.shop-name {
+  font-size: 125%;
+  /* padding: 1rem; */
+}
+.shop-address {
+  color: grey;
 }
 
 .items-page {
@@ -140,7 +160,7 @@ body {
 
 .items-shop-name-container {
   position: fixed;
-  top: 5%;
+  top: 3em;
   background-color: rgb(23, 30, 48);
   width: 100%;
   height: 10%;
@@ -158,17 +178,15 @@ body {
   /* border-color: black; */
   width: 100%;
   height: 100vh;
-  margin: 13% 10% 0 10%;
-  margin-left: 10%;
-  margin-right: 10%;
+  margin: 13em 10% 0 10%;
   /* height: 60vh; */
-  z-index: 4;
+  /* z-index: 4; */
   box-shadow: rgba(0, 0, 0, 0.12) 0px 4px 8px;
 }
 
 .items-grid-container {
   /* position: fixed; */
-  margin-top: 5%;
+  /* margin-top: 5%; */
   width: 80%;
   height: 63vh;
   display: grid;
@@ -176,10 +194,11 @@ body {
   grid-template-rows: 1fr;
   background-color: white;
 }
+
 /* SEARCH */
 
 .search-outer-container {
-  position: fixed;
+  /* position: fixed; */
   margin: 1%;
   width: 80%;
 }
@@ -284,6 +303,7 @@ body {
   cursor: pointer;
   border-radius: 5px;
   border: none;
+  outline: none;
   color: rgb(118, 245, 68);
   background-color: transparent;
   margin: 5% 5% 0 0;
@@ -317,6 +337,7 @@ body {
   border: none;
   background-color: transparent;
   cursor: pointer;
+  outline: none;
 }
 
 .cart-buttons-container button::selection {
@@ -411,6 +432,18 @@ body {
   font-size: 200%;
 }
 
+/* MEDIA QUERIES */
+
+@media screen and (max-width: 700px) {
+  .app-name {
+    font-size: 125%;
+  }
+  .nav-container {
+    font-size: 100%;
+    padding: 0 10% 0 2%;
+  }
+}
+
 .nav-container {
   position: fixed;
   top: 0%;
@@ -468,7 +501,7 @@ body {
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 2;
+  z-index: 4;
   /* cursor: pointer; */
 }
 
@@ -541,4 +574,36 @@ body {
 .form-footer p {
   color: #4168b4;
   cursor: pointer;
+}
+
+/* MEDIA QUERIES SHOPPAGE */
+
+@media screen and (max-width: 700px) {
+  .category-name-inshop-img {
+    height: auto;
+    width: 2rem;
+  }
+  .category-name-inshop {
+    font-size: 50%;
+  }
+  .shop-container {
+    width: 80%;
+    padding: 1%;
+    height: auto;
+    /* height: 20%; */
+  }
+}
+
+/*  MEDIA QUERIES ITEMSPAGE */
+
+@media screen and (max-width: 700px) {
+  .items-flex-container {
+    margin: 13em 0 0 5%;
+  }
+  .items-grid-container {
+    grid-template-columns: 1.5fr 2fr 0.5fr;
+  }
+  .item-image {
+    height: 2em;
+  }
 }
