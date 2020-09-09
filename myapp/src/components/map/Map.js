@@ -31,7 +31,6 @@ export default function Map ({ location }) {
   const mapRef = useRef(null)
   const routingControlRef = useRef(null)
   const map = () => {
-    // mymap = Leaflet.map('mapid').setView(position, 13)
     mapRef.current = Leaflet.map('mapid').setView(position, 10)
 
     Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -57,17 +56,11 @@ export default function Map ({ location }) {
       const geocoder = new Nominatim()
 
       const latlong = await geocoder.search({ q: address })
-      console.log('latlon', latlong)
+      console.log('latlon', latlong[0])
     }
 
-    geocoding('Shoppers Stop,kannur')
+    geocoding('Shoppers Stop,kannur,kerala')
 
-    // routingControlRef.current = Leaflet.Routing.control({
-    //   waypoints: [Leaflet.latLng(position), Leaflet.latLng(position2)],
-    //   routeWhileDragging: true
-    //   // geocoder: Leaflet.Control.Geocoder.Nominatim()
-    // }).addTo(mapRef.current)
-    // const popup = Leaflet.popup()
     let location = []
     function success (position) {
       const latitude = position.coords.latitude
@@ -77,16 +70,6 @@ export default function Map ({ location }) {
       console.log('liveLocation', liveLocation)
       console.log(latitude, longitude)
     }
-    function error () {
-      // status.textContent = 'Unable to retrieve your location'
-    }
-
-    // if (!navigator.geolocation) {
-    //   // status.textContent = 'Geolocation is not supported by your browser'
-    // } else {
-    //   // status.textContent = 'Locating…'
-    //   navigator.geolocation.getCurrentPosition(success, error)
-    // }
 
     const removeRoutingControl = () => {
       if (routingControlRef.current != null) {
@@ -96,7 +79,7 @@ export default function Map ({ location }) {
     }
 
     async function onMapClick (e) {
-      navigator.geolocation.getCurrentPosition(success, error)
+      navigator.geolocation.getCurrentPosition(success)
       if (routingControlRef.current != null) removeRoutingControl()
       console.log('location', location)
       routingControlRef.current = Leaflet.Routing.control({

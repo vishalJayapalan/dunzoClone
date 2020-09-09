@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 import Navbar from '../navbar/Navbar'
@@ -8,8 +8,7 @@ import Cart from '../items/cart'
 import Invoice from '../items/invoice.js'
 import { AppContext } from '../context/App/AppContext'
 
-import io from 'socket.io-client'
-let socket
+import UserAddress from '../userAddress/userAddress'
 
 export default function Checkout () {
   const {
@@ -22,7 +21,24 @@ export default function Checkout () {
     setDeliveryAddress
   } = useContext(AppContext)
   const [addressSelected, setAddressSelected] = useState(false)
-  const endpoint = 'http://localhost:5000'
+
+  const [userAddresses, setUserAddresses] = useState([])
+
+  const getUserAddress = async () => {
+    const data = await window.fetch(
+      `http://localhost:5000/userAddress/${isLoggedIn}`
+    )
+    if (data.ok) {
+      const jsonData = await data.json()
+      setUserAddresses(jsonData)
+      console.log('addresses', jsonData)
+    }
+  }
+
+  useEffect(() => {
+    getUserAddress()
+  }, [isLoggedIn])
+
   return (
     <div className='checkout-page'>
       <Navbar hideLoginAndLogout={true} />
@@ -66,13 +82,13 @@ export default function Checkout () {
                     <span>+</span> Add new Address
                   </p>
                 </div>
-                <div
-                  className='address-container'
-                  onClick={() => setAddressSelected(true)}
-                >
-                  <h2>Home</h2>
-                  <p>kannur,kerala</p>
-                </div>
+                {userAddresses.map(userAddress => (
+                  <UserAddress
+                    key={userAddress.addressid}
+                    userAddress={userAddress}
+                    setAddressSelected={setAddressSelected}
+                  />
+                ))}
               </div>
             )}
             {addressSelected && (
@@ -100,7 +116,7 @@ export default function Checkout () {
           >
             <button
               className='paybtn'
-              disabled={!addressSelected}
+              disabled={!addressSelected && !isLoggedIn}
               style={
                 !addressSelected
                   ? { backgroundColor: 'grey' }

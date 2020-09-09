@@ -121,19 +121,18 @@ body {
 .shop-container {
   position: relative;
   width: 30rem;
-  height: 9rem;
+  height: 10rem;
   margin-top: 5%;
   border: solid 1px lightgray;
-
+  border-radius: 7.5px;
+  box-shadow: 0.5px 0.5px 0.5px;
   display: flex;
   padding: 1rem;
   align-items: center;
   cursor: pointer;
 }
-.shop-container:hover {
-  border-radius: 2.5px;
-  box-shadow: 0.5px 0.5px 0.5px;
-}
+/* .shop-container:hover {
+} */
 
 .shop-image {
   margin-left: 5%;

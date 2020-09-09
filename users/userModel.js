@@ -37,7 +37,7 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body
-  console.log('cookie', req.headers)
+  // console.log('cookie', req.headers)
   if (!email || !password)
     return res.status(200).json({ msg: 'Please Enter all fields' })
   try {
@@ -49,6 +49,7 @@ const loginUser = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ msg: 'your email or password is wrong' })
     }
+    console.log(user.rows[0])
     const accessToken = jwt.sign(
       { userid: user.rows[0].userid },
       process.env.ACCESS_TOKEN_SECRET,
@@ -60,7 +61,11 @@ const loginUser = async (req, res) => {
         .cookie('x-auth-token', accessToken, { maxAge: 3600000 })
         // .header('Access-Control-Allow-Origin', 'http://localhost:3000/')
         // .header('Access-Control-Allow-Credentials', 'true')
-        .json({ userid: user.rows[0].userid, accessToken })
+        .json({
+          userid: user.rows[0].userid,
+          fullname: user.rows[0].fullname,
+          accessToken
+        })
     )
   } catch (err) {
     return res.status(500).json({ msg: 'Some error occured' })

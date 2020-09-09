@@ -24,12 +24,12 @@ export default function Signin () {
       })
       if (response.ok) {
         const jsonData = await response.json()
-        console.log(jsonData)
+        console.log('userdetails', jsonData)
         setCookie('x-auth-token', jsonData.accessToken)
         setEmail('')
         setPassword('')
         setShowLogin(false)
-        setIsLoggedIn(true)
+        setIsLoggedIn(jsonData.userid)
       }
     } catch (err) {
       console.log(err)

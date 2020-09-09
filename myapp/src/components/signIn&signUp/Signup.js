@@ -32,7 +32,7 @@ export default function Signup () {
         setFullname('')
         setPassword('')
         setCookie('x-auth-token', jsonData.accessToken)
-        // setIsLoggedin(true)
+        setIsLoggedIn(jsonData.userid)
       }
     } catch (err) {
       console.log(err)

@@ -21,8 +21,9 @@ body: itemid,shopname
 */
 
 const addItemToCart = async (req, res) => {
-  const { itemid, itemname, shopname, cartitemquantity } = req.body
+  const { itemid, itemname, shopname, cartitemquantity, item } = req.body
   try {
+    console.log(item)
     const cartItems = await pool.query(
       `INSERT INTO cart (itemid,itemname,shopname,cartitemquantity) VALUES ('${itemid}','${itemname}','${shopname}','${cartitemquantity}') RETURNING *`
     )
