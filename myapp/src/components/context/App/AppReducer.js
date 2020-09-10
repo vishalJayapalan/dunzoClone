@@ -14,6 +14,8 @@ export default (state, action) => {
       return { ...state, items: updatedItems }
     }
     case 'GET_CART': {
+      console.log('payload', action.payload)
+
       return {
         ...state,
         cart: action.payload
@@ -31,6 +33,12 @@ export default (state, action) => {
         cart: state.cart.filter(
           cartItem => cartItem.cartid !== action.payload.cartid
         )
+      }
+    }
+    case 'DELETE_ALL_ITEM_FROM_CART': {
+      return {
+        ...state,
+        cart: []
       }
     }
     case 'DECREMENT_ITEMCOUNT_FROM_CART': {

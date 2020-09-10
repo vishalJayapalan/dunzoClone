@@ -13,13 +13,10 @@ export default function Navbar ({ hideLoginAndLogout }) {
     setShowLogin,
     isLoggedIn,
     setIsLoggedIn,
-    cart
+    cart,
+    deleteAllItemsFromCartState
   } = useContext(AppContext)
-  useEffect(() => {
-    const token = getCookie('x-auth-token')
-    token && setIsLoggedIn(true)
-  }, [])
-
+  // console.log('navCart', cart.length)
   return (
     <div className='nav-container'>
       <span className='app-name'>Donesooo</span>
@@ -41,6 +38,7 @@ export default function Navbar ({ hideLoginAndLogout }) {
                 setIsLoggedIn(false)
                 document.cookie =
                   'x-auth-token=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;'
+                deleteAllItemsFromCartState()
               }}
             >
               Logout

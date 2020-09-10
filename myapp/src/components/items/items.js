@@ -4,7 +4,8 @@ import SubCategoryName from './subCategoryName'
 import Subcategories from './subcategories'
 import Cart from './cart'
 import Navbar from '../navbar/Navbar'
-import Search from './search'
+import Search from '../search/search'
+import ClearCartPopup from './clearCartPopup'
 
 import { AppContext } from '../context/App/AppContext'
 
@@ -13,7 +14,7 @@ export default function Items (props) {
 
   useEffect(() => {
     getItems(props.match.params.shopid)
-    getCart()
+    // getCart()
   }, [])
 
   let lastSubCategory = null
@@ -64,6 +65,7 @@ export default function Items (props) {
   return (
     <div className='items-page'>
       <Navbar />
+      <ClearCartPopup />
       <div className='items-shop-name-container'>
         {/* PUT IMAGE OF SHOP HERE */}
         <h1 className='items-shop-name'>{props.match.params.shopname}</h1>

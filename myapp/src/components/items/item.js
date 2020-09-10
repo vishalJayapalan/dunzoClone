@@ -5,7 +5,9 @@ import { AppContext } from '../context/App/AppContext'
 import CartButton from './cartButton'
 
 export default function Item (props) {
-  const { cart, addToCart, updateCart } = useContext(AppContext)
+  const { cart, addToCart, updateCart, setClearCartPopup } = useContext(
+    AppContext
+  )
   let inCart = null
   cart.forEach(cartItem => {
     if (cartItem.itemid === props.item.itemid) {
@@ -28,7 +30,15 @@ export default function Item (props) {
         ) : (
           <button
             className='item-button-add'
-            onClick={() => addToCart(props.item, props.shopname)}
+            onClick={() => {
+              if (cart[0].shopname) {
+                if (cart[0].shopname !== props.shopname) {
+                  setClearCartPopup(true)
+                } else {
+                  addToCart(props.item, props.shopname)
+                }
+              }
+            }}
           >
             + Add
           </button>

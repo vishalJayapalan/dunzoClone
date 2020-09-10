@@ -1,6 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
+import { getCookie } from '../util/cookies'
+
 import Navbar from '../navbar/Navbar'
 import './Checkout.css'
 
@@ -25,8 +27,16 @@ export default function Checkout () {
   const [userAddresses, setUserAddresses] = useState([])
 
   const getUserAddress = async () => {
+    console.log('inHere')
     const data = await window.fetch(
-      `http://localhost:5000/userAddress/${isLoggedIn}`
+      `http://localhost:5000/userAddress/${isLoggedIn}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': getCookie('x-auth-token')
+        }
+      }
     )
     if (data.ok) {
       const jsonData = await data.json()
@@ -97,13 +107,6 @@ export default function Checkout () {
                 <p>kannur,kerala</p>
               </div>
             )}
-            {/* <input
-                className='checkout-address-input'
-                placeholder='Enter the delivery address'
-                disabled={!isLoggedIn}
-                value={deliveryAddress}
-                onChange={e => setDeliveryAddress(e.target.value)}
-              /> */}
           </div>
 
           {/* PAYING SECTION */}

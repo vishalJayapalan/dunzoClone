@@ -1,5 +1,7 @@
 const router = require('express').Router()
 
+const auth = require('../middleware/auth')
+
 const {
   getCartItems,
   addItemToCart,
@@ -10,9 +12,9 @@ const {
 
 router.get('/', getCartItems)
 
-router.post('/', addItemToCart)
+router.post('/', auth, addItemToCart)
 
-router.delete('/all', deleteAllItemsFromCart)
+router.delete('/all', auth, deleteAllItemsFromCart)
 
 router.delete('/:cartid', deleteItemFromCart)
 

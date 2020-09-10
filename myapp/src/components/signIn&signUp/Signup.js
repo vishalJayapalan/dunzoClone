@@ -4,7 +4,7 @@ import { AppContext } from '../context/App/AppContext'
 import { setCookie } from '../util/cookies'
 
 export default function Signup () {
-  const { setShowRegister, setShowLogin, setIsLoggedIn } = useContext(
+  const { setShowRegister, setShowLogin, setIsLoggedIn, getCart } = useContext(
     AppContext
   )
 
@@ -33,6 +33,7 @@ export default function Signup () {
         setPassword('')
         setCookie('x-auth-token', jsonData.accessToken)
         setIsLoggedIn(jsonData.userid)
+        getCart()
       }
     } catch (err) {
       console.log(err)

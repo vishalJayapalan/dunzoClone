@@ -17,7 +17,6 @@ module.exports = (req, res, next) => {
   // }
   const accessToken =
     req.headers['x-auth-token'] || req.headers['authorization']
-  // console.log('accessTokenMiddleware', accessToken)
   try {
     if (!accessToken) {
       res.user = null
@@ -25,6 +24,8 @@ module.exports = (req, res, next) => {
     } else {
       const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)
       req.user = decoded
+      console.log('reqBody', req.body)
+      console.log('inAUth', req.user)
       next()
     }
   } catch (err) {

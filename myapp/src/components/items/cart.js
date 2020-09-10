@@ -8,12 +8,13 @@ import { AppContext } from '../context/App/AppContext'
 
 export default function Cart (props) {
   const { cart, getCart } = useContext(AppContext)
-  useEffect(() => {
-    getCart()
-  }, [])
-
+  // useEffect(() => {
+  //   getCart()
+  // }, [])
+  // console.log('cartInCart', cart)
   let totalPrice = 0
   cart.forEach(element => {
+    // console.log('element', element)
     totalPrice += element.itemprice * element.cartitemquantity
   })
   return (

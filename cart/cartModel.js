@@ -22,10 +22,10 @@ body: itemid,shopname
 
 const addItemToCart = async (req, res) => {
   const { itemid, itemname, shopname, cartitemquantity, item } = req.body
+  const { userid } = req.user
   try {
-    console.log(item)
     const cartItems = await pool.query(
-      `INSERT INTO cart (itemid,itemname,shopname,cartitemquantity) VALUES ('${itemid}','${itemname}','${shopname}','${cartitemquantity}') RETURNING *`
+      `INSERT INTO cart (itemid,itemname,shopname,cartitemquantity,userid) VALUES ('${itemid}','${itemname}','${shopname}','${cartitemquantity}','${userid}') RETURNING *`
     )
     // console.log(addedCartId)
     // const cartJoinItem = await pool.query(
@@ -34,7 +34,6 @@ const addItemToCart = async (req, res) => {
     // console.log(cartJoinItem.rows)
     res.status(201).send(cartItems.rows)
   } catch (err) {
-    console.log(err)
     res.status(500).json({ Msg: err })
   }
 }
@@ -57,9 +56,12 @@ http://localhost:5000/cart/all
 */
 
 const deleteAllItemsFromCart = async (req, res) => {
+  const { userid } = req.user
   try {
-    await pool.query(`DELETE FROM cart`)
-    res.status(200).send({ Msg: 'Deleted ALL Succesfully' })
+    await pool.query(`DELETE FROM cart WHERE userid=${userid}`)
+    res
+      .status(200)
+      .send({ Msg: 'Deleted ALL items in cart of user Succesfully' })
   } catch (err) {
     res.status(500).json({ Msg: 'There was an error please try again later' })
   }

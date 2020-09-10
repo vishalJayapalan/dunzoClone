@@ -1,5 +1,7 @@
 const router = require('express').Router()
 
+const auth = require('../middleware/auth')
+
 const {
   getUserAddress,
   addUserAddress,
@@ -7,7 +9,7 @@ const {
   deleteUserAddress
 } = require('./userAddressModel')
 
-router.get('/:userid', getUserAddress)
+router.get('/:userid', auth, getUserAddress)
 
 router.post('/:userid', addUserAddress)
 

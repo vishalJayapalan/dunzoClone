@@ -1,7 +1,8 @@
 const { pool } = require('../util/database')
 
 const getUserAddress = async (req, res) => {
-  const { userid } = req.params
+  const { userid } = req.user
+  // console.log('user', req.user)
   try {
     // const userAddress = await pool.query(
     //   `SELECT * FROM useraddresses JOIN users ON users.userid = useraddresses.userid WHERE users.userid = ${userid}`
