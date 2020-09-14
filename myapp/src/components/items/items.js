@@ -10,7 +10,9 @@ import ClearCartPopup from './clearCartPopup'
 import { AppContext } from '../context/App/AppContext'
 
 export default function Items (props) {
-  const { items, getItems, updateItems, getCart } = useContext(AppContext)
+  const { items, getItems, updateItems, getCart, clearCartPopup } = useContext(
+    AppContext
+  )
 
   useEffect(() => {
     getItems(props.match.params.shopid)
@@ -65,7 +67,7 @@ export default function Items (props) {
   return (
     <div className='items-page'>
       <Navbar />
-      <ClearCartPopup />
+      {clearCartPopup && <ClearCartPopup />}
       <div className='items-shop-name-container'>
         {/* PUT IMAGE OF SHOP HERE */}
         <h1 className='items-shop-name'>{props.match.params.shopname}</h1>

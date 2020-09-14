@@ -31,13 +31,11 @@ export default function Item (props) {
           <button
             className='item-button-add'
             onClick={() => {
-              if (cart[0].shopname) {
-                if (cart[0].shopname !== props.shopname) {
-                  setClearCartPopup(true)
-                } else {
-                  addToCart(props.item, props.shopname)
-                }
+              if (cart.length && cart[0].shopname !== props.shopname) {
+                return setClearCartPopup(true)
               }
+              console.log('inHere', props.item, props.shopname)
+              addToCart(props.item, props.shopname)
             }}
           >
             + Add

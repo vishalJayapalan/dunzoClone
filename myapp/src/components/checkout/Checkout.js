@@ -136,9 +136,7 @@ export default function Checkout () {
           <div className='checkout-cart-container'>
             <Cart showToCheckout={false} />
           </div>
-          <div className='checkout-invoice-container'>
-            <Invoice />
-          </div>
+          <div className='checkout-invoice-container'>{/* <Invoice /> */}</div>
         </div>
       </div>
     </div>

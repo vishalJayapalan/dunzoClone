@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
-export default function clearCartPopup () {
+import { AppContext } from '../context/App/AppContext'
+
+export default function ClearCartPopup () {
+  const { setClearCartPopup, deleteAllItemsFromCart } = useContext(AppContext)
   return (
     <div className='overlay'>
       <div className='clear-cart-popup-container'>
@@ -12,8 +15,18 @@ export default function clearCartPopup () {
           </p>
         </div>
         <div className='clear-cart-buttons-container'>
-          <button>Cancel</button>
-          <button>Clear Cart</button>
+          <button className='cancel' onClick={() => setClearCartPopup(false)}>
+            Cancel
+          </button>
+          <button
+            className='clear-cart'
+            onClick={() => {
+              deleteAllItemsFromCart()
+              setClearCartPopup(false)
+            }}
+          >
+            Clear Cart
+          </button>
         </div>
       </div>
     </div>

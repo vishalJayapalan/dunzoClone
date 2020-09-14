@@ -14,8 +14,6 @@ export default (state, action) => {
       return { ...state, items: updatedItems }
     }
     case 'GET_CART': {
-      console.log('payload', action.payload)
-
       return {
         ...state,
         cart: action.payload

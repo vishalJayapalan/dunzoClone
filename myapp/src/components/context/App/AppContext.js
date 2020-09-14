@@ -2,7 +2,7 @@ import React, { useReducer, createContext, useState, useEffect } from 'react'
 import { getCookie, setCookie } from '../../util/cookies'
 import AppReducer from './AppReducer'
 import { v4 as uuidV4 } from 'uuid'
-import cartItem from '../../items/cartItem'
+// import cartItem from '../../items/cartItem'
 
 export const AppContext = createContext()
 
@@ -30,8 +30,8 @@ export const AppContextProvider = props => {
   }, [])
   useEffect(() => {
     getCart()
-    if (isLoggedIn) {
-    }
+    // if (isLoggedIn) {
+    // }
   }, [isLoggedIn])
 
   async function getUser () {
@@ -81,7 +81,7 @@ export const AppContextProvider = props => {
       if (isLoggedIn) {
         const localCart = JSON.parse(localStorage.getItem('Donesooo-cart'))
         if (localCart && localCart.length) {
-          deleteAllItemsFromCartDb()
+          deleteAllItemsFromCart()
 
           // dispatch({ type: 'DELETE_ALL_ITEM_FROM_CART', payload: jsonData })
           // console.log('localCart', localCart)
@@ -118,10 +118,11 @@ export const AppContextProvider = props => {
   async function addToCart (item, shopname) {
     try {
       let jsonData = []
-      if (state.cart[0].shopname !== shopname) {
-        console.log('different shop')
-        return
-      }
+      // if (state.cart[0].shopname !== shopname) {
+      //   console.log('different shop')
+      //   return
+      // }
+      console.log('inherealso', item, shopname)
       if (isLoggedIn) {
         const data = await window.fetch('http://localhost:5000/cart', {
           method: 'POST',
@@ -215,9 +216,9 @@ export const AppContextProvider = props => {
           JSON.stringify(
             cart.map(cartItem => {
               if (cartItem.itemid === updateItem.itemid) {
-                if (incOrDec === '+') cartItem.cartItemQuantity += 1
+                if (incOrDec === '+') cartItem.cartitemquantity += 1
                 else {
-                  cartItem.cartItemQuantity -= 1
+                  cartItem.cartitemquantity -= 1
                 }
               }
               return cartItem
@@ -235,14 +236,16 @@ export const AppContextProvider = props => {
     localStorage.clear()
   }
 
-  async function deleteAllItemsFromCartDb () {
-    await window.fetch('http://localhost:5000/cart/all', {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-auth-token': getCookie('x-auth-token')
-      }
-    })
+  async function deleteAllItemsFromCart () {
+    if (isLoggedIn) {
+      await window.fetch('http://localhost:5000/cart/all', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': getCookie('x-auth-token')
+        }
+      })
+    }
     deleteAllItemsFromCartState()
   }
 
@@ -257,6 +260,7 @@ export const AppContextProvider = props => {
         addToCart,
         updateCart,
         deleteAllItemsFromCartState,
+        deleteAllItemsFromCart,
         showLogin,
         setShowLogin,
         showRegister,

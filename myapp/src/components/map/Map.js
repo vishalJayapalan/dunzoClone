@@ -38,7 +38,7 @@ export default function Map ({ location }) {
     }).addTo(mapRef.current)
 
     // making two markers and showing popup
-    let marker = Leaflet.marker(position).addTo(mapRef.current)
+    // let marker = Leaflet.marker(position).addTo(mapRef.current)
     // const storeMarket = Leaflet.marker(position2).addTo(mymap)
     // const test = Leaflet.marker(position3).addTo(mapRef.current)
     // const bikeIcon = Leaflet.icon({
@@ -85,9 +85,14 @@ export default function Map ({ location }) {
       routingControlRef.current = Leaflet.Routing.control({
         waypoints: [Leaflet.latLng(position), Leaflet.latLng(location)],
         routeWhileDragging: true
-        // geocoder: Leaflet.Control.Geocoder.Nominatim()
+        // geocoder: Leaflet.Control.geocoder.nominatim()
       }).addTo(mapRef.current)
-
+      routingControlRef.current.on('routeselected', function (e) {
+        const route = e.route
+        for (const coordinates of route.coordinates) {
+          console.log(coordinates)
+        }
+      })
       // popup
       //   .setLatLng(e.latlng)
       //   .setContent('You clicked the map at ' + e.latlng.toString())

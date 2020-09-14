@@ -4,10 +4,13 @@
 }
 .checkout-container {
   display: flex;
-  width: 80vw;
+  width: 100%;
   /* height: 90vh; */
-  height: 80%;
-  margin: 7.5%;
+  flex-wrap: wrap;
+  height: 100%;
+  /* margin: 7.5%; */
+  margin-top: 3em;
+  padding: 7.5%;
 }
 .checkout-signin-deliveryaddress-paybtn {
   /* background-color: white; */
@@ -16,6 +19,7 @@
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  padding: 2%;
 }
 
 .checkout-signin-container {
@@ -63,7 +67,7 @@
   width: 90%;
   /* height: 12rem; */
   height: auto;
-  padding: 2%;
+  /* padding: 2%; */
 }
 
 .checkout-delivery-address-title-container {
@@ -139,7 +143,7 @@
   height: 150%;
 }
 
-.checkout-cart-invoice {
+.checkout-cart-invoice-container {
   width: 30%;
   padding: 2%;
   display: flex;
