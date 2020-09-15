@@ -27,16 +27,16 @@ app.use('/userAddress', userAddressRoutes)
 io.on('connection', socket => {
   console.log('a user connected')
   socket.on('liveLocation', liveLocation => {
-    const { latitude, longitude } = liveLocation
-    console.log(latitude, longitude)
-    socket.broadcast.emit('deliveryLiveLocation', { latitude, longitude })
+    const { lat, lng } = liveLocation
+    // console.log(lat, lng)
+    socket.broadcast.emit('deliveryLiveLocation', { lat, lng })
   })
   socket.on('deliveryPartnerRequired', shopname => {
-    console.log(shopname)
+    // console.log(shopname)
     socket.broadcast.emit('toDeliveryPartner', shopname)
   })
   socket.on('deliveryPartnerAssigned', name => {
-    console.log(name)
+    // console.log(name)
     socket.broadcast.emit('partnerAssigned', name)
   })
   socket.on('orderPicked', () => {

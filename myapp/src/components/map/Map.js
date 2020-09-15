@@ -26,37 +26,24 @@ export default function Map ({ location }) {
   const [packingStatus, setPackingStatus] = useState(false)
   const [orderPickStatus, setOrderPickStatus] = useState(false)
 
-  // Making a map and tiles
-  // let mymap
   const mapRef = useRef(null)
   const routingControlRef = useRef(null)
+
+  // let bikeMarker
+
   const map = () => {
     mapRef.current = Leaflet.map('mapid').setView(position, 10)
+    https: Leaflet.tileLayer(
+      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      {
+        attribution: '© OpenStreetMap contributors'
+      }
+    ).addTo(mapRef.current)
 
-    Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors'
-    }).addTo(mapRef.current)
-
-    // making two markers and showing popup
-    // let marker = Leaflet.marker(position).addTo(mapRef.current)
-    // const storeMarket = Leaflet.marker(position2).addTo(mymap)
-    // const test = Leaflet.marker(position3).addTo(mapRef.current)
-    // const bikeIcon = Leaflet.icon({
-    //   iconSize: [25, 41],
-    //   iconAnchor: [10, 41],
-    //   popupAnchor: [2, -40],
-    //   iconUrl: '/images/bikeImg.jpg',
-    //   shadowUrl: 'https://unpkg.com/leaflet@1.6/dist/images/marker-shadow.png'
-    // })
-    // Leaflet.marker([11.877194, 75.375391], { icon: bikeIcon }).addTo(mymap)
-
-    // mapRef.current.on('click', onMapClick) // will show a pop where u clicked with the lat and lng
-    // marker.bindPopup('<b>Your Location</b>').openPopup()
     const geocoding = async address => {
       const geocoder = new Nominatim()
 
       const latlong = await geocoder.search({ q: address })
-      console.log('latlon', latlong[0])
     }
 
     geocoding('Shoppers Stop,kannur,kerala')
@@ -67,52 +54,34 @@ export default function Map ({ location }) {
       const longitude = position.coords.longitude
       setLiveLocation({ latitude, longitude })
       location = [latitude, longitude]
-      console.log('liveLocation', liveLocation)
-      console.log(latitude, longitude)
     }
 
-    const removeRoutingControl = () => {
-      if (routingControlRef.current != null) {
-        mapRef.current.removeControl(routingControlRef.current)
-        routingControlRef.current = null
-      }
-    }
+    // const removeRoutingControl = () => {
+    //   if (routingControlRef.current != null) {
+    //     mapRef.current.removeControl(routingControlRef.current)
+    //     routingControlRef.current = null
+    //   }
+    // }
 
-    async function onMapClick (e) {
-      navigator.geolocation.getCurrentPosition(success)
-      if (routingControlRef.current != null) removeRoutingControl()
-      console.log('location', location)
-      routingControlRef.current = Leaflet.Routing.control({
-        waypoints: [Leaflet.latLng(position), Leaflet.latLng(location)],
-        routeWhileDragging: true
-        // geocoder: Leaflet.Control.geocoder.nominatim()
-      }).addTo(mapRef.current)
-      routingControlRef.current.on('routeselected', function (e) {
-        const route = e.route
-        for (const coordinates of route.coordinates) {
-          console.log(coordinates)
-        }
-      })
-      // popup
-      //   .setLatLng(e.latlng)
-      //   .setContent('You clicked the map at ' + e.latlng.toString())
-      //   .openOn(mapRef.current)
-      // mapRef.current.removeLayer(marker)
-      // marker = Leaflet.marker(e.latlng).addTo(mapRef.current)
-    }
+    // async function onMapClick (e) {
+    // navigator.geolocation.getCurrentPosition(success)
+    // if (routingControlRef.current != null) removeRoutingControl()
 
-    mapRef.current.on('click', onMapClick)
+    routingControlRef.current = Leaflet.Routing.control({
+      waypoints: [Leaflet.latLng(position), Leaflet.latLng(position2)],
+      routeWhileDragging: true
+    }).addTo(mapRef.current)
+
+    // routingControlRef.current.on('routeselected', function (e) {
+    //   const route = e.route
+    //   for (const coordinates of route.coordinates) {
+    //     console.log(coordinates)
+    //   }
+    // })
+    // }
+
+    // mapRef.current.on('click', onMapClick)
   }
-
-  // useEffect(() => {
-  //   if (routingControlRef.current != null) removeRoutingControl()
-
-  //   routingControlRef.current = Leaflet.Routing.control({
-  //     waypoints: [Leaflet.latLng(position), Leaflet.latLng(position2)],
-  //     routeWhileDragging: true
-  //     // geocoder: Leaflet.Control.Geocoder.Nominatim()
-  //   }).addTo(mapRef.current)
-  // }, [liveLocation])
 
   useEffect(() => {
     map()
@@ -122,10 +91,20 @@ export default function Map ({ location }) {
       socket.emit('deliveryPartnerRequired', 'Shoppers Stop')
     }, 5000)
   }, [])
+  const bikeIcon = Leaflet.icon({
+    iconSize: [25, 41],
+    iconAnchor: [10, 41],
+    popupAnchor: [2, -40],
+    iconUrl: '/images/bikeImg.jpg',
+    shadowUrl: 'https://unpkg.com/leaflet@1.6/dist/images/marker-shadow.png'
+  })
+  let bikeMarker = null
+  // let bikeMarker = Leaflet.marker(position, {
+  //   icon: bikeIcon
+  // }).addTo(mapRef.current)
 
   useEffect(() => {
     socket.on('partnerAssigned', partnerName => {
-      console.log(partnerName)
       setDeliveryPartnerName(partnerName)
     })
     socket.on('orderPickedUp', () => {
@@ -135,20 +114,16 @@ export default function Map ({ location }) {
       setOrderCompleted(true)
     })
     socket.on('deliveryLiveLocation', location => {
-      console.log(location)
-      setLiveLocation(location)
-      const bikeIcon = Leaflet.icon({
-        iconSize: [25, 41],
-        iconAnchor: [10, 41],
-        popupAnchor: [2, -40],
-        iconUrl: '/images/bikeImg.jpg',
-        shadowUrl: 'https://unpkg.com/leaflet@1.6/dist/images/marker-shadow.png'
-      })
-      Leaflet.marker([liveLocation.latitude, liveLocation.longitude], {
+      // setLiveLocation(location)
+      // console.log(location)
+      if (bikeMarker !== null) mapRef.current.removeLayer(bikeMarker)
+      bikeMarker = Leaflet.marker([location.lat, location.lng], {
         icon: bikeIcon
       }).addTo(mapRef.current)
-      console.log('lat', liveLocation.latitude)
-      console.log('long', liveLocation.longitude)
+
+      // Leaflet.marker([liveLocation.latitude, liveLocation.longitude], {
+      //   icon: bikeIcon
+      // }).addTo(mapRef.current)
     })
   })
 
@@ -205,14 +180,6 @@ export default function Map ({ location }) {
           </div>
         </div>
       </div>
-      {/* <div className='order-details-invoice-container'>
-        <div className='order-address-container'>
-          <h4>Order Details</h4>
-          <p>address1</p>
-          <p>address2</p>
-        </div>
-        <div className='invoice-container'></div>
-      </div> */}
       <div className='item-list-container'></div>
     </div>
   )

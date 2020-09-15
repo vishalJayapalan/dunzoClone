@@ -23,48 +23,20 @@ export default function Delivery () {
   const routingControlRef = useRef(null)
 
   useEffect(() => {
-    // for getting geolocation
-    // function success (position) {
-    //   const latitude = position.coords.latitude
-    //   const longitude = position.coords.longitude
-    //   console.log(latitude, longitude)
-    //   socket.emit('liveLocation', { latitude, longitude })
-    // }
-    // function error () {
-    //   status.textContent = 'Unable to retrieve your location'
-    // }
-
-    if (!navigator.geolocation) {
-      // status.textContent = 'Geolocation is not supported by your browser'
-    } else {
-      // setInterval(() => {
-      //   navigator.geolocation.getCurrentPosition(success, error)
-      // }, 5000)
-    }
-  }, [])
-  useEffect(() => {
     socket.on('toDeliveryPartner', shopname => {
-      console.log(shopname)
       setRequirement(shopname)
     })
   })
   function orderStatusUpdation (status) {
-    function success (position) {
-      const latitude = position.coords.latitude
-      const longitude = position.coords.longitude
-      console.log(latitude, longitude)
-      socket.emit('liveLocation', { latitude, longitude })
-    }
-    function error () {
-      // status.textContent = 'Unable to retrieve your location'
-    }
+    // function success (position) {
+    //   const latitude = position.coords.latitude
+    //   const longitude = position.coords.longitude
+    //   socket.emit('liveLocation', { latitude, longitude })
+    // }
+    // function error () {}
     if (status) {
       socket.emit('deliveryPartnerAssigned', 'speedo')
       setOrderStatus(true)
-
-      // setInterval(() => {
-      //   navigator.geolocation.getCurrentPosition(success, error)
-      // }, 5000)
     }
   }
   function orderPickedUp () {
@@ -97,25 +69,18 @@ export default function Delivery () {
       routingControlRef.current = Leaflet.Routing.control({
         waypoints: [Leaflet.latLng(position), Leaflet.latLng(position2)],
         routeWhileDragging: true
-        // geocoder: Leaflet.Control.geocoder.nominatim()
       }).addTo(mapRef.current)
 
       routingControlRef.current.on('routeselected', function (e) {
         const route = e.route
         const cord = []
         for (const coordinates of route.coordinates) {
-          // console.log(coordinates)
           cord.push(coordinates)
         }
         const interval = setInterval(() => {
-          // const removeRoutingControl = () => {
-          //   if (routingControlRef.current != null) {
-          //     mapRef.current.removeControl(routingControlRef.current)
-          //     routingControlRef.current = null
-          //   }
-          // }
           if (marker !== null) mapRef.current.removeLayer(marker)
-          console.log(cord[0].lat, cord[0].lng)
+          socket.emit('liveLocation', { lat: cord[0].lat, lng: cord[0].lng })
+
           marker = Leaflet.marker([cord[0].lat, cord[0].lng], {
             icon: bikeIcon
           }).addTo(mapRef.current)

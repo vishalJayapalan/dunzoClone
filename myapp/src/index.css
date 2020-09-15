@@ -274,7 +274,7 @@ body {
 .items-container {
   /* border: 1px solid black; */
   background-color: white;
-
+  padding: 2%;
   overflow-y: auto;
 }
 
@@ -646,7 +646,7 @@ body {
   }
   .items-grid-container {
     width: 90%;
-    grid-template-columns: 1.5fr 2fr 0.5fr;
+    grid-template-columns: 0fr 2fr 1fr;
   }
   .item-image {
     height: 2em;
