@@ -20,14 +20,15 @@ export default function Checkout () {
     isLoggedIn,
     setIsLoggedIn,
     deliveryAddress,
-    setDeliveryAddress
+    setDeliveryAddress,
+    deleteAllItemsFromCart,
+    cart
   } = useContext(AppContext)
   const [addressSelected, setAddressSelected] = useState(false)
 
   const [userAddresses, setUserAddresses] = useState([])
 
   const getUserAddress = async () => {
-    console.log('inHere')
     const data = await window.fetch(
       `http://localhost:5000/userAddress/${isLoggedIn}`,
       {
@@ -41,7 +42,6 @@ export default function Checkout () {
     if (data.ok) {
       const jsonData = await data.json()
       setUserAddresses(jsonData)
-      console.log('addresses', jsonData)
     }
   }
 
@@ -51,7 +51,7 @@ export default function Checkout () {
 
   return (
     <div className='checkout-page'>
-      <Navbar hideLoginAndLogout={true} />
+      <Navbar />
       <div className='checkout-container'>
         <div className='checkout-signin-deliveryaddress-paybtn'>
           {/* LOGIN SECTION */}
@@ -119,9 +119,12 @@ export default function Checkout () {
           >
             <button
               className='paybtn'
-              disabled={!addressSelected && !isLoggedIn}
+              disabled={!(addressSelected && isLoggedIn && cart.length)}
+              onClick={() => {
+                deleteAllItemsFromCart()
+              }}
               style={
-                !addressSelected
+                !(addressSelected && isLoggedIn && cart.length)
                   ? { backgroundColor: 'grey' }
                   : { backgroundColor: 'green' }
               }

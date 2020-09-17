@@ -16,7 +16,6 @@ export default function Items (props) {
 
   useEffect(() => {
     getItems(props.match.params.shopid)
-    // getCart()
   }, [])
 
   let lastSubCategory = null
@@ -64,6 +63,7 @@ export default function Items (props) {
   const includeSearchResults = newItems => {
     updateItems(props.match.params.shopid, newItems)
   }
+
   return (
     <div className='items-page'>
       <Navbar />
@@ -75,11 +75,10 @@ export default function Items (props) {
       <div className='items-flex-container'>
         <Search includeSearchResults={includeSearchResults} />
 
-        {/* <hr /> */}
         <div className='items-grid-container'>
           <div className='subcategories-container'>{subcategories}</div>
           <div className='items-container'>{disp}</div>
-          <Cart showToCheckout={true} /> {/* can remove this  */}
+          <Cart showToCheckout={true} />
         </div>
       </div>
     </div>

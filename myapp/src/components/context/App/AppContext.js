@@ -238,6 +238,7 @@ export const AppContextProvider = props => {
 
   async function deleteAllItemsFromCart () {
     if (isLoggedIn) {
+      console.log('inDeleteFunction')
       await window.fetch('http://localhost:5000/cart/all', {
         method: 'DELETE',
         headers: {

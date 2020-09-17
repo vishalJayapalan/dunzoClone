@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
@@ -8,15 +8,11 @@ import { AppContext } from '../context/App/AppContext'
 
 export default function Cart (props) {
   const { cart, getCart } = useContext(AppContext)
-  // useEffect(() => {
-  //   getCart()
-  // }, [])
-  // console.log('cartInCart', cart)
   let totalPrice = 0
   cart.forEach(element => {
-    // console.log('element', element)
     totalPrice += element.itemprice * element.cartitemquantity
   })
+
   return (
     <div className='cart-container'>
       <div className='cart-title-container'>
@@ -40,15 +36,6 @@ export default function Cart (props) {
         <div className='cart-shopname'>{cart[0].shopname}</div>
       )}
       <CartItems />
-      {/* <div className='cart-items-container'>
-        {cart.map(cartItem => (
-          <CartItem
-            key={cartItem.cartid}
-            cartItem={cartItem}
-            // cart={props.cart}
-          />
-        ))}
-      </div> */}
       {cart.length !== 0 && (
         <div className='cart-totalprice-container'>
           <span>Item Total</span>
@@ -57,8 +44,13 @@ export default function Cart (props) {
       )}
       {cart.length !== 0 && props.showToCheckout && (
         <div className='checkout-button-container'>
-          <Link to='/checkout'>
-            <button style={{ cursor: 'pointer' }}>Proceed To Checkout</button>
+          <Link to={{ pathname: '/checkout', state: 'test' }}>
+            <button
+              className='proceed-to-checkout-btn'
+              style={{ cursor: 'pointer' }}
+            >
+              Proceed To Checkout
+            </button>
           </Link>
         </div>
       )}

@@ -21,17 +21,18 @@ export default function Navbar ({ hideLoginAndLogout }) {
     <div className='nav-container'>
       <span className='app-name'>Donesooo</span>
       <div></div>
-      <div className='nav-cartimg-signin-container'>
-        <div className='nav-cart-container'>
-          <img src='/images/cart2.png' className='nav-cart-image' />
-          {cart.length ? (
-            <div className='nav-cart-count'>{cart.length}</div>
-          ) : (
-            <div />
-          )}
-        </div>
-        {!hideLoginAndLogout &&
-          (isLoggedIn ? (
+
+      {!hideLoginAndLogout && (
+        <div className='nav-cartimg-signin-container'>
+          <div className='nav-cart-container'>
+            <img src='/images/cart2.png' className='nav-cart-image' />
+            {cart.length ? (
+              <div className='nav-cart-count'>{cart.length}</div>
+            ) : (
+              <div />
+            )}
+          </div>
+          {isLoggedIn ? (
             <span
               className='nav-signin-btn'
               onClick={() => {
@@ -47,8 +48,9 @@ export default function Navbar ({ hideLoginAndLogout }) {
             <span className='nav-signin-btn' onClick={() => setShowLogin(true)}>
               Sign in
             </span>
-          ))}
-      </div>
+          )}
+        </div>
+      )}
       {showLogin && <Signin />}
       {showRegister && <Signup />}
     </div>
