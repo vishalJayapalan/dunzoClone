@@ -74,7 +74,6 @@ const loginUser = async (req, res) => {
 const getCurrentUser = async (req, res) => {
   // const userId = req.params.userid
   const { userid } = req.user
-  console.log(userid)
   try {
     const user = await pool.query(
       `SELECT userid, fullname FROM users WHERE userid = ${userid}`

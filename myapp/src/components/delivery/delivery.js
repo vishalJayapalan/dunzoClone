@@ -28,12 +28,6 @@ export default function Delivery () {
     })
   })
   function orderStatusUpdation (status) {
-    // function success (position) {
-    //   const latitude = position.coords.latitude
-    //   const longitude = position.coords.longitude
-    //   socket.emit('liveLocation', { latitude, longitude })
-    // }
-    // function error () {}
     if (status) {
       socket.emit('deliveryPartnerAssigned', 'speedo')
       setOrderStatus(true)

@@ -132,7 +132,7 @@
 } */
 
 .paybtn {
-  width: 225%;
+  width: 6rem;
   color: white;
   border: none;
   background-color: green;
@@ -140,7 +140,7 @@
   font-size: 150%;
   padding: 2%;
   cursor: pointer;
-  height: 150%;
+  height: 4rem;
 }
 
 .checkout-cart-invoice-container {

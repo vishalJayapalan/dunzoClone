@@ -10,28 +10,35 @@ import Checkout from './components/checkout/Checkout'
 import Map from './components/map/Map'
 import Delivery from './components/delivery/delivery'
 import Business from './components/business/business'
+import PageNotFound from './components/pageNotFound/PageNotFound'
 
 function App () {
   return (
-    <AppContextProvider>
-      <div className='App'>
-        <Router>
-          <Switch>
-            <Route
-              path='/stores/:categoryname/:categoryid'
-              exact
-              component={Shops}
-            />
-            <Route path='/' exact component={Categories} />
-            <Route path='/checkout' component={Checkout} />
-            <Route path='/business' component={Business} />
-            <Route path='/delivery' component={Delivery} />
-            <Route path='/track-order' component={Map} />
-            <Route path='/:categoryid/:shopname/:shopid' component={Items} />
-          </Switch>
-        </Router>
-      </div>
-    </AppContextProvider>
+    <div className='App'>
+      <Router>
+        <Switch>
+          <AppContextProvider>
+            <Switch>
+              <Route
+                path='/stores/:categoryname/:categoryid'
+                exact
+                component={Shops}
+              />
+              <Route path='/' exact component={Categories} />
+              <Route path='/checkout' component={Checkout} />
+              <Route path='/business' component={Business} />
+              <Route path='/delivery' component={Delivery} />
+              <Route path='/track-order' component={Map} />
+              <Route
+                path='/:categoryid/shop/:shopname/:shopid'
+                component={Items}
+              />
+              <Route path='*' component={PageNotFound} />
+            </Switch>
+          </AppContextProvider>
+        </Switch>
+      </Router>
+    </div>
   )
 }
 

@@ -6,7 +6,7 @@ export default function Shop (props) {
     <div>
       <Link
         style={{ textDecoration: 'none' }}
-        to={`/${props.shop.categoryid}/${props.shop.shopname}/${props.shop.shopid}`}
+        to={`/${props.shop.categoryid}/shop/${props.shop.shopname}/${props.shop.shopid}`}
       >
         <div className='shop-container'>
           <img

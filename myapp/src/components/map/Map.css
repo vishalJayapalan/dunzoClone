@@ -1,8 +1,11 @@
 .leaflet-container {
   padding: 10%;
   margin: 2%;
-  height: 400px;
-  width: 600px;
+  height: 60vh;
+  max-height: 400px;
+  width: 90%;
+  max-width: 600px;
+  /* height: 400px; */
   z-index: 0;
   pointer-events: none;
 }
@@ -50,4 +53,13 @@
 .order-details-invoice-container {
   padding: 2%;
   margin: 2%;
+}
+
+.leaflet-control-zoom {
+  /* pointer-events: none; */
+  display: none;
+}
+
+.leaflet-marker-icon.leaflet-interactive {
+  pointer-events: none;
 }

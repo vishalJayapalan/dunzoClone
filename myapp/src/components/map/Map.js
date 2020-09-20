@@ -109,43 +109,22 @@ export default function Map ({ location }) {
           <div id='mapid' />
           <div className='delivery-process-details-container'>
             <div className='order-details'>
-              {/* <input type='checkbox' checked={true} readOnly={true} />{' '} */}
               <p>Order received</p>
             </div>
 
             <div className='order-details'>
-              {/* <input type='checkbox' checked={packingStatus} readOnly={true} />{' '} */}
-              {packingStatus && (
-                //   <p>Items are being packed</p>
-                // ) : (
-                <p>Items Packed</p>
-              )}
+              {packingStatus && <p>Items Packed</p>}
             </div>
 
             <div className='order-details'>
-              {/* <input
-                type='checkbox'
-                checked={deliveryPartnerName}
-                readOnly={true}
-              />{' '} */}
-              {deliveryPartnerName && (
-                <p>Delivery Partner Assigned</p>
-                // ) : (
-                //   <p>Looking for a partner</p>
-              )}
+              {deliveryPartnerName && <p>Delivery Partner Assigned</p>}
             </div>
 
             <div className='order-details'>
-              {/* <input
-                type='checkbox'
-                checked={orderPickStatus}
-                readOnly={true}
-              />{' '} */}
               {orderPickStatus && <p>Order picked up</p>}
             </div>
 
             <div className='order-details'>
-              {/* <input type='checkbox' checked={orderCompleted} readOnly={true} />{' '} */}
               {orderCompleted && <p>Delivered</p>}
             </div>
           </div>

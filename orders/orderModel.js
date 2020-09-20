@@ -2,6 +2,7 @@ const { pool } = require('../util/database')
 
 const getOrder = async (req, res) => {
   const { orderid } = req.params
+  console.log('orderid', orderid)
   try {
     const order = await pool.query(
       `SELECT * FROM orders WHERE orders.orderid = ${orderid}`
@@ -13,7 +14,8 @@ const getOrder = async (req, res) => {
 }
 
 const addOrder = async (req, res) => {
-  const { userid } = req.params
+  console.log(req.user)
+  const { userid } = req.user
   const { deliveryaddress, shopaddress } = req.body
   try {
     const order = await pool.query(
@@ -30,7 +32,7 @@ const updateOrder = async (req, res) => {
   const { name, value } = req.body
   try {
     const updatedOrder = await pool.query(
-      `UPDATE orders SET ${name} = ${value} where orderid = ${orderid} RETURNING *`
+      `UPDATE orders SET ${name} = '${value}' where orderid = ${orderid} RETURNING *`
     )
     res.status(200).send(updatedOrder.rows)
   } catch (err) {

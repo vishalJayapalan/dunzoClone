@@ -16,7 +16,6 @@ export default function Navbar ({ hideLoginAndLogout }) {
     cart,
     deleteAllItemsFromCartState
   } = useContext(AppContext)
-  // console.log('navCart', cart.length)
   return (
     <div className='nav-container'>
       <span className='app-name'>Donesooo</span>

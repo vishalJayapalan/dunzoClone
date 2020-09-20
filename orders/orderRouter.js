@@ -1,11 +1,13 @@
 const Router = require('express').Router()
 
+const auth = require('../middleware/auth')
+
 const { getOrder, addOrder, updateOrder } = require('./orderModel')
 
-Router.get('/:orderid', getOrder)
+Router.get('/:orderid', auth, getOrder)
 
-Router.post('/:userid', addOrder)
+Router.post('/', auth, addOrder)
 
-Router.put('/:orderid', updateOrder)
+Router.put('/:orderid', auth, updateOrder)
 
 module.exports = Router

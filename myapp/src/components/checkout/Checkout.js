@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 
 import { getCookie } from '../util/cookies'
 
@@ -28,6 +28,8 @@ export default function Checkout () {
 
   const [userAddresses, setUserAddresses] = useState([])
 
+  const [paid, setPaid] = useState(false)
+
   const getUserAddress = async () => {
     const data = await window.fetch(
       `http://localhost:5000/userAddress/${isLoggedIn}`,
@@ -48,6 +50,28 @@ export default function Checkout () {
   useEffect(() => {
     getUserAddress()
   }, [isLoggedIn])
+
+  const createOrder = async () => {
+    const data = await window.fetch(`http://localhost:5000/order`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': getCookie('x-auth-token')
+      }
+    })
+    if (data.ok) {
+      const newOrder = await data.json()
+    }
+  }
+
+  if (paid) {
+    return (
+      <div>
+        <Redirect to={{ pathname: '/track-order', state: { test: 'test' } }} />
+      </div>
+    )
+  }
+  console.log('addressSelected', addressSelected)
 
   return (
     <div className='checkout-page'>
@@ -110,28 +134,30 @@ export default function Checkout () {
           </div>
 
           {/* PAYING SECTION */}
-          <Link
+          {/* <Link
             style={{ textDecoration: 'none' }}
             to={{
               pathname: `/track-order`,
               aboutProps: { name: 'test information' }
             }}
+          > */}
+          <button
+            className='paybtn'
+            disabled={!(addressSelected && isLoggedIn && cart.length)}
+            onClick={() => {
+              deleteAllItemsFromCart()
+              createOrder()
+              setPaid(true)
+            }}
+            style={
+              !(addressSelected && isLoggedIn && cart.length)
+                ? { backgroundColor: 'grey' }
+                : { backgroundColor: 'green' }
+            }
           >
-            <button
-              className='paybtn'
-              disabled={!(addressSelected && isLoggedIn && cart.length)}
-              onClick={() => {
-                deleteAllItemsFromCart()
-              }}
-              style={
-                !(addressSelected && isLoggedIn && cart.length)
-                  ? { backgroundColor: 'grey' }
-                  : { backgroundColor: 'green' }
-              }
-            >
-              Pay
-            </button>
-          </Link>
+            Pay
+          </button>
+          {/* </Link> */}
         </div>
 
         {/* CART SECTION */}
