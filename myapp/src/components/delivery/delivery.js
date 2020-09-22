@@ -61,7 +61,7 @@ export default function Delivery () {
       }).addTo(mapRef.current)
 
       routingControlRef.current = Leaflet.Routing.control({
-        waypoints: [Leaflet.latLng(position), Leaflet.latLng(position2)],
+        waypoints: [Leaflet.latLng(position2), Leaflet.latLng(position)],
         routeWhileDragging: true
       }).addTo(mapRef.current)
 

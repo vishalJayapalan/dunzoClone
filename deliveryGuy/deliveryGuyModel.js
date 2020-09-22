@@ -1,0 +1,102 @@
+require('dotenv').config()
+const bcrypt = require('bcrypt')
+
+const jwt = require('jsonwebtoken')
+
+const { pool } = require('../util/database')
+
+const registerDeliveryGuy = async (req, res) => {
+  let { name, email, password } = req.body
+  if (!name || !email || !password) {
+    return res.status(400).json({ msg: 'Please enter all the fields' })
+  }
+  try {
+    const duplicateUser = await pool.query(
+      `SELECT * FROM deliveryguys where emailid='${email}'`
+    )
+    if (!duplicateUser.rowCount) {
+      console.log('inhere')
+      password = await bcrypt.hash(password, 10)
+      console.log(name, email, password)
+      const newDeliveryGuy = await pool.query(
+        `INSERT INTO deliveryguys (deliveryguyname,emailid,password) VALUES ('${name}','${email}','${password}') RETURNING *`
+      )
+      const accessToken = jwt.sign(
+        { userid: newDeliveryGuy.rows[0].userid },
+        process.env.ACCESS_TOKEN_SECRET,
+        { expiresIn: 3600 }
+      )
+      return res
+        .status(201)
+        .cookie('deliveryguy-token', accessToken, { maxAge: 3600000 })
+        .json({
+          deliveryguy: newDeliveryGuy.rows[0].deliveryguyid,
+          accessToken
+        })
+    }
+    return res.status(400).json({ msg: 'Email already exists' })
+  } catch (err) {
+    return res.status(500).json({ msg: 'Some error occured' })
+  }
+}
+
+const loginDeliveryGuy = async (req, res) => {
+  const { email, password } = req.body
+  if (!email || !password)
+    return res.status(200).json({ msg: 'Please Enter all fields' })
+  try {
+    // const all = await pool.query(`select * from deliveryguys`)
+    // console.log(all.rows)
+    const deliveryGuy = await pool.query(
+      `SELECT * FROM deliveryguys WHERE emailid='${email}'`
+    )
+    if (!deliveryGuy.rowCount) {
+      return res.status(400).json({ msg: 'your email or password is wrong' })
+    }
+    const isMatch = await bcrypt.compare(password, deliveryGuy.rows[0].password)
+    if (!isMatch) {
+      return res.status(400).json({ msg: 'your email or password is wrong' })
+    }
+    const accessToken = jwt.sign(
+      { deliveryguyid: deliveryGuy.rows[0].deliveryguyid },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: 3600 }
+    )
+    return res
+      .status(200)
+      .cookie('deliveryguy-token', accessToken, { maxAge: 3600000 })
+      .json({
+        deliveryguyid: deliveryGuy.rows[0].deliveryguyid,
+        accessToken
+      })
+  } catch (err) {
+    return res.status(500).json({ msg: 'Some error occured' })
+  }
+}
+
+const getCurrentDeliveryGuy = async (req, res) => {
+  // const userId = req.params.userid
+  //   const { deliveryguyid } = req.deliveryguy
+  const { deliveryguyid } = req.body
+  try {
+    const deliveryGuy = await pool.query(
+      `SELECT deliveryguyid, deliveryguyname FROM deliveryguys WHERE deliveryguyid = ${deliveryguyid}`
+    )
+
+    if (!deliveryGuy.rowCount) {
+      return res.status(400).json({ message: 'User not found' })
+    }
+    return res.status(200).json({
+      deliveryguyid: deliveryGuy.rows[0].deliveryguyid,
+      deliveryguyname: deliveryGuy.rows[0].deliveryguyname
+    })
+  } catch (err) {
+    return res.status(500).json({ message: "Can't find User" })
+  }
+}
+
+module.exports = {
+  registerDeliveryGuy,
+  loginDeliveryGuy,
+  getCurrentDeliveryGuy
+}

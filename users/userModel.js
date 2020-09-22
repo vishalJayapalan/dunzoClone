@@ -71,6 +71,7 @@ const loginUser = async (req, res) => {
     return res.status(500).json({ msg: 'Some error occured' })
   }
 }
+
 const getCurrentUser = async (req, res) => {
   // const userId = req.params.userid
   const { userid } = req.user
@@ -82,7 +83,6 @@ const getCurrentUser = async (req, res) => {
     if (!user.rowCount) {
       return res.status(400).json({ message: 'User not found' })
     }
-    console.log(user.rows[0])
     return res.status(200).json({
       userid: user.rows[0].userid,
       fullname: user.rows[0].fullname
@@ -91,4 +91,5 @@ const getCurrentUser = async (req, res) => {
     return res.status(500).json({ message: "Can't find User" })
   }
 }
+
 module.exports = { registerUser, loginUser, getCurrentUser }

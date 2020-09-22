@@ -14,6 +14,7 @@ const cartRoutes = require('./cart/cartRoute')
 const userRoutes = require('./users/userRouter')
 const userAddressRoutes = require('./userAddress/userAddressRouter')
 const orderRoutes = require('./orders/orderRouter')
+const deliveryGuyRoutes = require('./deliveryGuy/deliveryGuyRouter')
 
 app.use(cors())
 app.use(express.json())
@@ -25,6 +26,7 @@ app.use('/cart', cartRoutes)
 app.use('/user', userRoutes)
 app.use('/userAddress', userAddressRoutes)
 app.use('/order', orderRoutes)
+app.use('/deliveryguy', deliveryGuyRoutes)
 
 io.on('connection', socket => {
   console.log('a user connected')
