@@ -3,14 +3,16 @@ import { Link, Redirect } from 'react-router-dom'
 
 import { getCookie } from '../util/cookies'
 
+import Nominatim from 'nominatim-geocoder'
+
 import Navbar from '../navbar/Navbar'
 import './Checkout.css'
 
 import Cart from '../items/cart'
-import Invoice from '../items/invoice.js'
 import { AppContext } from '../context/App/AppContext'
 
 import UserAddress from '../userAddress/userAddress'
+import AddUserAddress from '../userAddress/addUserAddress'
 
 export default function Checkout () {
   const {
@@ -28,7 +30,20 @@ export default function Checkout () {
 
   const [userAddresses, setUserAddresses] = useState([])
 
+  const [newOrderId, setNewOrderId] = useState(null)
+
   const [paid, setPaid] = useState(false)
+
+  const [addNewAddress, setAddNewAddress] = useState('')
+
+  const geocoding = async address => {
+    const geocoder = new Nominatim()
+
+    const latlong = await geocoder.search({ q: address })
+    console.log('latlong', latlong)
+  }
+
+  geocoding('srinidhi sagar')
 
   const getUserAddress = async () => {
     const data = await window.fetch(
@@ -60,22 +75,33 @@ export default function Checkout () {
       }
     })
     if (data.ok) {
-      const newOrder = await data.json()
+      const order = await data.json()
+      setNewOrderId(order[0].orderid)
     }
+  }
+  const toPay = async () => {
+    deleteAllItemsFromCart()
+    await createOrder()
+    setPaid(true)
   }
 
   if (paid) {
     return (
       <div>
-        <Redirect to={{ pathname: '/track-order', state: { test: 'test' } }} />
+        <Redirect
+          to={{
+            pathname: `/track-order/${newOrderId}`,
+            state: { test: 'test' }
+          }}
+        />
       </div>
     )
   }
-  console.log('addressSelected', addressSelected)
 
   return (
     <div className='checkout-page'>
       <Navbar />
+      {addNewAddress && <AddUserAddress />}
       <div className='checkout-container'>
         <div className='checkout-signin-deliveryaddress-paybtn'>
           {/* LOGIN SECTION */}
@@ -111,7 +137,10 @@ export default function Checkout () {
             </div>
             {isLoggedIn && !addressSelected && (
               <div className='addresses-container'>
-                <div className='add-new-address-container'>
+                <div
+                  className='add-new-address-container'
+                  onClick={() => setAddNewAddress(true)}
+                >
                   <p>
                     <span>+</span> Add new Address
                   </p>
@@ -145,9 +174,7 @@ export default function Checkout () {
             className='paybtn'
             disabled={!(addressSelected && isLoggedIn && cart.length)}
             onClick={() => {
-              deleteAllItemsFromCart()
-              createOrder()
-              setPaid(true)
+              toPay()
             }}
             style={
               !(addressSelected && isLoggedIn && cart.length)

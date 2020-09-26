@@ -13,8 +13,33 @@ const getOrder = async (req, res) => {
   }
 }
 
+const getAllUserOrders = async (req, res) => {
+  const { userid } = req.user
+  try {
+    const orders = await pool.query(
+      `SELECT * FROM orders where order.userid = ${userid}`
+    )
+    console.log('getting all user orders:', orders)
+    res.status(200).send(orders.rows)
+  } catch (err) {
+    res.status(500).json({ Msg: 'There was an error please try again later' })
+  }
+}
+
+const getDeliveryGuyOrder = async (req, res) => {
+  const { deliveryguyid } = req.params
+  try {
+    const order = await pool.query(
+      `SELECT * FROM orders WHERE order.deliverypartnerid = ${deliveryguyid} AND order.delivered = ${false}`
+    )
+    console.log('delivery Guys order', order.rows)
+    res.status(200).send(order.rows)
+  } catch (err) {
+    res.status(500).json({ Msg: 'There was an error please try again later' })
+  }
+}
+
 const addOrder = async (req, res) => {
-  console.log(req.user)
   const { userid } = req.user
   const { deliveryaddress, shopaddress } = req.body
   try {
@@ -30,6 +55,7 @@ const addOrder = async (req, res) => {
 const updateOrder = async (req, res) => {
   const { orderid } = req.params
   const { name, value } = req.body
+  console.log(name, value)
   try {
     const updatedOrder = await pool.query(
       `UPDATE orders SET ${name} = '${value}' where orderid = ${orderid} RETURNING *`
@@ -40,4 +66,10 @@ const updateOrder = async (req, res) => {
   }
 }
 
-module.exports = { getOrder, addOrder, updateOrder }
+module.exports = {
+  getOrder,
+  getAllUserOrders,
+  getDeliveryGuyOrder,
+  addOrder,
+  updateOrder
+}

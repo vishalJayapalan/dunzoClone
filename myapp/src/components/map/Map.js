@@ -8,27 +8,31 @@ import Nominatim from 'nominatim-geocoder'
 
 import Navbar from '../navbar/Navbar'
 
+import { getCookie } from '../util/cookies'
+
 import io from 'socket.io-client'
 let socket
 const endpoint = 'http://localhost:5000'
 socket = io(endpoint)
 
-export default function Map ({ location }) {
+export default function Map (props) {
   const [liveLocation, setLiveLocation] = useState({
     latitude: 11.868762,
     longitude: 75.384577
   })
-  console.log(location)
   const [deliveryPartnerName, setDeliveryPartnerName] = useState(null)
 
   const position = [11.858762, 75.404577]
   const position2 = [11.877094, 75.372391]
-  const [orderCompleted, setOrderCompleted] = useState(false)
+  // const [orderCompleted, setOrderCompleted] = useState(false)
   const [packingStatus, setPackingStatus] = useState(false)
-  const [orderPickStatus, setOrderPickStatus] = useState(false)
+  // const [orderPickStatus, setOrderPickStatus] = useState(false)
+  const [order, setOrder] = useState({})
 
   const mapRef = useRef(null)
   const routingControlRef = useRef(null)
+
+  const orderid = props.match.params.orderid
 
   // let bikeMarker
 
@@ -45,9 +49,10 @@ export default function Map ({ location }) {
       const geocoder = new Nominatim()
 
       const latlong = await geocoder.search({ q: address })
+      console.log('latlong', latlong)
     }
 
-    geocoding('Shoppers Stop,kannur,kerala')
+    geocoding('Shoppers')
 
     let location = []
     function success (position) {
@@ -63,12 +68,32 @@ export default function Map ({ location }) {
     }).addTo(mapRef.current)
   }
 
+  const getOrderDetails = async () => {
+    const data = await window.fetch(`http://localhost:5000/order/${orderid}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': getCookie('x-auth-token')
+      }
+    })
+    if (data.ok) {
+      const jsonData = await data.json()
+      setOrder(jsonData[0])
+      console.log('order', jsonData[0])
+      // setNewOrderId(order[0].orderid)
+    }
+  }
+
   useEffect(() => {
+    getOrderDetails()
     map()
     setTimeout(() => {
       setPackingStatus(true)
       socket = io(endpoint)
-      socket.emit('deliveryPartnerRequired', 'Shoppers Stop')
+      socket.emit('deliveryPartnerRequired', {
+        shopname: 'Shoppers Stop',
+        orderid
+      })
     }, 5000)
   }, [])
   const bikeIcon = Leaflet.icon({
@@ -85,10 +110,16 @@ export default function Map ({ location }) {
       setDeliveryPartnerName(partnerName)
     })
     socket.on('orderPickedUp', () => {
-      setOrderPickStatus(true)
+      setOrder(prevOrder => {
+        return { ...prevOrder, orderpickedup: true }
+      })
+      // setOrderPickStatus(true)
     })
     socket.on('orderDelivered', () => {
-      setOrderCompleted(true)
+      setOrder(prevOrder => {
+        return { ...prevOrder, delivered: true }
+      })
+      // setOrderCompleted(true)
     })
     socket.on('deliveryLiveLocation', location => {
       if (bikeMarker !== null) mapRef.current.removeLayer(bikeMarker)
@@ -121,11 +152,10 @@ export default function Map ({ location }) {
             </div>
 
             <div className='order-details'>
-              {orderPickStatus && <p>Order picked up</p>}
+              {order.orderpickedup && <p>Order picked up</p>}
             </div>
-
             <div className='order-details'>
-              {orderCompleted && <p>Delivered</p>}
+              {order.delivered && <p>Delivered</p>}
             </div>
           </div>
         </div>

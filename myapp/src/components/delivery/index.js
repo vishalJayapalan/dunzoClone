@@ -5,6 +5,8 @@ import io from 'socket.io-client'
 import Leaflet, { routing } from 'leaflet'
 import 'leaflet-routing-machine'
 
+import { getCookie } from '../util/cookies'
+
 import Nominatim from 'nominatim-geocoder'
 
 let socket
@@ -18,27 +20,52 @@ export default function Delivery () {
   const [orderStatus, setOrderStatus] = useState(false)
   const position = [11.858762, 75.404577]
   let position2 = [11.877094, 75.372391]
+  const [orderid, setOrderid] = useState(null)
 
   const mapRef = useRef(null)
   const routingControlRef = useRef(null)
 
   useEffect(() => {
-    socket.on('toDeliveryPartner', shopname => {
+    socket.on('toDeliveryPartner', ({ shopname, orderid }) => {
       setRequirement(shopname)
+      setOrderid(orderid)
     })
   })
-  function orderStatusUpdation (status) {
-    if (status) {
-      socket.emit('deliveryPartnerAssigned', 'speedo')
-      setOrderStatus(true)
+
+  const updateOrder = async (name, value) => {
+    console.log('orderid', orderid)
+    const data = await window.fetch(`http://localhost:5000/order/${orderid}`, {
+      method: 'PUT',
+      body: JSON.stringify({ name, value }),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': getCookie('x-auth-token')
+      }
+    })
+    if (data.ok) {
+      const jsonData = await data.json()
+      // setOrder(jsonData[0])
+      console.log('order', jsonData[0])
+      // setNewOrderId(order[0].orderid)
     }
+  }
+
+  function orderStatusUpdation () {
+    // if (status) {
+    socket.emit('deliveryPartnerAssigned', 'speedo')
+    setOrderStatus(true)
+    updateOrder('deliverypartnerid', 1)
+
+    // }
   }
   function orderPickedUp () {
     setOrderPickStatus(true)
     socket.emit('orderPicked')
+    updateOrder('orderpickedup', true)
   }
   function orderCompleted () {
     socket.emit('orderCompleted')
+    updateOrder('delivered', true)
   }
 
   useEffect(() => {
@@ -97,7 +124,7 @@ export default function Delivery () {
           <div className='order-row'>
             <p>Order from {requirement}</p>
             <button
-              onClick={() => orderStatusUpdation(true)}
+              onClick={() => orderStatusUpdation()}
               disabled={orderStatus}
             >
               accept

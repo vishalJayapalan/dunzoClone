@@ -9,9 +9,9 @@ import Items from './components/items/items'
 import Checkout from './components/checkout/Checkout'
 import Map from './components/map/Map'
 import DeliveryHome from './components/delivery/DeliveryHome'
-import Delivery from './components/delivery/delivery'
+import Delivery from './components/delivery'
 import Business from './components/business/business'
-import PageNotFound from './components/pageNotFound/PageNotFound'
+import PageNotFound from './components/pageNotFound'
 
 function App () {
   return (
@@ -30,7 +30,7 @@ function App () {
               <Route path='/' exact component={Categories} />
               <Route path='/checkout' component={Checkout} />
               <Route path='/business' component={Business} />
-              <Route path='/track-order' component={Map} />
+              <Route path='/track-order/:orderid' component={Map} />
               <Route
                 path='/:categoryid/shop/:shopname/:shopid'
                 component={Items}
