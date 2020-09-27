@@ -11,6 +11,7 @@ export default function Signup () {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [fullname, setFullname] = useState('')
+  const [errorMsg, setErrorMsg] = useState('')
 
   const userRegister = async event => {
     event.preventDefault()
@@ -34,8 +35,15 @@ export default function Signup () {
         setCookie('x-auth-token', jsonData.accessToken)
         setIsLoggedIn(jsonData.userid)
         getCart()
+      } else {
+        throw response
       }
     } catch (err) {
+      const jsonData = await err.json()
+      console.log('jsonError', jsonData)
+      setEmail('')
+      setPassword('')
+      setErrorMsg(jsonData.msg)
       console.log(err)
     }
   }
@@ -52,7 +60,7 @@ export default function Signup () {
               />
             </div>
             <form onSubmit={userRegister}>
-              {/* <div className='errorMessage'>{errMsg}</div> */}
+              <div className='errorMessage'>{errorMsg}</div>
               <div className='form-row'>
                 <label>FullName</label>
                 <input

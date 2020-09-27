@@ -49,7 +49,7 @@ const loginUser = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ msg: 'your email or password is wrong' })
     }
-    console.log(user.rows[0])
+    // console.log(user.rows[0])
     const accessToken = jwt.sign(
       { userid: user.rows[0].userid },
       process.env.ACCESS_TOKEN_SECRET,

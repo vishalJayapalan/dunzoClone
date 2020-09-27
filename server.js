@@ -24,7 +24,7 @@ app.use('/categories', categoryRoutes)
 app.use('/shops', shopRoutes)
 app.use('/cart', cartRoutes)
 app.use('/user', userRoutes)
-app.use('/userAddress', userAddressRoutes)
+app.use('/useraddress', userAddressRoutes)
 app.use('/order', orderRoutes)
 app.use('/deliveryguy', deliveryGuyRoutes)
 

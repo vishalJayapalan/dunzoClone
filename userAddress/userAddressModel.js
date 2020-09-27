@@ -17,11 +17,11 @@ const getUserAddress = async (req, res) => {
 }
 
 const addUserAddress = async (req, res) => {
-  const { address } = req.body
-  const { userid } = req.params
+  const { address, category } = req.body
+  const { userid } = req.user
   try {
     const userAddress = await pool.query(
-      `INSERT INTO useraddresses (address,userid) VALUES ('${address}','${userid}') RETURNING *`
+      `INSERT INTO useraddresses (address,userid,category) VALUES ('${address}','${userid}','${category}') RETURNING *`
     )
     res.status(201).send(userAddress.rows)
   } catch (err) {

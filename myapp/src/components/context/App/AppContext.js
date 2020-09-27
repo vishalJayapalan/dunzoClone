@@ -83,14 +83,6 @@ export const AppContextProvider = props => {
         if (localCart && localCart.length) {
           deleteAllItemsFromCart()
 
-          // dispatch({ type: 'DELETE_ALL_ITEM_FROM_CART', payload: jsonData })
-          // console.log('localCart', localCart)
-          // localCart.forEach(cartitem => {
-          //   console.log('localCartInforEach', cartitem)
-          //   addToCart(cartitem, cartitem.shopname)
-          // })
-          // localStorage.clear()
-
           deleteAllItemsFromCartState()
           localCart.forEach(cartitem => {
             addToCart(cartitem, cartitem.shopname)
@@ -122,7 +114,6 @@ export const AppContextProvider = props => {
       //   console.log('different shop')
       //   return
       // }
-      console.log('inherealso', item, shopname)
       if (isLoggedIn) {
         const data = await window.fetch('http://localhost:5000/cart', {
           method: 'POST',
@@ -146,7 +137,6 @@ export const AppContextProvider = props => {
         jsonData[0].itemsize = item.itemsize
         jsonData[0].itemprice = item.itemprice
         jsonData[0].quantity = item.quantity
-        console.log('afteraddCart', jsonData)
       } else {
         const cartid = uuidV4()
         jsonData[0] = { ...item, shopname, cartid, cartitemquantity: 1 }
@@ -238,7 +228,6 @@ export const AppContextProvider = props => {
 
   async function deleteAllItemsFromCart () {
     if (isLoggedIn) {
-      console.log('inDeleteFunction')
       await window.fetch('http://localhost:5000/cart/all', {
         method: 'DELETE',
         headers: {

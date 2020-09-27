@@ -11,7 +11,7 @@ const {
 
 router.get('/:userid', auth, getUserAddress)
 
-router.post('/:userid', addUserAddress)
+router.post('/:userid', auth, addUserAddress)
 
 router.put('/:addressid', updateUserAddress)
 

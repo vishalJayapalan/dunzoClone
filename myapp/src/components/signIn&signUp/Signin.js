@@ -9,14 +9,12 @@ export default function Signin () {
   )
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [errorMsg, setErrorMsg] = useState('')
   const userLogin = async event => {
     event.preventDefault()
     try {
       const response = await window.fetch('http://localhost:5000/user/login', {
         method: 'POST',
-        // credentials: 'include',
-        // crossDomain: true,
-        // xhrFields: { withCredentials: true },
         body: JSON.stringify({ email, password }),
         headers: {
           'Content-type': 'application/json'
@@ -30,9 +28,16 @@ export default function Signin () {
         setShowLogin(false)
         setIsLoggedIn(jsonData.userid)
         getCart()
+      } else {
+        throw response
       }
     } catch (err) {
-      console.log(err)
+      const jsonData = await err.json()
+      console.log('jsonError', jsonData)
+      setEmail('')
+      setPassword('')
+      setErrorMsg(jsonData.msg)
+      // console.log(err)
     }
   }
   return (
@@ -48,16 +53,17 @@ export default function Signin () {
               />
             </div>
             <form onSubmit={userLogin}>
-              {/* <div className='errorMessage'>{errMsg}</div> */}
+              <div className='errorMessage'>{errorMsg}</div>
               <div className='form-row'>
                 <label>Email</label>
                 <input
                   type='email'
                   value={email}
                   placeholder='Enter Email'
+                  pattern='.{6,}'
                   onChange={e => setEmail(e.target.value)}
                   required
-                  title='enter a valid email address'
+                  title='enter a valid email address with atleast 6 characters'
                 />
               </div>
               <div className='form-row'>

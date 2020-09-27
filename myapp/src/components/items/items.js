@@ -70,6 +70,11 @@ export default function Items (props) {
       {clearCartPopup && <ClearCartPopup />}
       <div className='items-shop-name-container'>
         {/* PUT IMAGE OF SHOP HERE */}
+        {/* <img
+          className='category-name-inshop-img'
+          src={`/images/${categoryname}.png`}
+          alt='catimg'
+        /> */}
         <h1 className='items-shop-name'>{props.match.params.shopname}</h1>
       </div>
       <div className='items-flex-container'>

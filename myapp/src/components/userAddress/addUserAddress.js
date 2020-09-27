@@ -4,22 +4,28 @@ import Nominatim from 'nominatim-geocoder'
 
 import './userAddress.css'
 
-import SearchUserAddressItems from './searchUserAddressItems'
+import SearchUserAddressItem from './searchUserAddressItem'
 
-export default function AddUserAddress () {
+export default function AddUserAddress ({
+  setAddNewAddress,
+  addNewUserAddress
+}) {
   const [newAddress, setNewAddress] = useState('')
-  const searchItems = []
+  const [searchItems, setSearchItems] = useState([])
 
   const geocoding = async address => {
     const geocoder = new Nominatim()
 
     const latlong = await geocoder.search({ q: address })
-    console.log('latlong', latlong)
-  }
-
-  if (newAddress.length > 2) {
-    console.log(typeof newAddress)
-    geocoding(newAddress)
+    setSearchItems(
+      latlong.map(address => (
+        <SearchUserAddressItem
+          key={address.osm_id}
+          address={address}
+          addNewUserAddress={addNewUserAddress}
+        />
+      ))
+    )
   }
 
   return (
@@ -31,25 +37,35 @@ export default function AddUserAddress () {
               <h3>Search Drop Location</h3>
               <img
                 src='/images/closeIcon.png'
-                // onClick={() => setShowLogin(false)}
+                onClick={() => setAddNewAddress(false)}
               />
             </div>
             <input
+              className='user-address-input'
               type='text'
               placeholder='Enter the address'
               value={newAddress}
-              onChange={event => setNewAddress(event.target.value)}
+              onKeyDown={event => {
+                if (event.keyCode === 13) {
+                  geocoding(newAddress)
+                }
+                // console.log(event.keyCode)
+              }}
+              onChange={event => {
+                if (event.keycode !== 13) setNewAddress(event.target.value)
+              }}
             />
           </div>
           <div className='searched-addresses-container'>
             {searchItems.length ? (
-              <SearchUserAddressItems />
+              searchItems
             ) : (
               <img
                 className='waiting-image'
                 src='/images/searchUserAddressImage.png'
               ></img>
             )}
+            {/* {searchItems} */}
           </div>
         </div>
       </div>

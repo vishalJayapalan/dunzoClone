@@ -13,6 +13,7 @@ import { AppContext } from '../context/App/AppContext'
 
 import UserAddress from '../userAddress/userAddress'
 import AddUserAddress from '../userAddress/addUserAddress'
+import { json } from 'express'
 
 export default function Checkout () {
   const {
@@ -35,15 +36,6 @@ export default function Checkout () {
   const [paid, setPaid] = useState(false)
 
   const [addNewAddress, setAddNewAddress] = useState('')
-
-  const geocoding = async address => {
-    const geocoder = new Nominatim()
-
-    const latlong = await geocoder.search({ q: address })
-    console.log('latlong', latlong)
-  }
-
-  geocoding('srinidhi sagar')
 
   const getUserAddress = async () => {
     const data = await window.fetch(
@@ -69,6 +61,7 @@ export default function Checkout () {
   const createOrder = async () => {
     const data = await window.fetch(`http://localhost:5000/order`, {
       method: 'POST',
+      body: JSON.stringify({}),
       headers: {
         'Content-Type': 'application/json',
         'x-auth-token': getCookie('x-auth-token')
@@ -79,6 +72,25 @@ export default function Checkout () {
       setNewOrderId(order[0].orderid)
     }
   }
+
+  const addUserAddress = async () => {
+    const data = await window.fetch(
+      `http://localhost:5000/useraddress/${isLoggedIn}`,
+      {
+        method: 'POST',
+        body: JSON.stringify({ address: addNewAddress, category: 'Home' }),
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': getCookie('x-auth-token')
+        }
+      }
+    )
+    if (data.ok) {
+      // const order = await data.json()
+      // setNewOrderId(order[0].orderid)
+    }
+  }
+
   const toPay = async () => {
     deleteAllItemsFromCart()
     await createOrder()
@@ -101,7 +113,9 @@ export default function Checkout () {
   return (
     <div className='checkout-page'>
       <Navbar />
-      {addNewAddress && <AddUserAddress />}
+      {addNewAddress && (
+        <AddUserAddress setAddNewAddress={setAddNewAddress} addUser />
+      )}
       <div className='checkout-container'>
         <div className='checkout-signin-deliveryaddress-paybtn'>
           {/* LOGIN SECTION */}

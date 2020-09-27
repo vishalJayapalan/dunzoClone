@@ -292,6 +292,7 @@ body {
   height: 5rem;
   padding: 5%;
   margin-left: 5%;
+  border-radius: 10px;
 }
 .item-name-container {
   width: 60%;
@@ -511,6 +512,11 @@ body {
   max-width: 25em;
   margin: auto;
   padding-top: 6em;
+}
+
+.errorMessage {
+  color: red;
+  font-size: 80%;
 }
 
 .form-container {

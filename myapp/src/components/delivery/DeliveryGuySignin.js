@@ -8,6 +8,8 @@ export default function DeliveryGuySignin ({
 }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [errorMsg, setErrorMsg] = useState('')
+
   const deliveryGuyLogin = async event => {
     event.preventDefault()
     try {
@@ -29,9 +31,16 @@ export default function DeliveryGuySignin ({
         setShowLogin(false)
         setIsLoggedIn(jsonData.deliveryguyid)
         // getCart()
+      } else {
+        throw response
       }
     } catch (err) {
-      console.log(err)
+      const jsonData = await err.json()
+      // console.log('jsonError', jsonData)
+      setEmail('')
+      setPassword('')
+      setErrorMsg(jsonData.msg)
+      // console.log(err)
     }
   }
   return (
@@ -47,7 +56,7 @@ export default function DeliveryGuySignin ({
               />
             </div>
             <form onSubmit={deliveryGuyLogin}>
-              {/* <div className='errorMessage'>{errMsg}</div> */}
+              <div className='errorMessage'>{errorMsg}</div>
               <div className='form-row'>
                 <label>Email</label>
                 <input
@@ -74,7 +83,7 @@ export default function DeliveryGuySignin ({
               <div className='form-row'>
                 <button type='submit'>Log In</button>
               </div>
-              <div className='form-footer'>
+              {/* <div className='form-footer'>
                 <p
                   onClick={() => {
                     setShowLogin(false)
@@ -83,7 +92,7 @@ export default function DeliveryGuySignin ({
                 >
                   Dont have an account,click here to Register
                 </p>
-              </div>
+              </div> */}
             </form>
           </div>
         </div>
