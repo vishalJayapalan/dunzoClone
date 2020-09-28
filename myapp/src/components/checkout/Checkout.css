@@ -113,6 +113,7 @@
   width: 90%;
   padding: 1%;
   margin: 2%;
+  border: solid 1px lightgray;
 }
 
 /* .checkout-address-input {

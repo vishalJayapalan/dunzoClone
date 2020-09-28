@@ -3,7 +3,7 @@ import { Link, Redirect } from 'react-router-dom'
 
 import { getCookie } from '../util/cookies'
 
-import Nominatim from 'nominatim-geocoder'
+// import Nominatim from 'nominatim-geocoder'
 
 import Navbar from '../navbar/Navbar'
 import './Checkout.css'
@@ -14,7 +14,7 @@ import { AppContext } from '../context/App/AppContext'
 import UserAddress from '../userAddress/userAddress'
 import AddUserAddress from '../userAddress/addUserAddress'
 
-export default function Checkout () {
+export default function Checkout (props) {
   const {
     showLogin,
     showRegister,
@@ -35,15 +35,30 @@ export default function Checkout () {
   const [paid, setPaid] = useState(false)
 
   const [addNewAddress, setAddNewAddress] = useState('')
+  const [shopAddress, setShopAddress] = useState('')
 
-  const geocoding = async address => {
-    const geocoder = new Nominatim()
+  // const geocoding = async address => {
+  //   const geocoder = new Nominatim()
 
-    const latlong = await geocoder.search({ q: address })
-    console.log('latlong', latlong)
+  //   const latlong = await geocoder.search({ q: address })
+  //   console.log('latlong', latlong)
+  // }
+
+  // geocoding('srinidhi sagar')
+
+  const getShopDetails = async () => {
+    const data = await window.fetch(
+      `http://localhost:5000/shops/shop/${props.match.params.shopid}`
+    )
+    if (data.ok) {
+      const jsonData = await data.json()
+      setShopAddress(jsonData[0].address)
+    }
   }
 
-  geocoding('srinidhi sagar')
+  useEffect(() => {
+    getShopDetails()
+  }, [])
 
   const getUserAddress = async () => {
     const data = await window.fetch(
@@ -73,7 +88,11 @@ export default function Checkout () {
       headers: {
         'Content-Type': 'application/json',
         'x-auth-token': getCookie('x-auth-token')
-      }
+      },
+      body: JSON.stringify({
+        deliveryaddress: addressSelected,
+        shopaddress: shopAddress
+      })
     })
     if (data.ok) {
       const order = await data.json()
@@ -95,7 +114,10 @@ export default function Checkout () {
     )
     if (data.ok) {
       const newAddress = await data.json()
+      // console.log('userDetails', req.user)
       console.log(newAddress)
+      setUserAddresses(prevAddresses => [...prevAddresses, newAddress[0]])
+      setAddNewAddress(false)
       // const order = await data.json()
       // setNewOrderId(order[0].orderid)
     }
@@ -119,6 +141,7 @@ export default function Checkout () {
       </div>
     )
   }
+  // console.log('userAddress',userAddress)
 
   return (
     <div className='checkout-page'>
@@ -183,8 +206,8 @@ export default function Checkout () {
             )}
             {addressSelected && (
               <div className='selected-address'>
-                <h2>Home</h2>
-                <p>kannur,kerala</p>
+                {/* <h2>Home</h2> */}
+                <p>{addressSelected}</p>
               </div>
             )}
           </div>

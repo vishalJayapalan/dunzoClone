@@ -54,6 +54,7 @@ export default function Items (props) {
             ? item.itemid + 'searchResultsItem'
             : item.itemid
         }
+        userid
         item={item}
         shopname={props.match.params.shopname}
       />

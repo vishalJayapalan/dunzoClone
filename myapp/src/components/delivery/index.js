@@ -18,18 +18,25 @@ export default function Delivery () {
   const [requirement, setRequirement] = useState(null)
   const [orderPickStatus, setOrderPickStatus] = useState(false)
   const [orderStatus, setOrderStatus] = useState(false)
-  const position = [11.858762, 75.404577]
-  let position2 = [11.877094, 75.372391]
+  // const position = [11.858762, 75.404577]
+  // let position2 = [11.877094, 75.372391]
+  const [pickupLocation, setPickupLocation] = useState([])
+  const [deliveryLocation, setDeliveryLocation] = useState([])
   const [orderid, setOrderid] = useState(null)
 
   const mapRef = useRef(null)
   const routingControlRef = useRef(null)
 
   useEffect(() => {
-    socket.on('toDeliveryPartner', ({ shopname, orderid }) => {
-      setRequirement(shopname)
-      setOrderid(orderid)
-    })
+    socket.on(
+      'toDeliveryPartner',
+      ({ shopname, orderid, shopLocation, userLocation }) => {
+        setRequirement(shopname)
+        setPickupLocation(shopLocation)
+        setDeliveryLocation(userLocation)
+        setOrderid(orderid)
+      }
+    )
   })
 
   const updateOrder = async (name, value) => {
@@ -70,7 +77,7 @@ export default function Delivery () {
 
   useEffect(() => {
     const map = () => {
-      mapRef.current = Leaflet.map('mapid').setView(position, 10)
+      mapRef.current = Leaflet.map('mapid').setView(deliveryLocation, 10)
 
       Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
@@ -83,12 +90,15 @@ export default function Delivery () {
         iconUrl: '/images/bikeImg.jpg',
         shadowUrl: 'https://unpkg.com/leaflet@1.6/dist/images/marker-shadow.png'
       })
-      let marker = Leaflet.marker(position, {
+      let marker = Leaflet.marker(pickupLocation, {
         icon: bikeIcon
       }).addTo(mapRef.current)
 
       routingControlRef.current = Leaflet.Routing.control({
-        waypoints: [Leaflet.latLng(position2), Leaflet.latLng(position)],
+        waypoints: [
+          Leaflet.latLng(pickupLocation),
+          Leaflet.latLng(deliveryLocation)
+        ],
         routeWhileDragging: true
       }).addTo(mapRef.current)
 

@@ -18,7 +18,6 @@ const getUserAddress = async (req, res) => {
 
 const addUserAddress = async (req, res) => {
   const { address, category } = req.body
-  console.log('userDetails', req.user)
   const { userid } = req.user
   try {
     const userAddress = await pool.query(

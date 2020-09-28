@@ -12,7 +12,6 @@ export default function Cart (props) {
   cart.forEach(element => {
     totalPrice += element.itemprice * element.cartitemquantity
   })
-
   return (
     <div className='cart-container'>
       <div className='cart-title-container'>
@@ -44,7 +43,7 @@ export default function Cart (props) {
       )}
       {cart.length !== 0 && props.showToCheckout && (
         <div className='checkout-button-container'>
-          <Link to={{ pathname: '/checkout', state: 'test' }}>
+          <Link to={{ pathname: `/checkout/${cart[0].shopid}`, state: 'test' }}>
             <button
               className='proceed-to-checkout-btn'
               style={{ cursor: 'pointer' }}

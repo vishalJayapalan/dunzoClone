@@ -35,10 +35,18 @@ io.on('connection', socket => {
     // console.log(lat, lng)
     socket.broadcast.emit('deliveryLiveLocation', { lat, lng })
   })
-  socket.on('deliveryPartnerRequired', ({ shopname, orderid }) => {
-    // console.log(shopname)
-    socket.broadcast.emit('toDeliveryPartner', { shopname, orderid })
-  })
+  socket.on(
+    'deliveryPartnerRequired',
+    ({ shopname, orderid, shopLocation, userLocation }) => {
+      // console.log(shopname)
+      socket.broadcast.emit('toDeliveryPartner', {
+        shopname,
+        orderid,
+        shopLocation,
+        userLocation
+      })
+    }
+  )
   socket.on('deliveryPartnerAssigned', name => {
     // console.log(name)
     socket.broadcast.emit('partnerAssigned', name)

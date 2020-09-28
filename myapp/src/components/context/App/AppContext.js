@@ -108,12 +108,9 @@ export const AppContextProvider = props => {
   }
 
   async function addToCart (item, shopname) {
+    // console.log('ITEMS', item)
     try {
       let jsonData = []
-      // if (state.cart[0].shopname !== shopname) {
-      //   console.log('different shop')
-      //   return
-      // }
       if (isLoggedIn) {
         const data = await window.fetch('http://localhost:5000/cart', {
           method: 'POST',
@@ -133,18 +130,22 @@ export const AppContextProvider = props => {
           throw data
         }
         jsonData = await data.json()
+        // console.log('newCartItem', jsonData)
         localStorage.setItem('Donesooo-cartid', jsonData.cartid)
         jsonData[0].itemsize = item.itemsize
+        jsonData[0].shopid = item.shopid
         jsonData[0].itemprice = item.itemprice
         jsonData[0].quantity = item.quantity
       } else {
         const cartid = uuidV4()
         jsonData[0] = { ...item, shopname, cartid, cartitemquantity: 1 }
+
         localStorage.setItem(
           'Donesooo-cart',
           JSON.stringify([...state.cart, jsonData[0]])
         )
       }
+      console.log(jsonData)
       dispatch({ type: 'ADD_TO_CART', payload: jsonData })
     } catch (err) {
       dispatch({ type: 'ERROR', payload: err })

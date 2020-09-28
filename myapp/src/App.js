@@ -28,7 +28,7 @@ function App () {
                 component={Shops}
               />
               <Route path='/' exact component={Categories} />
-              <Route path='/checkout' component={Checkout} />
+              <Route path='/checkout/:shopid' component={Checkout} />
               <Route path='/business' component={Business} />
               <Route path='/track-order/:orderid' component={Map} />
               <Route

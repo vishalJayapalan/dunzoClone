@@ -16,14 +16,18 @@ const endpoint = 'http://localhost:5000'
 socket = io(endpoint)
 
 export default function Map (props) {
-  const [liveLocation, setLiveLocation] = useState({
-    latitude: 11.868762,
-    longitude: 75.384577
-  })
+  // const [liveLocation, setLiveLocation] = useState({
+  //   latitude: 11.868762,
+  //   longitude: 75.384577
+  // })
   const [deliveryPartnerName, setDeliveryPartnerName] = useState(null)
 
-  const position = [11.858762, 75.404577]
-  const position2 = [11.877094, 75.372391]
+  // const position = [11.858762, 75.404577]
+  // const position2 = [11.877094, 75.372391]
+  // const [deliveryLocation, setDeliveryLocation] = useState('')
+  // const [pickupLocation, setPickupLocation] = useState('')
+  let deliveryLocation = ''
+  let pickupLocation = ''
   // const [orderCompleted, setOrderCompleted] = useState(false)
   const [packingStatus, setPackingStatus] = useState(false)
   // const [orderPickStatus, setOrderPickStatus] = useState(false)
@@ -36,34 +40,37 @@ export default function Map (props) {
 
   // let bikeMarker
 
+  const geocoding = async address => {
+    const geocoder = new Nominatim()
+
+    const latlong = await geocoder.search({ q: address })
+    // console.log('latlong', latlong)
+    console.log('lat:', latlong[0].lat, 'lon:', latlong[0].lon)
+    return [latlong[0].lat, latlong[0].lon]
+  }
+
   const map = () => {
-    mapRef.current = Leaflet.map('mapid').setView(position, 10)
-    https: Leaflet.tileLayer(
-      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-      {
-        attribution: '© OpenStreetMap contributors'
-      }
-    ).addTo(mapRef.current)
+    console.log('deliveryLocationInMap', deliveryLocation)
+    mapRef.current = Leaflet.map('mapid').setView(deliveryLocation, 10)
+    Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(mapRef.current)
 
-    const geocoding = async address => {
-      const geocoder = new Nominatim()
+    // geocoding('Shoppers')
 
-      const latlong = await geocoder.search({ q: address })
-      console.log('latlong', latlong)
-    }
-
-    geocoding('Shoppers')
-
-    let location = []
-    function success (position) {
-      const latitude = position.coords.latitude
-      const longitude = position.coords.longitude
-      setLiveLocation({ latitude, longitude })
-      location = [latitude, longitude]
-    }
+    // let location = []
+    // function success (position) {
+    //   const latitude = position.coords.latitude
+    //   const longitude = position.coords.longitude
+    //   setLiveLocation({ latitude, longitude })
+    //   location = [latitude, longitude]
+    // }
 
     routingControlRef.current = Leaflet.Routing.control({
-      waypoints: [Leaflet.latLng(position), Leaflet.latLng(position2)],
+      waypoints: [
+        Leaflet.latLng(deliveryLocation),
+        Leaflet.latLng(pickupLocation)
+      ],
       routeWhileDragging: true
     }).addTo(mapRef.current)
   }
@@ -79,22 +86,37 @@ export default function Map (props) {
     if (data.ok) {
       const jsonData = await data.json()
       setOrder(jsonData[0])
-      console.log('order', jsonData[0])
-      // setNewOrderId(order[0].orderid)
+      // console.log('order', jsonData[0])
+
+      deliveryLocation = await geocoding(jsonData[0].deliveryaddress)
+      console.log('test', await geocoding(jsonData[0].deliveryaddress))
+      console.log('deliveryLocation', deliveryLocation)
+
+      pickupLocation = await geocoding(jsonData[0].shopaddress)
+      console.log('pickUpLocation', pickupLocation)
     }
   }
 
-  useEffect(() => {
-    getOrderDetails()
+  console.log('deliveryLocationMain', deliveryLocation)
+  console.log('pickupLocationMain', pickupLocation)
+
+  const startupFunction = async () => {
+    await getOrderDetails()
     map()
     setTimeout(() => {
       setPackingStatus(true)
       socket = io(endpoint)
       socket.emit('deliveryPartnerRequired', {
         shopname: 'Shoppers Stop',
-        orderid
+        orderid,
+        shopLocation: pickupLocation,
+        userLocation: deliveryLocation
       })
     }, 5000)
+  }
+
+  useEffect(() => {
+    startupFunction()
   }, [])
   const bikeIcon = Leaflet.icon({
     iconSize: [25, 41],

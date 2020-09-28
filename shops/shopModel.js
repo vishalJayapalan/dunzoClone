@@ -12,6 +12,16 @@ const getShops = async (req, res) => {
   }
 }
 
+const getShop = async (req, res) => {
+  const { shopid } = req.params
+  try {
+    const shop = await pool.query(`SELECT * FROM shops WHERE shopid=${shopid}`)
+    res.status(200).send(shop.rows)
+  } catch (err) {
+    res.status(500).json({ Msg: 'There was an error please try again later' })
+  }
+}
+
 // ('select * from shops JOIN categories_join_shops ON shops.shopid = categories_join_shops.shopid AND categories_join_shops.categoryId =1 JOIN categories ON categories_join_shops.categoryid = categories.categoryid;')
 
 // INSERT INTO shops(shopname) VALUES ('Model Medical Store');
@@ -20,4 +30,4 @@ const getShops = async (req, res) => {
 // INSERT INTO shops(shopname) VALUES ('Munmun Florist');
 // INSERT INTO shops(shopname) VALUES ('Black Tulip Flower International');
 
-module.exports = { getShops }
+module.exports = { getShops, getShop }
