@@ -205,9 +205,19 @@ export default function Checkout (props) {
               </div>
             )}
             {addressSelected && (
-              <div className='selected-address'>
-                {/* <h2>Home</h2> */}
-                <p>{addressSelected}</p>
+              <div className='selected-address-container'>
+                <div className='selected-address-title-container'>
+                  <h2>Selected Address: </h2>
+                  <button onClick={() => setAddressSelected(false)}>
+                    Change
+                  </button>
+                </div>
+                <div>
+                  <div className='selected-address'>
+                    {/* <h2>Home</h2> */}
+                    <p>{addressSelected}</p>
+                  </div>
+                </div>
               </div>
             )}
           </div>

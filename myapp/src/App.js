@@ -17,29 +17,28 @@ function App () {
   return (
     <div className='App'>
       <Router>
-        <Switch>
-          <Route path='/delivery' exact component={DeliveryHome} />
-          <Route path='/delivery/:deliveryguyid' component={Delivery} />
-          <AppContextProvider>
-            <Switch>
-              <Route
-                path='/stores/:categoryname/:categoryid'
-                exact
-                component={Shops}
-              />
-              <Route path='/' exact component={Categories} />
-              <Route path='/checkout/:shopid' component={Checkout} />
-              <Route path='/business' component={Business} />
-              <Route path='/track-order/:orderid' component={Map} />
-              <Route
-                path='/:categoryid/shop/:shopname/:shopid'
-                component={Items}
-              />
-
-              <Route path='*' component={PageNotFound} />
-            </Switch>
-          </AppContextProvider>
-        </Switch>
+        {/* <Switch> */}
+        <AppContextProvider>
+          <Switch>
+            <Route
+              path='/stores/:categoryname/:categoryid'
+              exact
+              component={Shops}
+            />
+            <Route path='/' exact component={Categories} />
+            <Route path='/checkout/:shopid' component={Checkout} />
+            <Route path='/business' component={Business} />
+            <Route path='/track-order/:orderid' component={Map} />
+            <Route
+              path='/:categoryid/shop/:shopname/:shopid'
+              component={Items}
+            />
+            <Route path='/delivery' exact component={DeliveryHome} />
+            <Route path='/delivery/:deliveryguyid' component={Delivery} />
+            <Route path='*' component={PageNotFound} />
+          </Switch>
+        </AppContextProvider>
+        {/* </Switch> */}
       </Router>
     </div>
   )

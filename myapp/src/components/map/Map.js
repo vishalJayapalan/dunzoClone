@@ -20,7 +20,7 @@ export default function Map (props) {
   //   latitude: 11.868762,
   //   longitude: 75.384577
   // })
-  const [deliveryPartnerName, setDeliveryPartnerName] = useState(null)
+  // const [deliveryPartnerId, setDeliveryPartnerId] = useState(null)
 
   // const position = [11.858762, 75.404577]
   // const position2 = [11.877094, 75.372391]
@@ -42,9 +42,14 @@ export default function Map (props) {
 
   const geocoding = async address => {
     const geocoder = new Nominatim()
+    // console.log('address', address)
+    const addressArr = address.split(',')
 
+    address = addressArr.slice(0, 9)
+    address = address.join(',')
+    console.log(address)
     const latlong = await geocoder.search({ q: address })
-    // console.log('latlong', latlong)
+    console.log('latlong', latlong)
     console.log('lat:', latlong[0].lat, 'lon:', latlong[0].lon)
     return [latlong[0].lat, latlong[0].lon]
   }
@@ -86,10 +91,10 @@ export default function Map (props) {
     if (data.ok) {
       const jsonData = await data.json()
       setOrder(jsonData[0])
+      console.log(jsonData[0])
       // console.log('order', jsonData[0])
 
       deliveryLocation = await geocoding(jsonData[0].deliveryaddress)
-      console.log('test', await geocoding(jsonData[0].deliveryaddress))
       console.log('deliveryLocation', deliveryLocation)
 
       pickupLocation = await geocoding(jsonData[0].shopaddress)
@@ -129,7 +134,10 @@ export default function Map (props) {
 
   useEffect(() => {
     socket.on('partnerAssigned', partnerName => {
-      setDeliveryPartnerName(partnerName)
+      setOrder(prevOrder => {
+        return { ...prevOrder, deliverypartnerid: partnerName }
+      })
+      // setDeliveryPartnerId(partnerName)
     })
     socket.on('orderPickedUp', () => {
       setOrder(prevOrder => {
@@ -143,13 +151,16 @@ export default function Map (props) {
       })
       // setOrderCompleted(true)
     })
-    socket.on('deliveryLiveLocation', location => {
-      if (bikeMarker !== null) mapRef.current.removeLayer(bikeMarker)
-      bikeMarker = Leaflet.marker([location.lat, location.lng], {
-        icon: bikeIcon
-      }).addTo(mapRef.current)
-    })
-  })
+
+    if (order.deliverypartnerid) {
+      socket.on('deliveryLiveLocation', location => {
+        if (bikeMarker !== null) mapRef.current.removeLayer(bikeMarker)
+        bikeMarker = Leaflet.marker([location.lat, location.lng], {
+          icon: bikeIcon
+        }).addTo(mapRef.current)
+      })
+    }
+  }, [packingStatus])
 
   return (
     <div className='track-order-page'>
@@ -170,7 +181,7 @@ export default function Map (props) {
             </div>
 
             <div className='order-details'>
-              {deliveryPartnerName && <p>Delivery Partner Assigned</p>}
+              {order.deliverypartnerid && <p>Delivery Partner Assigned</p>}
             </div>
 
             <div className='order-details'>

@@ -91,6 +91,7 @@
 
 .addresses-container {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .add-new-address-container {
@@ -100,12 +101,32 @@
   width: 45%;
   padding: 1%;
   margin: 2%;
+  cursor: pointer;
 }
 .add-new-address-container p {
   color: green;
 }
 .add-new-address-container p span {
   font-size: 125%;
+}
+
+.selected-address-container {
+  padding: 2%;
+}
+
+.selected-address-title-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.selected-address-title-container button {
+  color: white;
+  background-color: green;
+  border: none;
+  outline: none;
+  padding: 1%;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .selected-address {
