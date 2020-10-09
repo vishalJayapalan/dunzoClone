@@ -7,7 +7,6 @@ import 'leaflet-routing-machine'
 
 import { getCookie } from '../util/cookies'
 
-import Nominatim from 'nominatim-geocoder'
 
 let socket
 // const endpoint = 'http://192.168.1.13:5000'
@@ -27,7 +26,20 @@ export default function Delivery () {
   const mapRef = useRef(null)
   const routingControlRef = useRef(null)
 
+  const ifOrderOnDelivery = async()=>{
+    const data = await window.fetch('http://localhost:5000/deliveryguy/ongoing',{
+      method:'GET',
+      headers:{
+        'Content-type': 'application/json',
+        'deliveryguy-token': getCookie('delivery-token')
+      }
+    })
+    const jsonData = await data.json()
+    console.log(jsonData)
+  }
+
   useEffect(() => {
+    ifOrderOnDelivery()
     socket.on(
       'toDeliveryPartner',
       ({ shopname, orderid, shopLocation, userLocation }) => {

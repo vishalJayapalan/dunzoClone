@@ -3,8 +3,6 @@ import { Link, Redirect } from 'react-router-dom'
 
 import { getCookie } from '../util/cookies'
 
-// import Nominatim from 'nominatim-geocoder'
-
 import Navbar from '../navbar/Navbar'
 import './Checkout.css'
 
@@ -15,17 +13,9 @@ import UserAddress from '../userAddress/userAddress'
 import AddUserAddress from '../userAddress/addUserAddress'
 
 export default function Checkout (props) {
-  const {
-    showLogin,
-    showRegister,
-    setShowLogin,
-    isLoggedIn,
-    setIsLoggedIn,
-    deliveryAddress,
-    setDeliveryAddress,
-    deleteAllItemsFromCart,
-    cart
-  } = useContext(AppContext)
+  const { setShowLogin, isLoggedIn, deleteAllItemsFromCart, cart } = useContext(
+    AppContext
+  )
   const [addressSelected, setAddressSelected] = useState(false)
 
   const [userAddresses, setUserAddresses] = useState([])
@@ -36,15 +26,6 @@ export default function Checkout (props) {
 
   const [addNewAddress, setAddNewAddress] = useState('')
   const [shopAddress, setShopAddress] = useState('')
-
-  // const geocoding = async address => {
-  //   const geocoder = new Nominatim()
-
-  //   const latlong = await geocoder.search({ q: address })
-  //   console.log('latlong', latlong)
-  // }
-
-  // geocoding('srinidhi sagar')
 
   const getShopDetails = async () => {
     const data = await window.fetch(
@@ -79,7 +60,7 @@ export default function Checkout (props) {
   }
 
   useEffect(() => {
-    getUserAddress()
+    if (isLoggedIn) getUserAddress()
   }, [isLoggedIn])
 
   const createOrder = async () => {
@@ -114,12 +95,8 @@ export default function Checkout (props) {
     )
     if (data.ok) {
       const newAddress = await data.json()
-      // console.log('userDetails', req.user)
-      console.log(newAddress)
       setUserAddresses(prevAddresses => [...prevAddresses, newAddress[0]])
       setAddNewAddress(false)
-      // const order = await data.json()
-      // setNewOrderId(order[0].orderid)
     }
   }
 
@@ -141,7 +118,6 @@ export default function Checkout (props) {
       </div>
     )
   }
-  // console.log('userAddress',userAddress)
 
   return (
     <div className='checkout-page'>
@@ -221,15 +197,6 @@ export default function Checkout (props) {
               </div>
             )}
           </div>
-
-          {/* PAYING SECTION */}
-          {/* <Link
-            style={{ textDecoration: 'none' }}
-            to={{
-              pathname: `/track-order`,
-              aboutProps: { name: 'test information' }
-            }}
-          > */}
           <button
             className='paybtn'
             disabled={!(addressSelected && isLoggedIn && cart.length)}

@@ -77,8 +77,9 @@ const loginDeliveryGuy = async (req, res) => {
 const getCurrentDeliveryGuy = async (req, res) => {
   // const userId = req.params.userid
   //   const { deliveryguyid } = req.deliveryguy
-  const { deliveryguyid } = req.body
+  const { deliveryguyid } = req.deliveryguy
   try {
+    if(!deliveryguyid) res.status(401).json({message:'not authenticated'})
     const deliveryGuy = await pool.query(
       `SELECT deliveryguyid, deliveryguyname FROM deliveryguys WHERE deliveryguyid = ${deliveryguyid}`
     )
@@ -91,12 +92,25 @@ const getCurrentDeliveryGuy = async (req, res) => {
       deliveryguyname: deliveryGuy.rows[0].deliveryguyname
     })
   } catch (err) {
-    return res.status(500).json({ message: "Can't find User" })
+    return res.status(500).json({ msg: 'Some error occured' })
+  }
+}
+
+const onProcessOrderDelivery = async (req, res) => {
+  const { getdeliveryguyid } = req.deliveryguy
+
+  try {
+    // const orderDetails = await pool.query(`SELECT * from`)
+
+    res.status(200).json({msg:'working on sending the order details'})
+  } catch (err) {
+    return res.status(500).json({ msg: 'Some error occured' })
   }
 }
 
 module.exports = {
   registerDeliveryGuy,
   loginDeliveryGuy,
-  getCurrentDeliveryGuy
+  getCurrentDeliveryGuy,
+  onProcessOrderDelivery
 }
