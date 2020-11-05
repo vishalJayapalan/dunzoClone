@@ -27,12 +27,11 @@ const getAllUserOrders = async (req, res) => {
 }
 
 const getDeliveryGuyOrder = async (req, res) => {
-  const { deliveryguyid } = req.params
+  const { deliveryguyid } = req.deliveryguy
   try {
     const order = await pool.query(
-      `SELECT * FROM orders WHERE order.deliverypartnerid = ${deliveryguyid} AND order.delivered = ${false}`
+      `SELECT * FROM orders WHERE orders.deliverypartnerid = ${deliveryguyid} AND orders.delivered = ${false}`
     )
-    console.log('delivery Guys order', order.rows)
     res.status(200).send(order.rows)
   } catch (err) {
     res.status(500).json({ Msg: 'There was an error please try again later' })
@@ -44,7 +43,7 @@ const addOrder = async (req, res) => {
   const { deliveryaddress, shopaddress } = req.body
   try {
     const order = await pool.query(
-      `INSERT INTO orders (userid,deliverypartnerid,deliveryaddress,shopaddress,orderpickedup,delivered) VALUES ('${userid}','${0}','${deliveryaddress}','${shopaddress}','${false}','${false}') RETURNING *`
+      `INSERT INTO orders (userid,deliverypartnerid,deliveryaddress,shopaddress,orderpickedup,delivered) VALUES ('${userid}',0,'${deliveryaddress}','${shopaddress}','${false}','${false}') RETURNING *`
     )
     res.status(201).send(order.rows)
   } catch (err) {

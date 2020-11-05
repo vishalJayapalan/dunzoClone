@@ -5,7 +5,6 @@ export default function SearchItems ({
   subcategory,
   searchResultsToItems
 }) {
-  console.log('inSearchItems', searchItem)
   return (
     <div className='searched-item-on-subcategory'>
       <p onClick={() => searchResultsToItems(subcategory)}>

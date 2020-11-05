@@ -17,15 +17,14 @@ function App () {
   return (
     <div className='App'>
       <Router>
-        {/* <Switch> */}
         <AppContextProvider>
           <Switch>
+            <Route path='/' exact component={Categories} />
             <Route
               path='/stores/:categoryname/:categoryid'
               exact
               component={Shops}
             />
-            <Route path='/' exact component={Categories} />
             <Route path='/checkout/:shopid' component={Checkout} />
             <Route path='/business' component={Business} />
             <Route path='/track-order/:orderid' component={Map} />
@@ -38,7 +37,6 @@ function App () {
             <Route path='*' component={PageNotFound} />
           </Switch>
         </AppContextProvider>
-        {/* </Switch> */}
       </Router>
     </div>
   )

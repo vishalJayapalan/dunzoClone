@@ -102,8 +102,12 @@ export default function Map (props) {
     }
   }
 
-  console.log('deliveryLocationMain', deliveryLocation)
-  console.log('pickupLocationMain', pickupLocation)
+  // console.log('important-partnerid', order.deliverypartnerid)
+  // console.log('important-partnerid-type', typeof order.deliverypartnerid)
+  // console.log('important-orderid', typeof order.orderid)
+
+  // console.log('deliveryLocationMain', deliveryLocation)
+  // console.log('pickupLocationMain', pickupLocation)
 
   const startupFunction = async () => {
     await getOrderDetails()
@@ -152,7 +156,9 @@ export default function Map (props) {
       // setOrderCompleted(true)
     })
 
-    if (order.deliverypartnerid) {
+    if (order.deliverypartnerid != 0) {
+      console.log('inhere')
+      console.log(typeof order.deliverypartnerid)
       socket.on('deliveryLiveLocation', location => {
         if (bikeMarker !== null) mapRef.current.removeLayer(bikeMarker)
         bikeMarker = Leaflet.marker([location.lat, location.lng], {
@@ -181,7 +187,7 @@ export default function Map (props) {
             </div>
 
             <div className='order-details'>
-              {order.deliverypartnerid && <p>Delivery Partner Assigned</p>}
+              {order.deliverypartnerid != 0 && <p>Delivery Partner Assigned</p>}
             </div>
 
             <div className='order-details'>

@@ -2,7 +2,6 @@ import React, { useReducer, createContext, useState, useEffect } from 'react'
 import { getCookie, setCookie } from '../../util/cookies'
 import AppReducer from './AppReducer'
 import { v4 as uuidV4 } from 'uuid'
-// import cartItem from '../../items/cartItem'
 
 export const AppContext = createContext()
 
@@ -19,32 +18,17 @@ export const AppContextProvider = props => {
   const [deliveryAddress, setDeliveryAddress] = useState('')
   const [clearCartPopup, setClearCartPopup] = useState(false)
 
-  // const [cart, setCart] = useLocalStorage('cart')
-
   useEffect(() => {
     const token = getCookie('x-auth-token')
     if (token) {
       getUser()
-      // getCart()
     }
   }, [])
   useEffect(() => {
     getCart()
-    // if (isLoggedIn) {
-    // }
   }, [isLoggedIn])
 
-  async function getUser () {
-    const data = await window.fetch(`http://localhost:5000/user/getUser`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-auth-token': getCookie('x-auth-token')
-      }
-    })
-    const jsonData = await data.json()
-    setIsLoggedIn(jsonData.userid)
-  }
+  
 
   const getItems = async shopid => {
     try {
@@ -54,7 +38,6 @@ export const AppContextProvider = props => {
       }
       const jsonData = await data.json()
       dispatch({ type: 'GET_ITEMS', payload: jsonData })
-      // : dispatch({ type: 'ERROR', payload: jsonData.msg })
     } catch (err) {
       dispatch({ type: 'ERROR', payload: err })
     }
@@ -71,8 +54,6 @@ export const AppContextProvider = props => {
     } catch (err) {
       dispatch({ type: 'ERROR', payload: err })
     }
-
-    // dispatch({ type: 'UPDATE_ITEMS', payload: newItems })
   }
 
   const getCart = async () => {
@@ -108,7 +89,6 @@ export const AppContextProvider = props => {
   }
 
   async function addToCart (item, shopname) {
-    // console.log('ITEMS', item)
     try {
       let jsonData = []
       if (isLoggedIn) {
@@ -130,7 +110,6 @@ export const AppContextProvider = props => {
           throw data
         }
         jsonData = await data.json()
-        // console.log('newCartItem', jsonData)
         localStorage.setItem('Donesooo-cartid', jsonData.cartid)
         jsonData[0].itemsize = item.itemsize
         jsonData[0].shopid = item.shopid
@@ -145,7 +124,6 @@ export const AppContextProvider = props => {
           JSON.stringify([...state.cart, jsonData[0]])
         )
       }
-      console.log(jsonData)
       dispatch({ type: 'ADD_TO_CART', payload: jsonData })
     } catch (err) {
       dispatch({ type: 'ERROR', payload: err })
@@ -238,6 +216,18 @@ export const AppContextProvider = props => {
       })
     }
     deleteAllItemsFromCartState()
+  }
+  
+  async function getUser () {
+    const data = await window.fetch(`http://localhost:5000/user/getUser`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': getCookie('x-auth-token')
+      }
+    })
+    const jsonData = await data.json()
+    setIsLoggedIn(jsonData.userid)
   }
 
   return (

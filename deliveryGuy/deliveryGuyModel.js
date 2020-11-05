@@ -96,21 +96,21 @@ const getCurrentDeliveryGuy = async (req, res) => {
   }
 }
 
-const onProcessOrderDelivery = async (req, res) => {
-  const { getdeliveryguyid } = req.deliveryguy
+// const onProcessOrderDelivery = async (req, res) => {
+//   const { getdeliveryguyid } = req.deliveryguy
 
-  try {
-    // const orderDetails = await pool.query(`SELECT * from`)
+//   try {
+//     // const orderDetails = await pool.query(`SELECT * from`)
 
-    res.status(200).json({msg:'working on sending the order details'})
-  } catch (err) {
-    return res.status(500).json({ msg: 'Some error occured' })
-  }
-}
+//     res.status(200).json({msg:'working on sending the order details'})
+//   } catch (err) {
+//     return res.status(500).json({ msg: 'Some error occured' })
+//   }
+// }
 
 module.exports = {
   registerDeliveryGuy,
   loginDeliveryGuy,
   getCurrentDeliveryGuy,
-  onProcessOrderDelivery
+  // onProcessOrderDelivery
 }

@@ -73,7 +73,7 @@ export default function Items (props) {
         {/* PUT IMAGE OF SHOP HERE */}
         {/* <img
           className='category-name-inshop-img'
-          src={`/images/${categoryname}.png`}
+          src={`/images/${props.match.params}.png`}
           alt='catimg'
         /> */}
         <h1 className='items-shop-name'>{props.match.params.shopname}</h1>

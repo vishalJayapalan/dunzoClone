@@ -34,7 +34,6 @@ export default function Item (props) {
               if (cart.length && cart[0].shopname !== props.shopname) {
                 return setClearCartPopup(true)
               }
-              console.log('inHere', props.item, props.shopname)
               addToCart(props.item, props.shopname)
             }}
           >

@@ -15,6 +15,6 @@ Router.post('/', registerDeliveryGuy)
 
 Router.post('/login', loginDeliveryGuy)
 
-Router.get('/ongoing',deliveryAuth,onProcessOrderDelivery)
+// Router.get('/ongoing',deliveryAuth,onProcessOrderDelivery)
 
 module.exports = Router

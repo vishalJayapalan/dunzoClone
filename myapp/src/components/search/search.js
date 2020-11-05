@@ -10,14 +10,12 @@ export default function Search ({ includeSearchResults }) {
   let All = []
   const searchItemsBySubCategories = {}
   const searchItems = []
-  //   let
   const searchResultsToItems = subcategory => {
     includeSearchResults(searchItemsBySubCategories[subcategory])
     setSearchName('')
   }
   if (searchName) {
     All = items.filter(item => {
-      // console.log('searchITEM', typeof item.subcategory)
       return (
         item.itemname.toLowerCase().includes(searchName.toLowerCase()) &&
         item.subcategory !== 'Search Results'
@@ -55,10 +53,7 @@ export default function Search ({ includeSearchResults }) {
       }
     }
   }
-  // console.log('All', All)
-  // console.log('searchItemsBySubCategories', searchItemsBySubCategories)
 
-  //   console.log(items)
   return (
     <div className='search-outer-container'>
       <div className='search-item-container'>

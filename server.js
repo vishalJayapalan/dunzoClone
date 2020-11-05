@@ -32,13 +32,11 @@ io.on('connection', socket => {
   console.log('a user connected')
   socket.on('liveLocation', liveLocation => {
     const { lat, lng } = liveLocation
-    // console.log(lat, lng)
     socket.broadcast.emit('deliveryLiveLocation', { lat, lng })
   })
   socket.on(
     'deliveryPartnerRequired',
     ({ shopname, orderid, shopLocation, userLocation }) => {
-      // console.log(shopname)
       socket.broadcast.emit('toDeliveryPartner', {
         shopname,
         orderid,
@@ -48,7 +46,6 @@ io.on('connection', socket => {
     }
   )
   socket.on('deliveryPartnerAssigned', name => {
-    // console.log(name)
     socket.broadcast.emit('partnerAssigned', name)
   })
   socket.on('orderPicked', () => {

@@ -26,8 +26,8 @@ export default function Delivery () {
   const mapRef = useRef(null)
   const routingControlRef = useRef(null)
 
-  const ifOrderOnDelivery = async()=>{
-    const data = await window.fetch('http://localhost:5000/deliveryguy/ongoing',{
+  const ifOrderNotCompleted = async()=>{
+    const data = await window.fetch('http://localhost:5000/order/ongoing',{
       method:'GET',
       headers:{
         'Content-type': 'application/json',
@@ -36,10 +36,17 @@ export default function Delivery () {
     })
     const jsonData = await data.json()
     console.log(jsonData)
+    setRequirement(jsonData.shopaddress)
+    setPickupLocation(jsonData.deliveryaddress)
+    setDeliveryLocation(jsonData.shopaddress)
+    setOrderid(jsonData.orderid)
   }
 
+  useEffect(()=>{
+    ifOrderNotCompleted()
+  },[])
+
   useEffect(() => {
-    ifOrderOnDelivery()
     socket.on(
       'toDeliveryPartner',
       ({ shopname, orderid, shopLocation, userLocation }) => {

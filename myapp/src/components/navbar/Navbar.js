@@ -4,7 +4,7 @@ import Signup from '../signIn&signUp/Signup'
 
 import { AppContext } from '../context/App/AppContext'
 
-import { getCookie, setCookie } from '../util/cookies'
+// import { getCookie, setCookie } from '../util/cookies'
 
 export default function Navbar ({ hideLoginAndLogout }) {
   const {
