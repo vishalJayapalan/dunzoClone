@@ -9,8 +9,8 @@ import { AppContext } from '../context/App/AppContext'
 export default function Cart (props) {
   const { cart, getCart } = useContext(AppContext)
   let totalPrice = 0
-  cart.forEach(element => {
-    totalPrice += element.itemprice * element.cartitemquantity
+  cart.forEach(cartItem => {
+    totalPrice += cartItem.itemprice * cartItem.cartitemquantity
   })
   return (
     <div className='cart-container'>
@@ -20,7 +20,7 @@ export default function Cart (props) {
           <span className='cart-items-count'>({cart.length} Items)</span>
         )}
       </div>
-      {cart.length === 0 && (
+      {!cart.length ? (
         <div className='nocart-container'>
           <img
             className='nocart-image'
@@ -30,8 +30,7 @@ export default function Cart (props) {
           <p>Your cart is empty </p>
           <p>Add items to get started</p>
         </div>
-      )}
-      {cart.length !== 0 && (
+      ) : (
         <div className='cart-shopname'>{cart[0].shopname}</div>
       )}
       <CartItems />
@@ -43,13 +42,16 @@ export default function Cart (props) {
       )}
       {cart.length !== 0 && props.showToCheckout && (
         <div className='checkout-button-container'>
-          <Link to={{ pathname: `/checkout/${cart[0].shopid}`, state: 'test' }}>
-            <button
-              className='proceed-to-checkout-btn'
-              style={{ cursor: 'pointer' }}
-            >
-              Proceed To Checkout
-            </button>
+          <Link
+            className='proceed-to-checkout-btn'
+            to={{ pathname: `/checkout/${cart[0].shopid}`, state: 'test' }}
+          >
+            {/* <button
+            // className='proceed-to-checkout-btn'
+            // style={{ cursor: 'pointer' }}
+            > */}
+            Proceed To Checkout
+            {/* </button> */}
           </Link>
         </div>
       )}

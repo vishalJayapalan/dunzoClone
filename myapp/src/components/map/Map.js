@@ -47,10 +47,10 @@ export default function Map (props) {
 
     address = addressArr.slice(0, 9)
     address = address.join(',')
-    console.log(address)
+    // console.log(address)
     const latlong = await geocoder.search({ q: address })
-    console.log('latlong', latlong)
-    console.log('lat:', latlong[0].lat, 'lon:', latlong[0].lon)
+    // console.log('latlong', latlong)
+    // console.log('lat:', latlong[0].lat, 'lon:', latlong[0].lon)
     return [latlong[0].lat, latlong[0].lon]
   }
 

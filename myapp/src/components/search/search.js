@@ -4,10 +4,8 @@ import SearchItems from './searchItems'
 
 export default function Search ({ includeSearchResults }) {
   const [searchName, setSearchName] = useState('')
-  const { items, cart, getItems, getCart, addToCart, updateCart } = useContext(
-    AppContext
-  )
-  let All = []
+  const { items } = useContext(AppContext)
+  let searchResults = []
   const searchItemsBySubCategories = {}
   const searchItems = []
   const searchResultsToItems = subcategory => {
@@ -15,18 +13,18 @@ export default function Search ({ includeSearchResults }) {
     setSearchName('')
   }
   if (searchName) {
-    All = items.filter(item => {
+    searchResults = items.filter(item => {
       return (
         item.itemname.toLowerCase().includes(searchName.toLowerCase()) &&
         item.subcategory !== 'Search Results'
       )
     })
-    if (All.length) {
-      searchItemsBySubCategories.All = All
+    if (searchResults.length) {
+      searchItemsBySubCategories.All = searchResults
       searchItems.push(
         <SearchItems
-          key={All[0].itemid + 'allid'}
-          searchItem={All[0]}
+          key={searchResults[0].itemid + 'allid'}
+          searchItem={searchResults[0]}
           subcategory={'All'}
           searchResultsToItems={searchResultsToItems}
         />

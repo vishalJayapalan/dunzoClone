@@ -63,7 +63,7 @@ export default function Signin () {
                   pattern='.{6,}'
                   onChange={e => setEmail(e.target.value)}
                   required
-                  title='enter a valid email address with atleast 6 characters'
+                  title='Enter a valid email address with atleast 6 characters'
                 />
               </div>
               <div className='form-row'>
@@ -71,7 +71,7 @@ export default function Signin () {
                 <input
                   type='password'
                   value={password}
-                  placeholder='Enter password'
+                  placeholder='Enter Password'
                   required
                   pattern='.{6,}'
                   title='6 characters minimum'

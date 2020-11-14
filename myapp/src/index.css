@@ -25,12 +25,17 @@ body {
   -moz-osx-font-smoothing: grayscale;
   height: 100%;
 }
+
+button{
+  cursor: pointer;
+}
+
 .categories-page {
   overflow: auto;
 }
 
 .category-title {
-  margin: 5em 0 5% 15%;
+  margin: 5em 0 5% 13%;
 }
 
 .categories-container {
@@ -166,9 +171,12 @@ body {
   width: 100%;
   height: 10%;
   padding: 5%;
+  display: flex;
+  align-items: center;
 }
 .items-shop-name {
   color: aliceblue;
+  margin: 0 0 0 9%;
 }
 
 .items-flex-container {
@@ -278,6 +286,12 @@ body {
   background-color: white;
   padding: 2%;
   overflow-y: auto;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.items-container::-webkit-scrollbar {
+  display: none; /* for chrome*/
 }
 
 .item-container {
@@ -380,7 +394,15 @@ body {
   margin-top: 10%;
   overflow-y: auto;
   max-height: 25vh;
+  min-height: 0%;
+  /* -ms-overflow-style: none; */
+  /* scrollbar-width: none;*/
 }
+
+/* .cart-items-container::-webkit-scrollbar {
+display: none; 
+} */
+
 .cart-totalprice-container {
   margin-top: 7.5%;
 }
@@ -391,13 +413,22 @@ body {
   margin-top: 10%;
 }
 
-.checkout-button-container button {
+.proceed-to-checkout-btn{
+  border: none;
+  background-color: green;
+  color: white;
+  padding: 5%;
+  border-radius: 20px;
+  text-decoration: none;
+}
+
+/* .checkout-button-container Link {
   border: none;
   background-color: green;
   color: white;
   padding: 2%;
   border-radius: 20px;
-}
+} */
 
 .checkout-cart-invoice-container {
   display: flex;
@@ -552,7 +583,8 @@ body {
 }
 
 .form-row button {
-  background: #4168b4;
+  /* background: #4168b4; */
+  background-color: green;
   border: none;
   border-radius: 3px;
   color: white;
@@ -579,7 +611,7 @@ body {
   cursor: pointer;
 }
 .form-footer p {
-  color: #4168b4;
+  color: green;
   cursor: pointer;
 }
 

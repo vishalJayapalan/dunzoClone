@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import Shop from './shop'
+import Shop from './Shop'
 import Navbar from '../navbar/Navbar'
 
 export default function Shops (props) {

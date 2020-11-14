@@ -28,11 +28,21 @@ export const AppContextProvider = props => {
     getCart()
   }, [isLoggedIn])
 
-  
+  const request = async (params, method, body) => {
+    const data = await window.fetch('http://localhost:5000/' + params, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': getCookie('x-auth-token')
+      },
+      body: JSON.stringify(body)
+    })
+    return data
+  }
 
   const getItems = async shopid => {
     try {
-      const data = await window.fetch(`http://localhost:5000/items/${shopid}`)
+      const data = await request(`items/${shopid}`, 'GET')
       if (!data.ok) {
         throw data
       }
@@ -63,8 +73,6 @@ export const AppContextProvider = props => {
         const localCart = JSON.parse(localStorage.getItem('Donesooo-cart'))
         if (localCart && localCart.length) {
           deleteAllItemsFromCart()
-
-          deleteAllItemsFromCartState()
           localCart.forEach(cartitem => {
             addToCart(cartitem, cartitem.shopname)
           })
@@ -76,11 +84,7 @@ export const AppContextProvider = props => {
           jsonData = await data.json()
         }
       } else {
-        jsonData = JSON.parse(localStorage.getItem('Donesooo-cart'))
-
-        if (!jsonData) {
-          jsonData = []
-        }
+        jsonData = JSON.parse(localStorage.getItem('Donesooo-cart')) || []
       }
       jsonData.length && dispatch({ type: 'GET_CART', payload: jsonData })
     } catch (err) {
@@ -92,25 +96,18 @@ export const AppContextProvider = props => {
     try {
       let jsonData = []
       if (isLoggedIn) {
-        const data = await window.fetch('http://localhost:5000/cart', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-auth-token': getCookie('x-auth-token')
-          },
-          body: JSON.stringify({
-            item: item,
-            itemid: item.itemid,
-            shopname: shopname,
-            itemname: item.itemname,
-            cartitemquantity: 1
-          })
+        const data = await request('cart', 'POST', {
+          item,
+          itemid: item.itemid,
+          shopname,
+          itemname: item.itemname,
+          cartitemquantity: 1
         })
         if (!data.ok) {
           throw data
         }
         jsonData = await data.json()
-        localStorage.setItem('Donesooo-cartid', jsonData.cartid)
+        localStorage.setItem('Donesooo-cartid', jsonData[0].cartid)
         jsonData[0].itemsize = item.itemsize
         jsonData[0].shopid = item.shopid
         jsonData[0].itemprice = item.itemprice
@@ -134,15 +131,7 @@ export const AppContextProvider = props => {
     try {
       if (+updateItem.cartitemquantity === 1 && incOrDec === '-') {
         if (isLoggedIn) {
-          const data = await window.fetch(
-            `http://localhost:5000/cart/${updateItem.cartid}`,
-            {
-              method: 'DELETE',
-              headers: {
-                'Content-type': 'application/json'
-              }
-            }
-          )
+          const data = await request(`cart/${updateItem.cartid}`, 'DELETE')
           if (!data.ok) {
             throw data
           }
@@ -168,15 +157,9 @@ export const AppContextProvider = props => {
       else
         dispatch({ type: 'DECREMENT_ITEMCOUNT_FROM_CART', payload: updateItem })
       if (isLoggedIn) {
-        await window.fetch(`http://localhost:5000/cart/${updateItem.cartid}`, {
-          method: 'PUT',
-          headers: {
-            'Content-type': 'application/json'
-          },
-          body: JSON.stringify({
-            cartitemquantity: updateItem.cartitemquantity,
-            type: incOrDec
-          })
+        await request(`cart/${updateItem.cartid}`, 'PUT', {
+          cartitemquantity: updateItem.cartitemquantity,
+          type: incOrDec
         })
       } else {
         const cart = JSON.parse(localStorage.getItem('Donesooo-cart'))
@@ -207,25 +190,13 @@ export const AppContextProvider = props => {
 
   async function deleteAllItemsFromCart () {
     if (isLoggedIn) {
-      await window.fetch('http://localhost:5000/cart/all', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': getCookie('x-auth-token')
-        }
-      })
+      await request('cart/all', 'DELETE')
     }
     deleteAllItemsFromCartState()
   }
-  
+
   async function getUser () {
-    const data = await window.fetch(`http://localhost:5000/user/getUser`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-auth-token': getCookie('x-auth-token')
-      }
-    })
+    const data = await request('user/getUser', 'GET')
     const jsonData = await data.json()
     setIsLoggedIn(jsonData.userid)
   }

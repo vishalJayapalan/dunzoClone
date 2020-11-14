@@ -5,6 +5,7 @@ import { getCookie } from '../util/cookies'
 
 export default function Categories () {
   const [categories, setCategories] = useState([])
+
   const fetchCategories = async () => {
     const data = await window.fetch('http://localhost:5000/categories', {
       method: 'GET',

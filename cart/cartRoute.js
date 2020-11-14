@@ -16,7 +16,7 @@ router.post('/', auth, addItemToCart)
 
 router.delete('/all', auth, deleteAllItemsFromCart)
 
-router.delete('/:cartid', deleteItemFromCart)
+router.delete('/:cartid', auth, deleteItemFromCart)
 
 router.put('/:cartid', updateCartItem)
 

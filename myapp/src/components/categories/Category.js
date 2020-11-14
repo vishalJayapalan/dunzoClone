@@ -13,7 +13,7 @@ export default function Category (props) {
           <img
             className='category-image'
             src={`/images/${categoryname}.png`}
-            alt='**{Eeshvara}**'
+            alt={`${categoryname}`}
           />
           <p className='category-name'>{categoryname}</p>
         </div>

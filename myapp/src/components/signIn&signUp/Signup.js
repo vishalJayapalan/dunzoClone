@@ -62,10 +62,10 @@ export default function Signup () {
             <form onSubmit={userRegister}>
               <div className='errorMessage'>{errorMsg}</div>
               <div className='form-row'>
-                <label>FullName</label>
+                <label>Full Name</label>
                 <input
                   value={fullname}
-                  placeholder='Enter Email'
+                  placeholder='Enter Full Name'
                   onChange={e => setFullname(e.target.value)}
                   required
                   title='enter a valid email address'

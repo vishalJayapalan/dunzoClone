@@ -12,7 +12,7 @@ export default function Shop (props) {
           <img
             className='shop-image'
             src='/images/groceries.jpeg'
-            alt='**{Eeshvara}**'
+            alt='shopName'
           />
           <div className='shop-name-container'>
             <p className='shop-name'>{props.shop.shopname}</p>
