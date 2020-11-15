@@ -1,7 +1,7 @@
 const Router = require('express').Router()
 const auth = require('../middleware/auth')
 
-const { registerUser, loginUser, getCurrentUser } = require('./userModel')
+const { registerUser, loginUser, getCurrentUser } = require('./model')
 
 Router.post('/', registerUser)
 

@@ -1,6 +1,6 @@
 const router = require('express').Router()
 // const auth = require('../middleware/auth')
-const { getCategories } = require('./categoryModel')
+const { getCategories } = require('./model')
 
 router.get('/', getCategories)
 

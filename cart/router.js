@@ -8,7 +8,7 @@ const {
   deleteAllItemsFromCart,
   deleteItemFromCart,
   updateCartItem
-} = require('./cartModel')
+} = require('./model')
 
 router.get('/', getCartItems)
 

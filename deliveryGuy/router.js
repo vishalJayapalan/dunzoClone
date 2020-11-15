@@ -7,9 +7,9 @@ const {
   loginDeliveryGuy,
   getCurrentDeliveryGuy,
   onProcessOrderDelivery
-} = require('./deliveryGuyModel')
+} = require('./model')
 
-Router.get('/',deliveryAuth, getCurrentDeliveryGuy)
+Router.get('/', deliveryAuth, getCurrentDeliveryGuy)
 
 Router.post('/', registerDeliveryGuy)
 
