@@ -3,7 +3,8 @@ const app = express()
 const http = require('http').createServer(app)
 const cors = require('cors')
 require('dotenv').config()
-const port = process.env.PORT || 5000
+const PORT = process.env.PORT || 5000
+const path = require('path')
 
 const io = require('socket.io')(http)
 
@@ -18,6 +19,21 @@ const deliveryGuyRoutes = require('./deliveryGuy/router')
 
 const { ioSocket } = require('./util/socket')
 
+// process.env.PORT
+// app.use(express.static(path.join(__dirname, './myapp/build')))
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, './myapp/build/index.html'))
+// })
+
+if (process.env.NODE_ENV === 'production') {
+  // serve static content
+  app.use(express.static(path.join(__dirname, './myapp/build')))
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, './myapp/build/index.html'))
+  })
+}
+
+// middleware
 app.use(cors())
 app.use(express.json())
 
@@ -32,4 +48,4 @@ app.use('/deliveryguy', deliveryGuyRoutes)
 
 io.on('connection', ioSocket)
 
-http.listen(port, () => console.log(`listening on port ${port}`))
+http.listen(PORT, () => console.log(`listening on port ${PORT}`))

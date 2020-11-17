@@ -29,7 +29,7 @@ export const AppContextProvider = props => {
   }, [isLoggedIn])
 
   const request = async (params, method, body) => {
-    const data = await window.fetch('http://localhost:5000/' + params, {
+    const data = await window.fetch('' + params, {
       method,
       headers: {
         'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ export const AppContextProvider = props => {
 
   const updateItems = async (shopid, newItems) => {
     try {
-      const data = await window.fetch(`http://localhost:5000/items/${shopid}`)
+      const data = await window.fetch(`items/${shopid}`)
       if (!data.ok) {
         throw data
       }
@@ -77,7 +77,7 @@ export const AppContextProvider = props => {
             addToCart(cartitem, cartitem.shopname)
           })
         } else {
-          const data = await window.fetch(`http://localhost:5000/cart`)
+          const data = await window.fetch('cart')
           if (!data.ok) {
             throw data
           }
