@@ -29,7 +29,7 @@ export const AppContextProvider = props => {
   }, [isLoggedIn])
 
   const request = async (params, method, body) => {
-    const data = await window.fetch('' + params, {
+    const data = await window.fetch('http://localhost:5000/' + params, {
       method,
       headers: {
         'Content-Type': 'application/json',

@@ -6,15 +6,19 @@ import { getCookie } from '../util/cookies'
 
 export default function Shops (props) {
   const { categoryname, categoryid } = props.match.params
+  console.log('categoryname', categoryname)
   const [shops, setShops] = useState([])
   const fetchShops = async () => {
-    const data = await window.fetch(`shops/${categoryid}`, {
-      method: 'GET',
-      headers: {
-        'Content-type': 'application/json',
-        'x-auth-token': getCookie('x-auth-token')
+    const data = await window.fetch(
+      `http://localhost:5000/shops/${categoryid}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+          'x-auth-token': getCookie('x-auth-token')
+        }
       }
-    })
+    )
     const jsonData = await data.json()
     setShops(jsonData)
   }
