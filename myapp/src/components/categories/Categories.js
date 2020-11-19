@@ -7,7 +7,7 @@ export default function Categories () {
   const [categories, setCategories] = useState([])
 
   const fetchCategories = async () => {
-    const data = await window.fetch('http://localhost:5000/categories', {
+    const data = await window.fetch('categories', {
       method: 'GET',
       headers: {
         'Content-type': 'application/json',
