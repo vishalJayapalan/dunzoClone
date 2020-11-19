@@ -7,10 +7,9 @@ import 'leaflet-routing-machine'
 
 import { getCookie } from '../util/cookies'
 
-
 let socket
 // const endpoint = 'http://192.168.1.13:5000'
-const endpoint = 'http://localhost:5000'
+const endpoint = '/'
 
 socket = io(endpoint)
 export default function Delivery () {
@@ -26,10 +25,10 @@ export default function Delivery () {
   const mapRef = useRef(null)
   const routingControlRef = useRef(null)
 
-  const ifOrderNotCompleted = async()=>{
-    const data = await window.fetch('http://localhost:5000/order/ongoing',{
-      method:'GET',
-      headers:{
+  const ifOrderNotCompleted = async () => {
+    const data = await window.fetch('/order/ongoing', {
+      method: 'GET',
+      headers: {
         'Content-type': 'application/json',
         'deliveryguy-token': getCookie('delivery-token')
       }
@@ -42,9 +41,9 @@ export default function Delivery () {
     setOrderid(jsonData.orderid)
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     ifOrderNotCompleted()
-  },[])
+  }, [])
 
   useEffect(() => {
     socket.on(
@@ -60,7 +59,7 @@ export default function Delivery () {
 
   const updateOrder = async (name, value) => {
     console.log('orderid', orderid)
-    const data = await window.fetch(`http://localhost:5000/order/${orderid}`, {
+    const data = await window.fetch(`/order/${orderid}`, {
       method: 'PUT',
       body: JSON.stringify({ name, value }),
       headers: {

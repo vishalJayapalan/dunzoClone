@@ -12,7 +12,7 @@ import { getCookie } from '../util/cookies'
 
 import io from 'socket.io-client'
 let socket
-const endpoint = 'http://localhost:5000'
+const endpoint = '/'
 socket = io(endpoint)
 
 export default function Map (props) {
