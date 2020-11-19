@@ -29,14 +29,17 @@ export const AppContextProvider = props => {
   }, [isLoggedIn])
 
   const request = async (params, method, body) => {
-    const data = await window.fetch('/' + params, {
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-        'x-auth-token': getCookie('x-auth-token')
-      },
-      body: JSON.stringify(body)
-    })
+    const data = await window.fetch(
+      'https://vjdonesooo.herokuapp.com/' + params,
+      {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': getCookie('x-auth-token')
+        },
+        body: JSON.stringify(body)
+      }
+    )
     return data
   }
 
@@ -55,7 +58,9 @@ export const AppContextProvider = props => {
 
   const updateItems = async (shopid, newItems) => {
     try {
-      const data = await window.fetch(`items/${shopid}`)
+      const data = await window.fetch(
+        `https://vjdonesooo.herokuapp.com/items/${shopid}`
+      )
       if (!data.ok) {
         throw data
       }

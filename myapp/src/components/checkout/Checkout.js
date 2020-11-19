@@ -29,7 +29,7 @@ export default function Checkout (props) {
 
   const getShopDetails = async () => {
     const data = await window.fetch(
-      `http://localhost:5000/shops/shop/${props.match.params.shopid}`
+      `https://vjdonesooo.herokuapp.com/shops/shop/${props.match.params.shopid}`
     )
     if (data.ok) {
       const jsonData = await data.json()
@@ -43,7 +43,7 @@ export default function Checkout (props) {
 
   const getUserAddress = async () => {
     const data = await window.fetch(
-      `http://localhost:5000/userAddress/${isLoggedIn}`,
+      `https://vjdonesooo.herokuapp.com/userAddress/${isLoggedIn}`,
       {
         method: 'GET',
         headers: {
@@ -64,7 +64,7 @@ export default function Checkout (props) {
   }, [isLoggedIn])
 
   const createOrder = async () => {
-    const data = await window.fetch(`http://localhost:5000/order`, {
+    const data = await window.fetch(`https://vjdonesooo.herokuapp.com/order`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ export default function Checkout (props) {
 
   const addNewUserAddress = async address => {
     const data = await window.fetch(
-      `http://localhost:5000/useraddress/${isLoggedIn}`,
+      `https://vjdonesooo.herokuapp.com/useraddress/${isLoggedIn}`,
       {
         method: 'POST',
         body: JSON.stringify({ address, category: 'Home' }),

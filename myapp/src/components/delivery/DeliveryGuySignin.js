@@ -13,13 +13,16 @@ export default function DeliveryGuySignin ({
   const deliveryGuyLogin = async event => {
     event.preventDefault()
     try {
-      const response = await window.fetch('/deliveryguy/login', {
-        method: 'POST',
-        body: JSON.stringify({ email, password }),
-        headers: {
-          'Content-type': 'application/json'
+      const response = await window.fetch(
+        'https://vjdonesooo.herokuapp.com/deliveryguy/login',
+        {
+          method: 'POST',
+          body: JSON.stringify({ email, password }),
+          headers: {
+            'Content-type': 'application/json'
+          }
         }
-      })
+      )
       if (response.ok) {
         const jsonData = await response.json()
         setCookie('delivery-token', jsonData.accessToken)

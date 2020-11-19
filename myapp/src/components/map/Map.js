@@ -12,7 +12,7 @@ import { getCookie } from '../util/cookies'
 
 import io from 'socket.io-client'
 let socket
-const endpoint = '/'
+const endpoint = 'https://vjdonesooo.herokuapp.com/'
 socket = io(endpoint)
 
 export default function Map (props) {
@@ -80,13 +80,16 @@ export default function Map (props) {
   }
 
   const getOrderDetails = async () => {
-    const data = await window.fetch(`http://localhost:5000/order/${orderid}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-auth-token': getCookie('x-auth-token')
+    const data = await window.fetch(
+      `https://vjdonesooo.herokuapp.com/order/${orderid}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': getCookie('x-auth-token')
+        }
       }
-    })
+    )
     if (data.ok) {
       const jsonData = await data.json()
       setOrder(jsonData[0])
