@@ -1,16 +1,16 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useEffect, useContext } from 'react'
 import Item from './item'
 import SubCategoryName from './subCategoryName'
 import Subcategories from './subcategories'
-import Cart from './cart'
+import Cart from '../cart/cart'
 import Navbar from '../navbar/Navbar'
 import Search from '../search/search'
-import ClearCartPopup from './clearCartPopup'
+import ClearCartPopup from '../cart/clearCartPopup'
 
 import { AppContext } from '../context/App/AppContext'
 
 export default function Items (props) {
-  const { items, getItems, updateItems, getCart, clearCartPopup } = useContext(
+  const { items, getItems, updateItems, clearCartPopup } = useContext(
     AppContext
   )
 

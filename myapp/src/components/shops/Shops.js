@@ -6,7 +6,6 @@ import { getCookie } from '../util/cookies'
 
 export default function Shops (props) {
   const { categoryname, categoryid } = props.match.params
-  console.log('categoryname', categoryname)
   const [shops, setShops] = useState([])
   const fetchShops = async () => {
     const data = await window.fetch(

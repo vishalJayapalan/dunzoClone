@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import './Map.css'
 
-import Leaflet, { routing } from 'leaflet'
+import Leaflet from 'leaflet'
 import 'leaflet-routing-machine'
 
 import Nominatim from 'nominatim-geocoder'
@@ -47,7 +47,6 @@ export default function Map (props) {
 
     address = addressArr.slice(0, 9)
     address = address.join(',')
-    // console.log(address)
     const latlong = await geocoder.search({ q: address })
     // console.log('latlong', latlong)
     // console.log('lat:', latlong[0].lat, 'lon:', latlong[0].lon)
@@ -55,7 +54,7 @@ export default function Map (props) {
   }
 
   const map = () => {
-    console.log('deliveryLocationInMap', deliveryLocation)
+    // console.log('deliveryLocationInMap', deliveryLocation)
     mapRef.current = Leaflet.map('mapid').setView(deliveryLocation, 10)
     Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors'
@@ -91,23 +90,16 @@ export default function Map (props) {
     if (data.ok) {
       const jsonData = await data.json()
       setOrder(jsonData[0])
-      console.log(jsonData[0])
+      // console.log(jsonData[0])
       // console.log('order', jsonData[0])
 
       deliveryLocation = await geocoding(jsonData[0].deliveryaddress)
-      console.log('deliveryLocation', deliveryLocation)
+      // console.log('deliveryLocation', deliveryLocation)
 
       pickupLocation = await geocoding(jsonData[0].shopaddress)
-      console.log('pickUpLocation', pickupLocation)
+      // console.log('pickUpLocation', pickupLocation)
     }
   }
-
-  // console.log('important-partnerid', order.deliverypartnerid)
-  // console.log('important-partnerid-type', typeof order.deliverypartnerid)
-  // console.log('important-orderid', typeof order.orderid)
-
-  // console.log('deliveryLocationMain', deliveryLocation)
-  // console.log('pickupLocationMain', pickupLocation)
 
   const startupFunction = async () => {
     await getOrderDetails()
@@ -141,24 +133,19 @@ export default function Map (props) {
       setOrder(prevOrder => {
         return { ...prevOrder, deliverypartnerid: partnerName }
       })
-      // setDeliveryPartnerId(partnerName)
     })
     socket.on('orderPickedUp', () => {
       setOrder(prevOrder => {
         return { ...prevOrder, orderpickedup: true }
       })
-      // setOrderPickStatus(true)
     })
     socket.on('orderDelivered', () => {
       setOrder(prevOrder => {
         return { ...prevOrder, delivered: true }
       })
-      // setOrderCompleted(true)
     })
 
     if (order.deliverypartnerid != 0) {
-      console.log('inhere')
-      console.log(typeof order.deliverypartnerid)
       socket.on('deliveryLiveLocation', location => {
         if (bikeMarker !== null) mapRef.current.removeLayer(bikeMarker)
         bikeMarker = Leaflet.marker([location.lat, location.lng], {

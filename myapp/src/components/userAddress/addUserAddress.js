@@ -37,6 +37,7 @@ export default function AddUserAddress ({
               <h3>Search Drop Location</h3>
               <img
                 src='/images/closeIcon.png'
+                alt='close-icon'
                 onClick={() => setAddNewAddress(false)}
               />
             </div>
@@ -63,6 +64,7 @@ export default function AddUserAddress ({
               <img
                 className='waiting-image'
                 src='/images/searchUserAddressImage.png'
+                alt='waiting for input or address not found'
               ></img>
             )}
             {/* {searchItems} */}

@@ -1,13 +1,11 @@
-import React, { useState, useContext } from 'react'
+import React, { useContext } from 'react'
 
 import { AppContext } from '../context/App/AppContext'
 
-import CartButton from './cartButton'
+import CartButton from '../cart/cartButton'
 
 export default function Item (props) {
-  const { cart, addToCart, updateCart, setClearCartPopup } = useContext(
-    AppContext
-  )
+  const { cart, addToCart, setClearCartPopup } = useContext(AppContext)
   let inCart = null
   cart.forEach(cartItem => {
     if (cartItem.itemid === props.item.itemid) {
@@ -17,7 +15,11 @@ export default function Item (props) {
   return (
     <div className='item-container'>
       <div className='item-image-container'>
-        <img src='/images/groceries.jpeg' className='item-image'></img>
+        <img
+          src='/images/groceries.jpeg'
+          alt='item'
+          className='item-image'
+        ></img>
       </div>
       <div className='item-name-container'>
         <p className='item-name'>{props.item.itemname}</p>

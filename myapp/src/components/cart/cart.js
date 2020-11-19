@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 
 import { Link } from 'react-router-dom'
 
@@ -7,7 +7,7 @@ import CartItems from './cartItems'
 import { AppContext } from '../context/App/AppContext'
 
 export default function Cart (props) {
-  const { cart, getCart } = useContext(AppContext)
+  const { cart } = useContext(AppContext)
   let totalPrice = 0
   cart.forEach(cartItem => {
     totalPrice += cartItem.itemprice * cartItem.cartitemquantity

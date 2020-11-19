@@ -1,12 +1,12 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { Link, Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 
 import { getCookie } from '../util/cookies'
 
 import Navbar from '../navbar/Navbar'
 import './Checkout.css'
 
-import Cart from '../items/cart'
+import Cart from '../cart/cart'
 import { AppContext } from '../context/App/AppContext'
 
 import UserAddress from '../userAddress/userAddress'

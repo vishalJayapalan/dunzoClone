@@ -1,5 +1,5 @@
 import React, { useReducer, createContext, useState, useEffect } from 'react'
-import { getCookie, setCookie } from '../../util/cookies'
+import { getCookie } from '../../util/cookies'
 import AppReducer from './AppReducer'
 import { v4 as uuidV4 } from 'uuid'
 

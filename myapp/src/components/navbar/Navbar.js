@@ -1,10 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import Signin from '../signIn&signUp/Signin'
 import Signup from '../signIn&signUp/Signup'
 
 import { AppContext } from '../context/App/AppContext'
-
-// import { getCookie, setCookie } from '../util/cookies'
 
 export default function Navbar ({ hideLoginAndLogout }) {
   const {
@@ -24,7 +22,11 @@ export default function Navbar ({ hideLoginAndLogout }) {
       {!hideLoginAndLogout && (
         <div className='nav-cartimg-signin-container'>
           <div className='nav-cart-container'>
-            <img src='/images/cart2.png' className='nav-cart-image' />
+            <img
+              src='/images/cart2.png'
+              alt='cart-icon'
+              className='nav-cart-image'
+            />
             {cart.length ? (
               <div className='nav-cart-count'>{cart.length}</div>
             ) : (

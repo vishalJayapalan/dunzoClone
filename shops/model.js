@@ -2,7 +2,7 @@ const { pool } = require('../util/database')
 
 const getShops = async (req, res) => {
   const { categoryid } = req.params
-  console.log('categoryid', categoryid)
+  // console.log('categoryid', categoryid)
   try {
     const shops = await pool.query(
       `select * from shops JOIN categories_join_shops ON shops.shopid = categories_join_shops.shopid AND categories_join_shops.categoryId =${categoryid} ORDER BY shops.shopid;`
