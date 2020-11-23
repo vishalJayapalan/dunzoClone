@@ -21,6 +21,7 @@ export default function Items (props) {
   let lastSubCategory = null
   const disp = []
   const subcategories = []
+
   items.forEach(item => {
     if (lastSubCategory !== item.subcategory) {
       lastSubCategory = item.subcategory

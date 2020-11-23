@@ -13,16 +13,13 @@ export default function Signin () {
   const userLogin = async event => {
     event.preventDefault()
     try {
-      const response = await window.fetch(
-        'https://vjdonesooo.herokuapp.com/user/login',
-        {
-          method: 'POST',
-          body: JSON.stringify({ email, password }),
-          headers: {
-            'Content-type': 'application/json'
-          }
+      const response = await window.fetch('/user/login/', {
+        method: 'POST',
+        body: JSON.stringify({ email, password }),
+        headers: {
+          'Content-type': 'application/json'
         }
-      )
+      })
       if (response.ok) {
         const jsonData = await response.json()
         setCookie('x-auth-token', jsonData.accessToken)

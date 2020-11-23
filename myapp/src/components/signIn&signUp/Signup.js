@@ -16,20 +16,17 @@ export default function Signup () {
   const userRegister = async event => {
     event.preventDefault()
     try {
-      const response = await window.fetch(
-        'https://vjdonesooo.herokuapp.com/user/',
-        {
-          method: 'POST',
-          body: JSON.stringify({
-            email,
-            fullname,
-            password
-          }),
-          headers: {
-            'Content-Type': 'application/json'
-          }
+      const response = await window.fetch('/user/', {
+        method: 'POST',
+        body: JSON.stringify({
+          email,
+          fullname,
+          password
+        }),
+        headers: {
+          'Content-Type': 'application/json'
         }
-      )
+      })
       if (response.ok) {
         const jsonData = await response.json()
         setEmail('')

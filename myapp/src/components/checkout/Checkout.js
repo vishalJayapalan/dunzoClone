@@ -28,9 +28,7 @@ export default function Checkout (props) {
   const [shopAddress, setShopAddress] = useState('')
 
   const getShopDetails = async () => {
-    const data = await window.fetch(
-      `https://vjdonesooo.herokuapp.com/shops/shop/${props.match.params.shopid}`
-    )
+    const data = await window.fetch(`/shops/shop/${props.match.params.shopid}/`)
     if (data.ok) {
       const jsonData = await data.json()
       setShopAddress(jsonData[0].address)
@@ -42,16 +40,13 @@ export default function Checkout (props) {
   }, [])
 
   const getUserAddress = async () => {
-    const data = await window.fetch(
-      `https://vjdonesooo.herokuapp.com/userAddress/${isLoggedIn}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': getCookie('x-auth-token')
-        }
+    const data = await window.fetch(`/userAddress/${isLoggedIn}/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': getCookie('x-auth-token')
       }
-    )
+    })
     if (data.ok) {
       const jsonData = await data.json()
       setUserAddresses(jsonData)
@@ -64,7 +59,7 @@ export default function Checkout (props) {
   }, [isLoggedIn])
 
   const createOrder = async () => {
-    const data = await window.fetch(`https://vjdonesooo.herokuapp.com/order`, {
+    const data = await window.fetch(`/order/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -82,17 +77,14 @@ export default function Checkout (props) {
   }
 
   const addNewUserAddress = async address => {
-    const data = await window.fetch(
-      `https://vjdonesooo.herokuapp.com/useraddress/${isLoggedIn}`,
-      {
-        method: 'POST',
-        body: JSON.stringify({ address, category: 'Home' }),
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': getCookie('x-auth-token')
-        }
+    const data = await window.fetch(`/useraddress/${isLoggedIn}/`, {
+      method: 'POST',
+      body: JSON.stringify({ address, category: 'Home' }),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': getCookie('x-auth-token')
       }
-    )
+    })
     if (data.ok) {
       const newAddress = await data.json()
       setUserAddresses(prevAddresses => [...prevAddresses, newAddress[0]])

@@ -26,16 +26,13 @@ export default function Delivery () {
   const routingControlRef = useRef(null)
 
   const ifOrderNotCompleted = async () => {
-    const data = await window.fetch(
-      'https://vjdonesooo.herokuapp.com/order/ongoing',
-      {
-        method: 'GET',
-        headers: {
-          'Content-type': 'application/json',
-          'deliveryguy-token': getCookie('delivery-token')
-        }
+    const data = await window.fetch('/order/ongoing/', {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json',
+        'deliveryguy-token': getCookie('delivery-token')
       }
-    )
+    })
     const jsonData = await data.json()
     console.log(jsonData)
     setRequirement(jsonData.shopaddress)
@@ -61,18 +58,15 @@ export default function Delivery () {
   })
 
   const updateOrder = async (name, value) => {
-    console.log('orderid', orderid)
-    const data = await window.fetch(
-      `https://vjdonesooo.herokuapp.com/order/${orderid}`,
-      {
-        method: 'PUT',
-        body: JSON.stringify({ name, value }),
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': getCookie('x-auth-token')
-        }
+    // console.log('orderid', orderid)
+    const data = await window.fetch(`/order/${orderid}/`, {
+      method: 'PUT',
+      body: JSON.stringify({ name, value }),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': getCookie('x-auth-token')
       }
-    )
+    })
     if (data.ok) {
       const jsonData = await data.json()
       // setOrder(jsonData[0])

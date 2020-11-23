@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import './Map.css'
+// import { proxy } from '../../../package.json'
 
 import Leaflet from 'leaflet'
 import 'leaflet-routing-machine'
@@ -11,26 +12,15 @@ import Navbar from '../navbar/Navbar'
 import { getCookie } from '../util/cookies'
 
 import io from 'socket.io-client'
-let socket
-const endpoint = 'https://vjdonesooo.herokuapp.com/'
-socket = io(endpoint)
+// let socket
+const endpoint = '/'
+const socket = io(endpoint)
 
 export default function Map (props) {
-  // const [liveLocation, setLiveLocation] = useState({
-  //   latitude: 11.868762,
-  //   longitude: 75.384577
-  // })
-  // const [deliveryPartnerId, setDeliveryPartnerId] = useState(null)
-
-  // const position = [11.858762, 75.404577]
-  // const position2 = [11.877094, 75.372391]
-  // const [deliveryLocation, setDeliveryLocation] = useState('')
-  // const [pickupLocation, setPickupLocation] = useState('')
+  // console.log('Proxy', proxy)
   let deliveryLocation = ''
   let pickupLocation = ''
-  // const [orderCompleted, setOrderCompleted] = useState(false)
   const [packingStatus, setPackingStatus] = useState(false)
-  // const [orderPickStatus, setOrderPickStatus] = useState(false)
   const [order, setOrder] = useState({})
 
   const mapRef = useRef(null)
@@ -38,37 +28,21 @@ export default function Map (props) {
 
   const orderid = props.match.params.orderid
 
-  // let bikeMarker
-
   const geocoding = async address => {
     const geocoder = new Nominatim()
-    // console.log('address', address)
     const addressArr = address.split(',')
 
     address = addressArr.slice(0, 9)
     address = address.join(',')
     const latlong = await geocoder.search({ q: address })
-    // console.log('latlong', latlong)
-    // console.log('lat:', latlong[0].lat, 'lon:', latlong[0].lon)
     return [latlong[0].lat, latlong[0].lon]
   }
 
   const map = () => {
-    // console.log('deliveryLocationInMap', deliveryLocation)
     mapRef.current = Leaflet.map('mapid').setView(deliveryLocation, 10)
     Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors'
     }).addTo(mapRef.current)
-
-    // geocoding('Shoppers')
-
-    // let location = []
-    // function success (position) {
-    //   const latitude = position.coords.latitude
-    //   const longitude = position.coords.longitude
-    //   setLiveLocation({ latitude, longitude })
-    //   location = [latitude, longitude]
-    // }
 
     routingControlRef.current = Leaflet.Routing.control({
       waypoints: [
@@ -80,27 +54,20 @@ export default function Map (props) {
   }
 
   const getOrderDetails = async () => {
-    const data = await window.fetch(
-      `https://vjdonesooo.herokuapp.com/order/${orderid}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': getCookie('x-auth-token')
-        }
+    const data = await window.fetch(`/order/${orderid}/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': getCookie('x-auth-token')
       }
-    )
+    })
     if (data.ok) {
       const jsonData = await data.json()
       setOrder(jsonData[0])
-      // console.log(jsonData[0])
-      // console.log('order', jsonData[0])
 
       deliveryLocation = await geocoding(jsonData[0].deliveryaddress)
-      // console.log('deliveryLocation', deliveryLocation)
 
       pickupLocation = await geocoding(jsonData[0].shopaddress)
-      // console.log('pickUpLocation', pickupLocation)
     }
   }
 
@@ -109,7 +76,6 @@ export default function Map (props) {
     map()
     setTimeout(() => {
       setPackingStatus(true)
-      socket = io(endpoint)
       socket.emit('deliveryPartnerRequired', {
         shopname: 'Shoppers Stop',
         orderid,

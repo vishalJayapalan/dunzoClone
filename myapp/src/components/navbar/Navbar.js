@@ -1,4 +1,6 @@
 import React, { useContext } from 'react'
+import { Link } from 'react-router-dom'
+
 import Signin from '../signIn&signUp/Signin'
 import Signup from '../signIn&signUp/Signup'
 
@@ -16,8 +18,9 @@ export default function Navbar ({ hideLoginAndLogout }) {
   } = useContext(AppContext)
   return (
     <div className='nav-container'>
-      <span className='app-name'>Donesooo</span>
-      <div></div>
+      <Link style={{ textDecoration: 'none' }} to={'/'}>
+        <span className='app-name'>Donesooo</span>
+      </Link>
 
       {!hideLoginAndLogout && (
         <div className='nav-cartimg-signin-container'>

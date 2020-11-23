@@ -7,18 +7,16 @@ export default function Categories () {
   const [categories, setCategories] = useState([])
 
   const fetchCategories = async () => {
-    const data = await window.fetch(
-      'https://vjdonesooo.herokuapp.com/categories',
-      {
-        method: 'GET',
-        headers: {
-          'Content-type': 'application/json',
-          'x-auth-token': getCookie('x-auth-token')
-        }
+    const data = await window.fetch('categories/', {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json',
+        'x-auth-token': getCookie('x-auth-token')
       }
-    )
-    console.log(data.ok)
+    })
+    console.log(data)
     const jsonData = await data.json()
+    console.log('jsonCategories', jsonData)
     setCategories(jsonData)
   }
 
