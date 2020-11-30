@@ -15,9 +15,9 @@ const registerDeliveryGuy = async (req, res) => {
       `SELECT * FROM deliveryguys where emailid='${email}'`
     )
     if (!duplicateUser.rowCount) {
-      console.log('inhere')
+      // console.log('inhere')
       password = await bcrypt.hash(password, 10)
-      console.log(name, email, password)
+      // console.log(name, email, password)
       const newDeliveryGuy = await pool.query(
         `INSERT INTO deliveryguys (deliveryguyname,emailid,password) VALUES ('${name}','${email}','${password}') RETURNING *`
       )
@@ -79,7 +79,7 @@ const getCurrentDeliveryGuy = async (req, res) => {
   //   const { deliveryguyid } = req.deliveryguy
   const { deliveryguyid } = req.deliveryguy
   try {
-    if(!deliveryguyid) res.status(401).json({message:'not authenticated'})
+    if (!deliveryguyid) res.status(401).json({ message: 'not authenticated' })
     const deliveryGuy = await pool.query(
       `SELECT deliveryguyid, deliveryguyname FROM deliveryguys WHERE deliveryguyid = ${deliveryguyid}`
     )
@@ -111,6 +111,6 @@ const getCurrentDeliveryGuy = async (req, res) => {
 module.exports = {
   registerDeliveryGuy,
   loginDeliveryGuy,
-  getCurrentDeliveryGuy,
+  getCurrentDeliveryGuy
   // onProcessOrderDelivery
 }

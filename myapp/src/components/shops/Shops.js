@@ -15,9 +15,9 @@ export default function Shops (props) {
         'x-auth-token': getCookie('x-auth-token')
       }
     })
-    console.log('shopData', data)
+    // console.log('shopData', data)
     const jsonData = await data.json()
-    console.log('shopJsonData', jsonData)
+    // console.log('shopJsonData', jsonData)
     setShops(jsonData)
   }
 
@@ -30,7 +30,7 @@ export default function Shops (props) {
       <div className='category-name-inshop-container'>
         <img
           className='category-name-inshop-img'
-          src={`/images/${categoryname}.png`}
+          src={`/images/${categoryname.split(' ').join('_')}.png`}
           alt='catimg'
         ></img>
         <h3 className='category-name-inshop'>{categoryname}</h3>

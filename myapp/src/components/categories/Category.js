@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom'
 
 export default function Category (props) {
   const { categoryid, categoryname } = props.category
+  const imageName = categoryname.split(' ').join('_')
+  console.log('imageName', imageName)
   return (
     <div className='category-outer-container'>
       <Link
@@ -13,7 +15,7 @@ export default function Category (props) {
         <div className='category-container'>
           <img
             className='category-image'
-            src={`/images/${categoryname}.png`}
+            src={`/images/${imageName}.png`}
             alt={`${categoryname}`}
           />
           <p className='category-name'>{categoryname}</p>
