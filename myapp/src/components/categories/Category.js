@@ -1,11 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 // import path from 'path'
+require('dotenv').config()
+console.log(process.env.NODE_ENV === 'production')
 
 export default function Category (props) {
   const { categoryid, categoryname } = props.category
   const imageName = categoryname.split(' ').join('_')
-  console.log('imageName', imageName)
   return (
     <div className='category-outer-container'>
       <Link

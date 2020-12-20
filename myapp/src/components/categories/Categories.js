@@ -14,9 +14,9 @@ export default function Categories () {
         'x-auth-token': getCookie('x-auth-token')
       }
     })
-    console.log(data)
+    // console.log(data)
     const jsonData = await data.json()
-    console.log('jsonCategories', jsonData)
+    // console.log('jsonCategories', jsonData)
     setCategories(jsonData)
   }
 

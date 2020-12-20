@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import './Map.css'
+import { Redirect, Link } from 'react-router-dom'
 // import { proxy } from '../../../package.json'
 
 import Leaflet from 'leaflet'
@@ -20,13 +21,18 @@ export default function Map (props) {
   // console.log('Proxy', proxy)
   let deliveryLocation = ''
   let pickupLocation = ''
+
   const [packingStatus, setPackingStatus] = useState(false)
+  const [noOrder, setNoOrder] = useState(false)
+
   const [order, setOrder] = useState({})
+  let orderIdNotFound = false
 
   const mapRef = useRef(null)
   const routingControlRef = useRef(null)
 
   const orderid = props.match.params.orderid
+  let orderDelivered = false
 
   const geocoding = async address => {
     const geocoder = new Nominatim()
@@ -54,25 +60,38 @@ export default function Map (props) {
   }
 
   const getOrderDetails = async () => {
-    const data = await window.fetch(`/order/${orderid}/`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-auth-token': getCookie('x-auth-token')
+    try {
+      const data = await window.fetch(`/order/${orderid}/`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': getCookie('x-auth-token')
+        }
+      })
+      if (data.ok) {
+        console.log('inHere')
+        const jsonData = await data.json()
+        setOrder(jsonData[0])
+        if (jsonData[0].delivered) orderDelivered = true
+
+        deliveryLocation = await geocoding(jsonData[0].deliveryaddress)
+
+        pickupLocation = await geocoding(jsonData[0].shopaddress)
+      } else {
+        orderIdNotFound = true
+        const jsonData = await data.json()
+        throw jsonData
       }
-    })
-    if (data.ok) {
-      const jsonData = await data.json()
-      setOrder(jsonData[0])
+    } catch (e) {
+      console.log('IN Error')
 
-      deliveryLocation = await geocoding(jsonData[0].deliveryaddress)
-
-      pickupLocation = await geocoding(jsonData[0].shopaddress)
+      setNoOrder(true)
     }
   }
 
   const startupFunction = async () => {
     await getOrderDetails()
+    if (orderIdNotFound || orderDelivered) return
     map()
     setTimeout(() => {
       setPackingStatus(true)
@@ -82,12 +101,37 @@ export default function Map (props) {
         shopLocation: pickupLocation,
         userLocation: deliveryLocation
       })
+      socket.on('partnerAssigned', partnerName => {
+        setOrder(prevOrder => {
+          return { ...prevOrder, deliverypartnerid: partnerName }
+        })
+      })
+      socket.on('orderPickedUp', () => {
+        setOrder(prevOrder => {
+          return { ...prevOrder, orderpickedup: true }
+        })
+      })
+      socket.on('orderDelivered', () => {
+        setOrder(prevOrder => {
+          return { ...prevOrder, delivered: true }
+        })
+      })
+
+      if (order.deliverypartnerid != 0) {
+        socket.on('deliveryLiveLocation', location => {
+          if (bikeMarker !== null) mapRef.current.removeLayer(bikeMarker)
+          bikeMarker = Leaflet.marker([location.lat, location.lng], {
+            icon: bikeIcon
+          }).addTo(mapRef.current)
+        })
+      }
     }, 5000)
   }
 
   useEffect(() => {
     startupFunction()
   }, [])
+
   const bikeIcon = Leaflet.icon({
     iconSize: [25, 41],
     iconAnchor: [10, 41],
@@ -97,64 +141,83 @@ export default function Map (props) {
   })
   let bikeMarker = null
 
-  useEffect(() => {
-    socket.on('partnerAssigned', partnerName => {
-      setOrder(prevOrder => {
-        return { ...prevOrder, deliverypartnerid: partnerName }
-      })
-    })
-    socket.on('orderPickedUp', () => {
-      setOrder(prevOrder => {
-        return { ...prevOrder, orderpickedup: true }
-      })
-    })
-    socket.on('orderDelivered', () => {
-      setOrder(prevOrder => {
-        return { ...prevOrder, delivered: true }
-      })
-    })
+  // useEffect(() => {
+  //   socket.on('partnerAssigned', partnerName => {
+  //     setOrder(prevOrder => {
+  //       return { ...prevOrder, deliverypartnerid: partnerName }
+  //     })
+  //   })
+  //   socket.on('orderPickedUp', () => {
+  //     setOrder(prevOrder => {
+  //       return { ...prevOrder, orderpickedup: true }
+  //     })
+  //   })
+  //   socket.on('orderDelivered', () => {
+  //     setOrder(prevOrder => {
+  //       return { ...prevOrder, delivered: true }
+  //     })
+  //   })
 
-    if (order.deliverypartnerid != 0) {
-      socket.on('deliveryLiveLocation', location => {
-        if (bikeMarker !== null) mapRef.current.removeLayer(bikeMarker)
-        bikeMarker = Leaflet.marker([location.lat, location.lng], {
-          icon: bikeIcon
-        }).addTo(mapRef.current)
-      })
-    }
-  }, [packingStatus])
-
-  return (
+  //   if (order.deliverypartnerid != 0) {
+  //     socket.on('deliveryLiveLocation', location => {
+  //       if (bikeMarker !== null) mapRef.current.removeLayer(bikeMarker)
+  //       bikeMarker = Leaflet.marker([location.lat, location.lng], {
+  //         icon: bikeIcon
+  //       }).addTo(mapRef.current)
+  //     })
+  //   }
+  // }, [packingStatus])
+  console.log('order', order)
+  // console.log('orderLength', Object.keys(order).length)
+  return noOrder ? (
+    <div>
+      <h1>The Order Number Does not exist</h1>
+      <Link to={{ pathname: '/' }}>Return to Home Page</Link>
+    </div>
+  ) : Object.keys(order).length === 0 ? (
+    <h1>Loading ...</h1>
+  ) : order.delivered ? (
+    <div>
+      <h1>Order Completed... </h1>
+      <Link to={{ pathname: '/' }}>Go To Home Page</Link>
+    </div>
+  ) : (
     <div className='track-order-page'>
       <Navbar hideLoginAndLogout={true} />
-      <div className='track-order-container'>
-        <div className='track-title-container'>
-          <h3>Track Your Order</h3>
-        </div>
-        <div className='map-delivery-detail'>
-          <div id='mapid' />
-          <div className='delivery-process-details-container'>
-            <div className='order-details'>
-              <p>Order received</p>
-            </div>
+      {order.delivered ? (
+        <h1>Order Completed</h1>
+      ) : (
+        <div className='track-order-container'>
+          <div className='track-title-container'>
+            <h3>Track Your Order</h3>
+          </div>
+          <div className='map-delivery-detail'>
+            <div id='mapid' />
+            <div className='delivery-process-details-container'>
+              <div className='order-details'>
+                <p>Order received</p>
+              </div>
 
-            <div className='order-details'>
-              {packingStatus && <p>Items Packed</p>}
-            </div>
+              <div className='order-details'>
+                {packingStatus && <p>Items Packed</p>}
+              </div>
 
-            <div className='order-details'>
-              {order.deliverypartnerid != 0 && <p>Delivery Partner Assigned</p>}
-            </div>
+              <div className='order-details'>
+                {order.deliverypartnerid != 0 && (
+                  <p>Delivery Partner Assigned</p>
+                )}
+              </div>
 
-            <div className='order-details'>
-              {order.orderpickedup && <p>Order picked up</p>}
-            </div>
-            <div className='order-details'>
-              {order.delivered && <p>Delivered</p>}
+              <div className='order-details'>
+                {order.orderpickedup && <p>Order picked up</p>}
+              </div>
+              <div className='order-details'>
+                {order.delivered && <p>Delivered</p>}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
       <div className='item-list-container'></div>
     </div>
   )

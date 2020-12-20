@@ -40,11 +40,9 @@ export default function Signup () {
       }
     } catch (err) {
       const jsonData = await err.json()
-      console.log('jsonError', jsonData)
       setEmail('')
       setPassword('')
       setErrorMsg(jsonData.msg)
-      console.log(err)
     }
   }
   return (

@@ -2,13 +2,14 @@ import React, { useEffect, useState, useRef } from 'react'
 import './delivery.css'
 import io from 'socket.io-client'
 
+import Nominatim from 'nominatim-geocoder'
+
 import Leaflet, { routing } from 'leaflet'
 import 'leaflet-routing-machine'
 
 import { getCookie } from '../util/cookies'
 
 let socket
-// const endpoint = 'http://192.168.1.13:5000'
 const endpoint = '/'
 
 socket = io(endpoint)
@@ -16,14 +17,23 @@ export default function Delivery () {
   const [requirement, setRequirement] = useState(null)
   const [orderPickStatus, setOrderPickStatus] = useState(false)
   const [orderStatus, setOrderStatus] = useState(false)
-  // const position = [11.858762, 75.404577]
-  // let position2 = [11.877094, 75.372391]
   const [pickupLocation, setPickupLocation] = useState([])
   const [deliveryLocation, setDeliveryLocation] = useState([])
   const [orderid, setOrderid] = useState(null)
+  const [mapShown, setMapShown] = useState(false)
 
   const mapRef = useRef(null)
   const routingControlRef = useRef(null)
+
+  const geocoding = async address => {
+    const geocoder = new Nominatim()
+    const addressArr = address.split(',')
+
+    address = addressArr.slice(0, 9)
+    address = address.join(',')
+    const latlong = await geocoder.search({ q: address })
+    return [latlong[0].lat, latlong[0].lon]
+  }
 
   const ifOrderNotCompleted = async () => {
     const data = await window.fetch('/order/ongoing/', {
@@ -35,10 +45,16 @@ export default function Delivery () {
     })
     const jsonData = await data.json()
     console.log(jsonData)
-    setRequirement(jsonData.shopaddress)
-    setPickupLocation(jsonData.deliveryaddress)
-    setDeliveryLocation(jsonData.shopaddress)
-    setOrderid(jsonData.orderid)
+    if (jsonData.length) {
+      const userDeliveryLocation = await geocoding(jsonData[0].deliveryaddress)
+      const userPickupLocation = await geocoding(jsonData[0].shopaddress)
+      setPickupLocation(userPickupLocation)
+      setOrderPickStatus(jsonData[0].orderpickedup)
+      setDeliveryLocation(userDeliveryLocation)
+      setOrderid(jsonData[0].orderid)
+      setRequirement(jsonData[0].shopaddress)
+      setOrderStatus(true)
+    }
   }
 
   useEffect(() => {
@@ -55,10 +71,9 @@ export default function Delivery () {
         setOrderid(orderid)
       }
     )
-  })
+  }, [])
 
   const updateOrder = async (name, value) => {
-    // console.log('orderid', orderid)
     const data = await window.fetch(`/order/${orderid}/`, {
       method: 'PUT',
       body: JSON.stringify({ name, value }),
@@ -69,19 +84,13 @@ export default function Delivery () {
     })
     if (data.ok) {
       const jsonData = await data.json()
-      // setOrder(jsonData[0])
-      console.log('order', jsonData[0])
-      // setNewOrderId(order[0].orderid)
     }
   }
 
   function orderStatusUpdation () {
-    // if (status) {
     socket.emit('deliveryPartnerAssigned', 'speedo')
     setOrderStatus(true)
     updateOrder('deliverypartnerid', 1)
-
-    // }
   }
   function orderPickedUp () {
     setOrderPickStatus(true)
@@ -139,6 +148,7 @@ export default function Delivery () {
           }
         }, 1000)
       })
+      setMapShown(true)
     }
     if (orderStatus) map()
   }, [orderStatus])
@@ -158,7 +168,7 @@ export default function Delivery () {
               accept
             </button>
           </div>
-          {orderStatus && (
+          {orderStatus && mapShown && (
             <div className='order-row'>
               <p>Order Picked</p>
               <button onClick={orderPickedUp}>Picked</button>
