@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import './Map.css'
 import { Redirect, Link } from 'react-router-dom'
-// import { proxy } from '../../../package.json'
 
 import Leaflet from 'leaflet'
 import 'leaflet-routing-machine'
@@ -13,12 +12,10 @@ import Navbar from '../navbar/Navbar'
 import { getCookie } from '../util/cookies'
 
 import io from 'socket.io-client'
-// let socket
 const endpoint = '/'
 const socket = io(endpoint)
 
 export default function Map (props) {
-  // console.log('Proxy', proxy)
   let deliveryLocation = ''
   let pickupLocation = ''
 
@@ -69,7 +66,6 @@ export default function Map (props) {
         }
       })
       if (data.ok) {
-        console.log('inHere')
         const jsonData = await data.json()
         setOrder(jsonData[0])
         if (jsonData[0].delivered) orderDelivered = true
@@ -83,8 +79,6 @@ export default function Map (props) {
         throw jsonData
       }
     } catch (e) {
-      console.log('IN Error')
-
       setNoOrder(true)
     }
   }
@@ -141,34 +135,6 @@ export default function Map (props) {
   })
   let bikeMarker = null
 
-  // useEffect(() => {
-  //   socket.on('partnerAssigned', partnerName => {
-  //     setOrder(prevOrder => {
-  //       return { ...prevOrder, deliverypartnerid: partnerName }
-  //     })
-  //   })
-  //   socket.on('orderPickedUp', () => {
-  //     setOrder(prevOrder => {
-  //       return { ...prevOrder, orderpickedup: true }
-  //     })
-  //   })
-  //   socket.on('orderDelivered', () => {
-  //     setOrder(prevOrder => {
-  //       return { ...prevOrder, delivered: true }
-  //     })
-  //   })
-
-  //   if (order.deliverypartnerid != 0) {
-  //     socket.on('deliveryLiveLocation', location => {
-  //       if (bikeMarker !== null) mapRef.current.removeLayer(bikeMarker)
-  //       bikeMarker = Leaflet.marker([location.lat, location.lng], {
-  //         icon: bikeIcon
-  //       }).addTo(mapRef.current)
-  //     })
-  //   }
-  // }, [packingStatus])
-  console.log('order', order)
-  // console.log('orderLength', Object.keys(order).length)
   return noOrder ? (
     <div>
       <h1>The Order Number Does not exist</h1>

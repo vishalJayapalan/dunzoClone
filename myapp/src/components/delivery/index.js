@@ -17,6 +17,8 @@ export default function Delivery () {
   const [requirement, setRequirement] = useState(null)
   const [orderPickStatus, setOrderPickStatus] = useState(false)
   const [orderStatus, setOrderStatus] = useState(false)
+  const [isOrderCompleted, setIsOrderCompleted] = useState(false)
+
   const [pickupLocation, setPickupLocation] = useState([])
   const [deliveryLocation, setDeliveryLocation] = useState([])
   const [orderid, setOrderid] = useState(null)
@@ -44,7 +46,6 @@ export default function Delivery () {
       }
     })
     const jsonData = await data.json()
-    console.log(jsonData)
     if (jsonData.length) {
       const userDeliveryLocation = await geocoding(jsonData[0].deliveryaddress)
       const userPickupLocation = await geocoding(jsonData[0].shopaddress)
@@ -98,8 +99,20 @@ export default function Delivery () {
     updateOrder('orderpickedup', true)
   }
   function orderCompleted () {
+    setIsOrderCompleted(true)
     socket.emit('orderCompleted')
     updateOrder('delivered', true)
+  }
+
+  function resetOrder () {
+    setRequirement(null)
+    setOrderStatus(false)
+    setOrderPickStatus(false)
+    setIsOrderCompleted(false)
+    setPickupLocation([])
+    setDeliveryLocation([])
+    setOrderid(null)
+    setMapShown(false)
   }
 
   useEffect(() => {
@@ -153,7 +166,12 @@ export default function Delivery () {
     if (orderStatus) map()
   }, [orderStatus])
 
-  return (
+  return isOrderCompleted ? (
+    <div>
+      <h1>Order Completed</h1>
+      <button onClick={resetOrder}>Look For New Orders</button>
+    </div>
+  ) : (
     <div className='order-page'>
       <h1>Delivery page</h1>
       <div id='mapid' />
