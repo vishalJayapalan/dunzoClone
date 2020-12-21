@@ -30,6 +30,7 @@ export default function Map (props) {
 
   const orderid = props.match.params.orderid
   let orderDelivered = false
+  let partnerAlreadyAssigned = false
 
   const geocoding = async address => {
     const geocoder = new Nominatim()
@@ -68,6 +69,8 @@ export default function Map (props) {
       if (data.ok) {
         const jsonData = await data.json()
         setOrder(jsonData[0])
+        console.log(jsonData)
+        partnerAlreadyAssigned = jsonData[0].deliverypartnerid
         if (jsonData[0].delivered) orderDelivered = true
 
         deliveryLocation = await geocoding(jsonData[0].deliveryaddress)
@@ -86,40 +89,43 @@ export default function Map (props) {
   const startupFunction = async () => {
     await getOrderDetails()
     if (orderIdNotFound || orderDelivered) return
+    setPackingStatus(true)
     map()
-    setTimeout(() => {
-      setPackingStatus(true)
+    // setTimeout(() => {
+    // console.log(order)
+    if (!partnerAlreadyAssigned) {
       socket.emit('deliveryPartnerRequired', {
         shopname: 'Shoppers Stop',
         orderid,
         shopLocation: pickupLocation,
         userLocation: deliveryLocation
       })
-      socket.on('partnerAssigned', partnerName => {
-        setOrder(prevOrder => {
-          return { ...prevOrder, deliverypartnerid: partnerName }
-        })
+    }
+    socket.on('partnerAssigned', partnerName => {
+      setOrder(prevOrder => {
+        return { ...prevOrder, deliverypartnerid: partnerName }
       })
-      socket.on('orderPickedUp', () => {
-        setOrder(prevOrder => {
-          return { ...prevOrder, orderpickedup: true }
-        })
+    })
+    socket.on('orderPickedUp', () => {
+      setOrder(prevOrder => {
+        return { ...prevOrder, orderpickedup: true }
       })
-      socket.on('orderDelivered', () => {
-        setOrder(prevOrder => {
-          return { ...prevOrder, delivered: true }
-        })
+    })
+    socket.on('orderDelivered', () => {
+      setOrder(prevOrder => {
+        return { ...prevOrder, delivered: true }
       })
+    })
 
-      if (order.deliverypartnerid != 0) {
-        socket.on('deliveryLiveLocation', location => {
-          if (bikeMarker !== null) mapRef.current.removeLayer(bikeMarker)
-          bikeMarker = Leaflet.marker([location.lat, location.lng], {
-            icon: bikeIcon
-          }).addTo(mapRef.current)
-        })
-      }
-    }, 5000)
+    if (order.deliverypartnerid != 0) {
+      socket.on('deliveryLiveLocation', location => {
+        if (bikeMarker !== null) mapRef.current.removeLayer(bikeMarker)
+        bikeMarker = Leaflet.marker([location.lat, location.lng], {
+          icon: bikeIcon
+        }).addTo(mapRef.current)
+      })
+    }
+    // }, 5000)
   }
 
   useEffect(() => {
