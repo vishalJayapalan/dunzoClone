@@ -69,7 +69,7 @@ export default function Map (props) {
       if (data.ok) {
         const jsonData = await data.json()
         setOrder(jsonData[0])
-        console.log(jsonData)
+        // console.log(jsonData)
         partnerAlreadyAssigned = jsonData[0].deliverypartnerid
         if (jsonData[0].delivered) orderDelivered = true
 
@@ -106,11 +106,13 @@ export default function Map (props) {
         return { ...prevOrder, deliverypartnerid: partnerName }
       })
     })
+
     socket.on('orderPickedUp', () => {
       setOrder(prevOrder => {
         return { ...prevOrder, orderpickedup: true }
       })
     })
+
     socket.on('orderDelivered', () => {
       setOrder(prevOrder => {
         return { ...prevOrder, delivered: true }

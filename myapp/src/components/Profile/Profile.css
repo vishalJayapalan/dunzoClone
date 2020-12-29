@@ -1,0 +1,27 @@
+.profile-page{box-sizing: border-box;
+  height: 100vh;
+  background: rgb(240, 245, 247);
+  overflow-y: hidden;}
+
+.profile-outer-container{
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0px auto;
+  padding-top: 48px;
+  /* background-color: aqua; */
+}
+
+.profile-inner-container{
+  box-sizing: border-box;
+  padding: 24px 0px 0px 24px;
+  border-bottom: none;
+  height: calc(100vh - 150px);
+  background: rgb(255, 255, 255);
+}
+
+.profile-header-container{
+  box-sizing: border-box;
+  padding-right: 24px;
+  display: flex;
+  justify-content: space-between;
+}

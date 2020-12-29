@@ -12,6 +12,7 @@ import DeliveryHome from './components/delivery/DeliveryHome'
 import Delivery from './components/delivery'
 import Business from './components/business/business'
 import PageNotFound from './components/pageNotFound'
+import Profile from './components/Profile/Profile'
 
 function App () {
   return (
@@ -25,6 +26,7 @@ function App () {
               exact
               component={Shops}
             />
+            <Route path='/profile' component={Profile} />
             <Route path='/checkout/:shopid' component={Checkout} />
             <Route path='/business' component={Business} />
             <Route path='/track-order/:orderid' component={Map} />

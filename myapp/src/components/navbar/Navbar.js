@@ -37,17 +37,24 @@ export default function Navbar ({ hideLoginAndLogout }) {
             )}
           </div>
           {isLoggedIn ? (
-            <span
-              className='nav-signin-btn'
-              onClick={() => {
-                setIsLoggedIn(false)
-                document.cookie =
-                  'x-auth-token=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;'
-                deleteAllItemsFromCartState()
-              }}
-            >
-              Logout
-            </span>
+            // <span
+            //   className='nav-signin-btn'
+            //   onClick={() => {
+            //     setIsLoggedIn(false)
+            //     document.cookie =
+            //       'x-auth-token=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;'
+            //     deleteAllItemsFromCartState()
+            //   }}
+            // >
+            //   Logout
+            // </span>
+            <Link style={{ textDecoration: 'none' }} to={'/profile'}>
+              <img
+                className='user-avatar'
+                src='/images/default-avatar.png'
+                alt='User Avathar'
+              ></img>
+            </Link>
           ) : (
             <span className='nav-signin-btn' onClick={() => setShowLogin(true)}>
               Sign in

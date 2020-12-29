@@ -1,8 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-// import path from 'path'
 require('dotenv').config()
-console.log(process.env.NODE_ENV === 'production')
 
 export default function Category (props) {
   const { categoryid, categoryname } = props.category

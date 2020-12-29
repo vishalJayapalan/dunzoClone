@@ -183,18 +183,20 @@ export default function Delivery () {
               onClick={() => orderStatusUpdation()}
               disabled={orderStatus}
             >
-              accept
+              Accept
             </button>
           </div>
           {orderStatus && mapShown && (
             <div className='order-row'>
               <p>Order Picked</p>
-              <button onClick={orderPickedUp}>Picked</button>
+              <button onClick={orderPickedUp} disabled={orderPickStatus}>
+                Picked
+              </button>
             </div>
           )}
           {orderPickStatus && (
             <div className='order-row'>
-              <p>Order Status</p>
+              <p>Order Delivered</p>
               <button onClick={orderCompleted}>Completed</button>
             </div>
           )}

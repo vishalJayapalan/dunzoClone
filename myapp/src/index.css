@@ -526,6 +526,11 @@ display: none;
   width: 10%;
 }
 
+.user-avatar{
+  height: 2em;
+  cursor:pointer;
+}
+
 .nav-signin-btn {
   cursor: pointer;
 }
