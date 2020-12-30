@@ -76,16 +76,13 @@ const getCurrentUser = async (req, res) => {
   const { userid } = req.user
   try {
     const user = await pool.query(
-      `SELECT userid, fullname FROM users WHERE userid = ${userid}`
+      `SELECT userid, fullname,email FROM users WHERE userid = ${userid}`
     )
 
     if (!user.rowCount) {
       return res.status(400).json({ message: 'User not found' })
     }
-    return res.status(200).json({
-      userid: user.rows[0].userid,
-      fullname: user.rows[0].fullname
-    })
+    return res.status(200).json(user.rows[0])
   } catch (err) {
     return res.status(500).json({ message: "Can't find User" })
   }

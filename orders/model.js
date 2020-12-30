@@ -21,7 +21,7 @@ const getAllUserOrders = async (req, res) => {
     const orders = await pool.query(
       `SELECT * FROM orders where orders.userid = ${userid}`
     )
-    console.log('getting all user orders:', orders)
+    console.log('getting all user orders:', orders.rows[0])
     res.status(200).send(orders.rows)
   } catch (err) {
     res.status(500).json({ Msg: 'There was an error please try again later' })

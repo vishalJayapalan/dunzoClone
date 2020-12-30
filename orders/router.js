@@ -8,8 +8,11 @@ const {
   getOrder,
   addOrder,
   updateOrder,
-  getDeliveryGuyOrder
+  getDeliveryGuyOrder,
+  getAllUserOrders
 } = require('./model')
+
+Router.get('/all', auth, getAllUserOrders)
 
 Router.get('/ongoing', deliveryAuth, getDeliveryGuyOrder)
 

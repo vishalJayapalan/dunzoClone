@@ -15,6 +15,7 @@ export const AppContextProvider = props => {
   const [showLogin, setShowLogin] = useState(false)
   const [showRegister, setShowRegister] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [userDetails, setUserDetails] = useState(null)
   const [deliveryAddress, setDeliveryAddress] = useState('')
   const [clearCartPopup, setClearCartPopup] = useState(false)
 
@@ -198,6 +199,7 @@ export const AppContextProvider = props => {
   async function getUser () {
     const data = await request('user/getUser', 'GET')
     const jsonData = await data.json()
+    setUserDetails(jsonData)
     setIsLoggedIn(jsonData.userid)
   }
 
@@ -218,6 +220,7 @@ export const AppContextProvider = props => {
         showRegister,
         setShowRegister,
         isLoggedIn,
+        userDetails,
         setIsLoggedIn,
         deliveryAddress,
         setDeliveryAddress,
