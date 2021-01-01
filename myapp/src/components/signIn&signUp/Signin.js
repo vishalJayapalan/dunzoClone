@@ -47,6 +47,7 @@ export default function Signin () {
               <h1 className='heading'>Login</h1>
               <img
                 src='/images/closeIcon.png'
+                alt='close'
                 onClick={() => setShowLogin(false)}
               />
             </div>

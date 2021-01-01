@@ -73,6 +73,8 @@ const loginUser = async (req, res) => {
 
 const getCurrentUser = async (req, res) => {
   // const userId = req.params.userid
+  if (!req.user) return res.status(400).json({ message: 'User not found' })
+
   const { userid } = req.user
   try {
     const user = await pool.query(

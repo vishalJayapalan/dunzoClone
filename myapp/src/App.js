@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import { AppContextProvider } from './components/context/App/AppContext'
 
+import PrivateRoute from './PrivateRoute'
+
 import Categories from './components/categories/Categories'
 import Shops from './components/shops/Shops'
 import Items from './components/items/items'
@@ -26,10 +28,10 @@ function App () {
               exact
               component={Shops}
             />
-            <Route path='/profile' component={Profile} />
+            <Route path='/track-order/:orderid' component={Map} />
+            <PrivateRoute path='/profile' component={Profile} />
             <Route path='/checkout/:shopid' component={Checkout} />
             <Route path='/business' component={Business} />
-            <Route path='/track-order/:orderid' component={Map} />
             <Route
               path='/:categoryid/shop/:shopname/:shopid'
               component={Items}

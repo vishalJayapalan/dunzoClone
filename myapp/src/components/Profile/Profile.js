@@ -19,7 +19,7 @@ export default function Profile () {
 
   const [userOrders, setUserOrders] = useState([])
 
-  console.log(userDetails)
+  // console.log(userDetails)
 
   async function getAllUserOrders () {
     const data = await window.fetch('/order/all/', {
@@ -32,7 +32,7 @@ export default function Profile () {
     if (data.ok) {
       const jsonData = await data.json()
       setUserOrders(jsonData)
-      console.log(jsonData)
+      // console.log(jsonData)
     }
   }
 
@@ -46,7 +46,7 @@ export default function Profile () {
     })
     if (data.ok) {
       const jsonData = await data.json()
-      console.log(jsonData)
+      // console.log(jsonData)
       setUserAddresses(jsonData)
     } else {
     }

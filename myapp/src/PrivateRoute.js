@@ -1,0 +1,26 @@
+import React, { useEffect, useContext } from 'react'
+import { Route, Redirect, useLocation, useHistory } from 'react-router-dom'
+import { getCookie } from './components/util/cookies'
+
+import { AppContext } from './components/context/App/AppContext'
+// import { getCookie } from './components/util/cookies'
+
+export default function PrivateRoute ({ component: Component, ...rest }) {
+  const { isLoggedIn } = useContext(AppContext)
+  const history = useHistory()
+  const location = useLocation()
+  const token = getCookie('x-auth-token')
+
+  useEffect(() => {
+    token && history.push(location.pathname)
+  }, [])
+
+  return (
+    <Route
+      {...rest}
+      render={props =>
+        isLoggedIn ? <Component {...props} /> : <Redirect to='/' />
+      }
+    />
+  )
+}

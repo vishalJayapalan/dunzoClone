@@ -70,7 +70,8 @@ export default function Map (props) {
         const jsonData = await data.json()
         setOrder(jsonData[0])
         // console.log(jsonData)
-        partnerAlreadyAssigned = jsonData[0].deliverypartnerid
+        // console.log('DeliveryPartner', jsonData[0].deliverypartnerid)
+        partnerAlreadyAssigned = Number(jsonData[0].deliverypartnerid)
         if (jsonData[0].delivered) orderDelivered = true
 
         deliveryLocation = await geocoding(jsonData[0].deliveryaddress)

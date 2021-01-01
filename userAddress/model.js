@@ -1,6 +1,7 @@
 const { pool } = require('../util/database')
 
 const getUserAddress = async (req, res) => {
+  if (!req.user) return res.status(404).json({ Msg: 'Not Authenticated' })
   const { userid } = req.user
   // console.log('user', req.user)
   try {
