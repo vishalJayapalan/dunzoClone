@@ -7,14 +7,14 @@ import Navbar from '../navbar/Navbar'
 import './Checkout.css'
 
 import Cart from '../cart/cart'
-import { AppContext } from '../context/App/AppContext'
+import { UserContext } from '../context/user/UserContext'
 
 import UserAddress from '../userAddress/userAddress'
 import AddUserAddress from '../userAddress/addUserAddress'
 
 export default function Checkout (props) {
   const { setShowLogin, isLoggedIn, deleteAllItemsFromCart, cart } = useContext(
-    AppContext
+    UserContext
   )
   const [addressSelected, setAddressSelected] = useState(false)
 

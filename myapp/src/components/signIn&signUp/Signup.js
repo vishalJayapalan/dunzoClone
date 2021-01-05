@@ -1,11 +1,11 @@
 import React, { useState, useContext } from 'react'
 
-import { AppContext } from '../context/App/AppContext'
+import { UserContext } from '../context/user/UserContext'
 import { setCookie } from '../util/cookies'
 
 export default function Signup () {
   const { setShowRegister, setShowLogin, setIsLoggedIn, getCart } = useContext(
-    AppContext
+    UserContext
   )
 
   const [email, setEmail] = useState('')

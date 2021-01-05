@@ -1,0 +1,28 @@
+.user-orders-container{
+  width: 100%;
+  height: 100%;
+}
+
+.user-order-container{
+  padding: 2.5em;
+  width: 80%;
+}
+
+.order-category-container{
+  display: flex;
+  align-items: center;
+}
+
+.user-category-image{
+  width: 3em;
+}
+
+.user-category{
+  font-weight: 550;
+}
+
+.hr{
+  width: 100%;
+  height: 1px;
+  background-color: rgb(231, 232, 235);
+}

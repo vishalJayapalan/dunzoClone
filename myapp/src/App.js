@@ -1,9 +1,10 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
-import { AppContextProvider } from './components/context/App/AppContext'
+import { UserContextProvider } from './components/context/user/UserContext'
 
 import PrivateRoute from './PrivateRoute'
+import PrivateDeliveryRoute from './PrivateDeliveryRoute'
 
 import Categories from './components/categories/Categories'
 import Shops from './components/shops/Shops'
@@ -20,7 +21,7 @@ function App () {
   return (
     <div className='App'>
       <Router>
-        <AppContextProvider>
+        <UserContextProvider>
           <Switch>
             <Route path='/' exact component={Categories} />
             <Route
@@ -28,7 +29,7 @@ function App () {
               exact
               component={Shops}
             />
-            <Route path='/track-order/:orderid' component={Map} />
+            <PrivateRoute path='/track-order/:orderid' component={Map} />
             <PrivateRoute path='/profile' component={Profile} />
             <Route path='/checkout/:shopid' component={Checkout} />
             <Route path='/business' component={Business} />
@@ -37,10 +38,13 @@ function App () {
               component={Items}
             />
             <Route path='/delivery' exact component={DeliveryHome} />
-            <Route path='/delivery/:deliveryguyid' component={Delivery} />
+            <PrivateDeliveryRoute
+              path='/delivery/:deliveryguyid'
+              component={Delivery}
+            />
             <Route path='*' component={PageNotFound} />
           </Switch>
-        </AppContextProvider>
+        </UserContextProvider>
       </Router>
     </div>
   )

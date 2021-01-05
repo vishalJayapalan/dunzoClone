@@ -2,9 +2,10 @@ import React, { useContext, useState, useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import Navbar from '../navbar/Navbar'
 import { getCookie } from '../util/cookies'
+import ShowOrders from '../orders/ShowOrders'
 import './Profile.css'
 
-import { AppContext } from '../context/App/AppContext'
+import { UserContext } from '../context/user/UserContext'
 
 export default function Profile () {
   const {
@@ -12,29 +13,10 @@ export default function Profile () {
     setIsLoggedIn,
     userDetails,
     deleteAllItemsFromCartState
-  } = useContext(AppContext)
+  } = useContext(UserContext)
   const [redirectToHomePage, setRedirectToHomePage] = useState(false)
 
   const [userAddresses, setUserAddresses] = useState([])
-
-  const [userOrders, setUserOrders] = useState([])
-
-  // console.log(userDetails)
-
-  async function getAllUserOrders () {
-    const data = await window.fetch('/order/all/', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-auth-token': getCookie('x-auth-token')
-      }
-    })
-    if (data.ok) {
-      const jsonData = await data.json()
-      setUserOrders(jsonData)
-      // console.log(jsonData)
-    }
-  }
 
   const getUserAddress = async () => {
     const data = await window.fetch(`/userAddress/${isLoggedIn}/`, {
@@ -46,14 +28,14 @@ export default function Profile () {
     })
     if (data.ok) {
       const jsonData = await data.json()
-      // console.log(jsonData)
+      console.log('userAddresses', jsonData)
       setUserAddresses(jsonData)
     } else {
     }
   }
 
   useEffect(() => {
-    getAllUserOrders()
+    // getAllUserOrders()
     getUserAddress()
   }, [])
 
@@ -101,7 +83,9 @@ export default function Profile () {
               <a className='selected'>Orders List</a>
               <a>Addresses</a>
             </div>
-            <div className='profile-contents'></div>
+            <div className='profile-contents'>
+              <ShowOrders />
+            </div>
           </div>
         </div>
       </div>

@@ -1,10 +1,10 @@
 import React, { useState, useContext } from 'react'
-import { AppContext } from '../context/App/AppContext'
+import { UserContext } from '../context/user/UserContext'
 import SearchItems from './searchItems'
 
 export default function Search ({ includeSearchResults }) {
   const [searchName, setSearchName] = useState('')
-  const { items } = useContext(AppContext)
+  const { items } = useContext(UserContext)
   let searchResults = []
   const searchItemsBySubCategories = {}
   const searchItems = []

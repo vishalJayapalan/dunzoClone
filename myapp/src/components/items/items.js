@@ -7,11 +7,11 @@ import Navbar from '../navbar/Navbar'
 import Search from '../search/search'
 import ClearCartPopup from '../cart/clearCartPopup'
 
-import { AppContext } from '../context/App/AppContext'
+import { UserContext } from '../context/user/UserContext'
 
 export default function Items (props) {
   const { items, getItems, updateItems, clearCartPopup } = useContext(
-    AppContext
+    UserContext
   )
 
   useEffect(() => {

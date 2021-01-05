@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
 
-import { AppContext } from '../context/App/AppContext'
+import { UserContext } from '../context/user/UserContext'
 
 export default function CartButton (props) {
-  const { updateCart } = useContext(AppContext)
+  const { updateCart } = useContext(UserContext)
 
   return (
     <div>

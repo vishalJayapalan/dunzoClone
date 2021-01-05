@@ -46,6 +46,7 @@
 .profile-contents-container{
   /* width: 80%;
   height: 63vh; */
+  height: 100%;
   display: grid;
   grid-template-columns: 0.85fr 5fr;
   grid-template-rows: 1fr;
@@ -71,4 +72,9 @@
 
 .profile-sidebar-container .selected{
   background-color: rgb(255, 255, 255);
+}
+
+.profile-contents{
+  height: 50vh;
+  overflow-y: scroll;
 }

@@ -1,17 +1,17 @@
 import React, { useReducer, createContext, useState, useEffect } from 'react'
 import { getCookie } from '../../util/cookies'
-import AppReducer from './AppReducer'
+import UserReducer from './UserReducer'
 import { v4 as uuidV4 } from 'uuid'
 
-export const AppContext = createContext()
+export const UserContext = createContext()
 
 const initialState = {
   cart: [],
   items: []
 }
 
-export const AppContextProvider = props => {
-  const [state, dispatch] = useReducer(AppReducer, initialState)
+export const UserContextProvider = props => {
+  const [state, dispatch] = useReducer(UserReducer, initialState)
   const [showLogin, setShowLogin] = useState(false)
   const [showRegister, setShowRegister] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -204,7 +204,7 @@ export const AppContextProvider = props => {
   }
 
   return (
-    <AppContext.Provider
+    <UserContext.Provider
       value={{
         cart: state.cart,
         items: state.items,
@@ -229,6 +229,6 @@ export const AppContextProvider = props => {
       }}
     >
       {props.children}
-    </AppContext.Provider>
+    </UserContext.Provider>
   )
 }

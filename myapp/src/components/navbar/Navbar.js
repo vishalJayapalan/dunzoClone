@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import Signin from '../signIn&signUp/Signin'
 import Signup from '../signIn&signUp/Signup'
 
-import { AppContext } from '../context/App/AppContext'
+import { UserContext } from '../context/user/UserContext'
 
 export default function Navbar ({ hideLoginAndLogout }) {
   const {
@@ -15,7 +15,8 @@ export default function Navbar ({ hideLoginAndLogout }) {
     setIsLoggedIn,
     cart,
     deleteAllItemsFromCartState
-  } = useContext(AppContext)
+  } = useContext(UserContext)
+
   return (
     <div className='nav-container'>
       <Link style={{ textDecoration: 'none' }} to={'/'}>

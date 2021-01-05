@@ -1,10 +1,10 @@
 import React, { useContext } from 'react'
 
-import { AppContext } from '../context/App/AppContext'
+import { UserContext } from '../context/user/UserContext'
 import CartItem from './cartItem'
 
 export default function CartItems () {
-  const { cart } = useContext(AppContext)
+  const { cart } = useContext(UserContext)
   return (
     <div className='cart-items-container'>
       {cart.map(cartItem => (

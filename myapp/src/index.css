@@ -300,6 +300,22 @@ button{
   display: none; /* for chrome*/
 }
 
+
+.few-indicator{
+  color: red;
+}
+
+.disabled{
+  pointer-events: none;
+  opacity: .5;
+  /* background-color: #CCC; */
+}
+
+.msg-unavailable{
+  color: grey;
+  font-size: 80%;
+}
+
 .item-container {
   display: flex;
   margin-bottom: 5%;

@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
 
-import { AppContext } from '../context/App/AppContext'
+import { UserContext } from '../context/user/UserContext'
 
 export default function ClearCartPopup () {
-  const { setClearCartPopup, deleteAllItemsFromCart } = useContext(AppContext)
+  const { setClearCartPopup, deleteAllItemsFromCart } = useContext(UserContext)
   return (
     <div className='overlay'>
       <div className='clear-cart-popup-container'>
