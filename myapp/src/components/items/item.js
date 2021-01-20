@@ -6,7 +6,7 @@ import CartButton from '../cart/cartButton'
 
 export default function Item (props) {
   const { cart, addToCart, setClearCartPopup } = useContext(UserContext)
-  console.log(props.item)
+  // console.log(props.item)
   let inCart = null
   cart.forEach(cartItem => {
     if (cartItem.itemid === props.item.itemid) {
@@ -40,7 +40,6 @@ export default function Item (props) {
         ) : (
           <button
             className={`item-button-add`}
-            disabled={props.item.quantity}
             onClick={() => {
               if (cart.length && cart[0].shopname !== props.shopname) {
                 return setClearCartPopup(true)

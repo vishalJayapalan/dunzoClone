@@ -69,7 +69,8 @@ button{
 
 @media screen and (max-width: 700px) {
   .category-container {
-    width: 90%;
+    min-width: 90%;
+    max-width: 90%;
   }
 }
 
@@ -699,7 +700,8 @@ display: none;
     font-size: 50%;
   }
   .shop-container {
-    width: 80%;
+    min-width: 80%;
+    max-width: 80%;
     padding: 1%;
     height: auto;
     /* height: 20%; */

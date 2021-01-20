@@ -26,3 +26,18 @@
   height: 1px;
   background-color: rgb(231, 232, 235);
 }
+
+.status-track{
+  padding: 1%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.track-order{
+  border: none;
+  background-color: green;
+  color: white;
+  padding: 1% 5%;
+  border-radius: 20px;
+  text-decoration: none;
+}

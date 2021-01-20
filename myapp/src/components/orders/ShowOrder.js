@@ -1,6 +1,9 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export default function ShowOrder ({ userOrder }) {
+  console.log(typeof userOrder.delivered)
+  console.log(userOrder.delivered)
   console.log(userOrder)
   return (
     <div className='user-order-container'>
@@ -15,6 +18,16 @@ export default function ShowOrder ({ userOrder }) {
       <div className='shop-name'>{userOrder.shopaddress}</div>
       <div className='user-address'>{userOrder.deliveryaddress}</div>
       <div className='hr'></div>
+      <div className='status-track'>
+        {userOrder.delivered && <div>Completed</div>}
+        <Link
+          className='track-order'
+          style={{ textDecoration: 'none' }}
+          to={`/track-order/${userOrder.orderid}`}
+        >
+          Track Order
+        </Link>
+      </div>
     </div>
   )
 }
