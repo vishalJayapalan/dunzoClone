@@ -78,3 +78,7 @@
   height: 50vh;
   overflow-y: scroll;
 }
+
+.profileSidebarButtons{
+  cursor: pointer;
+}

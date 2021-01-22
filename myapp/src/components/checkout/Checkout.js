@@ -9,7 +9,8 @@ import './Checkout.css'
 import Cart from '../cart/cart'
 import { UserContext } from '../context/user/UserContext'
 
-import UserAddress from '../userAddress/userAddress'
+// import UserAddress from '../userAddress/userAddress'
+import UserAddresses from '../userAddress/userAddresses'
 import AddUserAddress from '../userAddress/addUserAddress'
 
 export default function Checkout (props) {
@@ -154,23 +155,28 @@ export default function Checkout (props) {
               </p>
             </div>
             {isLoggedIn && !addressSelected && (
-              <div className='addresses-container'>
-                <div
-                  className='add-new-address-container'
-                  onClick={() => setAddNewAddress(true)}
-                >
-                  <p>
-                    <span>+</span> Add new Address
-                  </p>
-                </div>
-                {userAddresses.map(userAddress => (
-                  <UserAddress
-                    key={userAddress.addressid}
-                    userAddress={userAddress}
-                    setAddressSelected={setAddressSelected}
-                  />
-                ))}
-              </div>
+              <UserAddresses
+                userAddresses={userAddresses}
+                setAddNewAddress={setAddNewAddress}
+                setAddressSelected={setAddressSelected}
+              />
+              // <div className='addresses-container'>
+              //   <div
+              //     className='add-new-address-container'
+              //     onClick={() => setAddNewAddress(true)}
+              //   >
+              //     <p>
+              //       <span>+</span> Add new Address
+              //     </p>
+              //   </div>
+              //   {userAddresses.map(userAddress => (
+              //     <UserAddress
+              //       key={userAddress.addressid}
+              //       userAddress={userAddress}
+              //       setAddressSelected={setAddressSelected}
+              //     />
+              //   ))}
+              // </div>
             )}
             {addressSelected && (
               <div className='selected-address-container'>
