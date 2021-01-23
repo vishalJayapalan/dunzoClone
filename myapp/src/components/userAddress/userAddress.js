@@ -3,8 +3,11 @@ import React from 'react'
 export default function UserAddress ({
   userAddress,
   setAddressSelected,
-  fromProfile
+  fromProfile,
+  deleteUserAddress
 }) {
+  // function deleteUserAddress () {}
+  // console.log(userAddress)
   return (
     <div
       className='address-container'
@@ -12,7 +15,14 @@ export default function UserAddress ({
     >
       <h2>{userAddress.category}</h2>
       <p>{userAddress.address}</p>
-      {fromProfile && <button className='delete-address'>Delete</button>}
+      {fromProfile && (
+        <button
+          onClick={() => deleteUserAddress(userAddress.addressid)}
+          className='delete-address'
+        >
+          Delete
+        </button>
+      )}
     </div>
   )
 }

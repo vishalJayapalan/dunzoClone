@@ -5,9 +5,10 @@ export default function ({
   setAddNewAddress,
   userAddresses,
   setAddressSelected,
-  fromProfile
+  fromProfile,
+  deleteUserAddress
 }) {
-  console.log(userAddresses)
+  // console.log(userAddresses)
   return (
     <div className='addresses-container'>
       <div
@@ -24,6 +25,7 @@ export default function ({
           userAddress={userAddress}
           setAddressSelected={setAddressSelected}
           fromProfile={fromProfile}
+          deleteUserAddress={deleteUserAddress}
         />
       ))}
     </div>

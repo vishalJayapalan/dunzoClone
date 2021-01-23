@@ -43,7 +43,19 @@ const updateUserAddress = async (req, res) => {
   }
 }
 
-const deleteUserAddress = async (req, res) => {}
+const deleteUserAddress = async (req, res) => {
+  const { addressid } = req.params
+  console.log(addressid)
+  try {
+    const userAddresses = await pool.query(
+      `DELETE FROM userAddresses WHERE addressid = ${addressid} RETURNING *`
+    )
+    console.log(userAddresses.rows)
+    res.status(200).send(userAddresses.rows)
+  } catch (err) {
+    res.status(500).json({ Msg: 'There was an error please try again later' })
+  }
+}
 
 module.exports = {
   getUserAddress,

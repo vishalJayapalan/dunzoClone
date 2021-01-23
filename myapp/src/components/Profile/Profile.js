@@ -56,6 +56,30 @@ export default function Profile () {
     }
   }
 
+  const deleteUserAddress = async addressId => {
+    console.log(addressId)
+    const data = await window.fetch(`/useraddress/${addressId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': getCookie('x-auth-token')
+      }
+    })
+    if (data.ok) {
+      const deletedAddress = await data.json()
+      console.log('deletedAddress', deletedAddress)
+      const updatedAddress = userAddresses.filter(a => {
+        console.log('1', a.addressid)
+        console.log('2', deletedAddress[0].addressid)
+        return a.addressid !== deletedAddress[0].addressid
+      })
+      console.log('updatedAfterDeleting', updatedAddress)
+      setUserAddresses(updatedAddress)
+    } else {
+      console.log('Error in Deleting')
+    }
+  }
+
   useEffect(() => {
     // getAllUserOrders()
     getUserAddress()
@@ -134,6 +158,7 @@ export default function Profile () {
                   userAddresses={userAddresses}
                   setAddNewAddress={setAddNewAddress}
                   fromProfile={true}
+                  deleteUserAddress={deleteUserAddress}
                 />
               )}
             </div>
