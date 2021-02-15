@@ -1,9 +1,21 @@
+import {
+  GET_ITEMS,
+  UPDATE_ITEMS,
+  GET_CART,
+  ADD_TO_CART,
+  DELETE_ITEM_FROM_CART,
+  DELETE_ALL_ITEM_FROM_CART,
+  DECREMENT_ITEMCOUNT_FROM_CART,
+  INCREMENT_ITEMCOUNT_FROM_CART,
+  ERROR
+} from './ActionType'
+
 export default (state, action) => {
   switch (action.type) {
-    case 'GET_ITEMS': {
+    case GET_ITEMS: {
       return { ...state, items: action.payload }
     }
-    case 'UPDATE_ITEMS': {
+    case UPDATE_ITEMS: {
       const updatedItems = action.payload.items
       const toUpdateItems = action.payload.newItems.reverse()
       for (const item of toUpdateItems) {
@@ -13,19 +25,19 @@ export default (state, action) => {
       }
       return { ...state, items: updatedItems }
     }
-    case 'GET_CART': {
+    case GET_CART: {
       return {
         ...state,
         cart: action.payload
       }
     }
-    case 'ADD_TO_CART': {
+    case ADD_TO_CART: {
       return {
         ...state,
         cart: [...state.cart, ...action.payload]
       }
     }
-    case 'DELETE_ITEM_FROM_CART': {
+    case DELETE_ITEM_FROM_CART: {
       return {
         ...state,
         cart: state.cart.filter(
@@ -33,13 +45,13 @@ export default (state, action) => {
         )
       }
     }
-    case 'DELETE_ALL_ITEM_FROM_CART': {
+    case DELETE_ALL_ITEM_FROM_CART: {
       return {
         ...state,
         cart: []
       }
     }
-    case 'DECREMENT_ITEMCOUNT_FROM_CART': {
+    case DECREMENT_ITEMCOUNT_FROM_CART: {
       const newCart = state.cart.map(cartItem => {
         if (cartItem.cartid === action.payload.cartid) {
           const newCartItem = { ...cartItem }
@@ -53,7 +65,7 @@ export default (state, action) => {
         cart: newCart
       }
     }
-    case 'INCREMENT_ITEMCOUNT_FROM_CART': {
+    case INCREMENT_ITEMCOUNT_FROM_CART: {
       const newCart = state.cart.map(cartItem => {
         if (cartItem.cartid === action.payload.cartid) {
           const newCartItem = { ...cartItem }
@@ -67,7 +79,7 @@ export default (state, action) => {
         cart: newCart
       }
     }
-    case 'ERROR': {
+    case ERROR: {
       return {
         ...state,
         'ERROR: ': action.payload

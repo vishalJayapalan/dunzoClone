@@ -69,8 +69,6 @@ export default function Map (props) {
       if (data.ok) {
         const jsonData = await data.json()
         setOrder(jsonData[0])
-        // console.log(jsonData)
-        // console.log('DeliveryPartner', jsonData[0].deliverypartnerid)
         partnerAlreadyAssigned = Number(jsonData[0].deliverypartnerid)
         if (jsonData[0].delivered) orderDelivered = true
 
@@ -92,8 +90,6 @@ export default function Map (props) {
     if (orderIdNotFound || orderDelivered) return
     setPackingStatus(true)
     map()
-    // setTimeout(() => {
-    // console.log(order)
     if (!partnerAlreadyAssigned) {
       socket.emit('deliveryPartnerRequired', {
         shopname: 'Shoppers Stop',
@@ -128,7 +124,6 @@ export default function Map (props) {
         }).addTo(mapRef.current)
       })
     }
-    // }, 5000)
   }
 
   useEffect(() => {
@@ -152,9 +147,12 @@ export default function Map (props) {
   ) : Object.keys(order).length === 0 ? (
     <h1>Loading ...</h1>
   ) : order.delivered ? (
-    <div>
-      <h1>Order Completed... </h1>
-      <Link to={{ pathname: '/' }}>Go To Home Page</Link>
+    <div className='order-completed-container'>
+      <Navbar hideLoginAndLogout={true} />
+      <div className='order-completed-inner-container'>
+        <h1 className='order-completed-msg'>Your order has been delivered </h1>
+        <Link to={{ pathname: '/' }}>Go To Home Page</Link>
+      </div>
     </div>
   ) : (
     <div className='track-order-page'>

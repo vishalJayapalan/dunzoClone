@@ -37,7 +37,6 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body
-  // console.log('cookie', req.headers)
   if (!email || !password)
     return res.status(200).json({ msg: 'Please Enter all fields' })
   try {
@@ -54,25 +53,20 @@ const loginUser = async (req, res) => {
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: 3600 }
     )
-    return (
-      res
-        .status(200)
-        .cookie('x-auth-token', accessToken, { maxAge: 3600000 })
-        // .header('Access-Control-Allow-Origin', 'http://localhost:3000/')
-        // .header('Access-Control-Allow-Credentials', 'true')
-        .json({
-          userid: user.rows[0].userid,
-          fullname: user.rows[0].fullname,
-          accessToken
-        })
-    )
+    return res
+      .status(200)
+      .cookie('x-auth-token', accessToken, { maxAge: 3600000 })
+      .json({
+        userid: user.rows[0].userid,
+        fullname: user.rows[0].fullname,
+        accessToken
+      })
   } catch (err) {
     return res.status(500).json({ msg: 'Some error occured' })
   }
 }
 
 const getCurrentUser = async (req, res) => {
-  // const userId = req.params.userid
   if (!req.user) return res.status(400).json({ message: 'User not found' })
 
   const { userid } = req.user

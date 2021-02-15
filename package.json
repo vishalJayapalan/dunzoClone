@@ -20,7 +20,6 @@
   "bugs": {
     "url": "https://github.com/vishalJayapalan/dunzoClone/issues"
   },
-  "homepage": "https://github.com/vishalJayapalan/dunzoClone#readme",
   "devDependencies": {
     "nodemon": "^2.0.4"
   },

@@ -56,10 +56,18 @@
 }
 
 .leaflet-control-zoom {
-  /* pointer-events: none; */
   display: none;
 }
 
 .leaflet-marker-icon.leaflet-interactive {
   pointer-events: none;
+}
+.order-completed-inner-container{
+  padding: 5em;
+  margin: 5em;
+}
+
+.order-completed-msg{
+  font-size: 21px;
+  color: rgb(108, 122, 255);
 }

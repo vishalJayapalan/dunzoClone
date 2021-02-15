@@ -26,7 +26,7 @@ const { ioSocket } = require('./util/socket')
 // next()
 // })
 // console.log(__dirname)
-
+console.log('path', path.join(__dirname, 'myapp', 'build'))
 if (process.env.NODE_ENV === 'production') {
   // serve static content
   app.use(express.static(path.join(__dirname, 'myapp', 'build')))

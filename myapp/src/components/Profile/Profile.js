@@ -34,7 +34,6 @@ export default function Profile () {
     })
     if (data.ok) {
       const jsonData = await data.json()
-      // console.log('userAddresses', jsonData)
       setUserAddresses(jsonData)
     } else {
     }
@@ -57,7 +56,6 @@ export default function Profile () {
   }
 
   const deleteUserAddress = async addressId => {
-    console.log(addressId)
     const data = await window.fetch(`/useraddress/${addressId}`, {
       method: 'DELETE',
       headers: {
@@ -67,13 +65,9 @@ export default function Profile () {
     })
     if (data.ok) {
       const deletedAddress = await data.json()
-      console.log('deletedAddress', deletedAddress)
       const updatedAddress = userAddresses.filter(a => {
-        console.log('1', a.addressid)
-        console.log('2', deletedAddress[0].addressid)
         return a.addressid !== deletedAddress[0].addressid
       })
-      console.log('updatedAfterDeleting', updatedAddress)
       setUserAddresses(updatedAddress)
     } else {
       console.log('Error in Deleting')
@@ -81,7 +75,6 @@ export default function Profile () {
   }
 
   useEffect(() => {
-    // getAllUserOrders()
     getUserAddress()
   }, [])
 
