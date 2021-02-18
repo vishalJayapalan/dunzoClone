@@ -1,10 +1,10 @@
-require('dotenv').config()
+// require('dotenv').config()
 
 const { pool } = require('../util/database')
 
 const getItems = async (req, res) => {
   try {
-    await pool.query(
+    pool.query(
       `SELECT * FROM items WHERE shopid = '${req.params.shopid}' ORDER BY subcategory`,
       (error, results) => {
         if (error) throw error
@@ -15,6 +15,8 @@ const getItems = async (req, res) => {
     res.status(500).json({ Msg: 'There was an error please try again later' })
   }
 }
+
+// todo remove the try catch
 
 // INSERT INTO items(itemname,subcategory,itemsize,itemprice,quantity,shopid) VALUES ('Bread','Breadfast & Diary','400 Gms',34.99 ,100 ,1 );
 // INSERT INTO items(itemname,subcategory,itemsize,itemprice,quantity,shopid) VALUES ('Cheese Slices','Breadfast & Diary','10 Slices', 99.99, 30 , 1 );

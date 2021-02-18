@@ -90,6 +90,8 @@ const updateCartItem = async (req, res) => {
   }
 }
 
+// update cart send the quantity from frontend
+
 module.exports = {
   getCartItems,
   addItemToCart,

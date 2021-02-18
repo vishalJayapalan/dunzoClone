@@ -19,7 +19,11 @@ export default function Navbar ({ hideLoginAndLogout }) {
 
   return (
     <div className='nav-container'>
-      <Link style={{ textDecoration: 'none' }} to={'/'}>
+      <Link
+        className='app-name-container'
+        style={{ textDecoration: 'none' }}
+        to={'/'}
+      >
         <span className='app-name'>Donesooo</span>
       </Link>
 
@@ -49,7 +53,11 @@ export default function Navbar ({ hideLoginAndLogout }) {
             // >
             //   Logout
             // </span>
-            <Link style={{ textDecoration: 'none' }} to={'/profile'}>
+            <Link
+              className='profile-icon'
+              style={{ textDecoration: 'none' }}
+              to={'/profile'}
+            >
               <img
                 className='user-avatar'
                 src='/images/default-avatar.png'

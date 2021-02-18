@@ -27,17 +27,14 @@ export default function DeliveryGuySignin ({
         setPassword('')
         setShowLogin(false)
         setIsLoggedIn(jsonData.deliveryguyid)
-        // getCart()
       } else {
         throw response
       }
     } catch (err) {
       const jsonData = await err.json()
-      // console.log('jsonError', jsonData)
       setEmail('')
       setPassword('')
       setErrorMsg(jsonData.msg)
-      // console.log(err)
     }
   }
   return (

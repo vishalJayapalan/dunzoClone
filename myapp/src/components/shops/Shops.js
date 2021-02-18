@@ -25,7 +25,7 @@ export default function Shops (props) {
     fetchShops()
   }, [])
   return (
-    <div>
+    <>
       <Navbar />
       <div className='category-name-inshop-container'>
         <img
@@ -42,6 +42,6 @@ export default function Shops (props) {
           ))}
         </div>
       </div>
-    </div>
+    </>
   )
 }

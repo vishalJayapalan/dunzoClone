@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import './Map.css'
-import { Redirect, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import Leaflet from 'leaflet'
 import 'leaflet-routing-machine'
