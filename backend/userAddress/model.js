@@ -3,13 +3,10 @@ const { pool } = require('../util/database')
 const getUserAddress = async (req, res) => {
   if (!req.user) return res.status(404).json({ Msg: 'Not Authenticated' })
   const { userid } = req.user
-  // console.log('user', req.user)
   try {
-    // const userAddress = await pool.query(
-    //   `SELECT * FROM useraddresses JOIN users ON users.userid = useraddresses.userid WHERE users.userid = ${userid}`
-    // )
     const userAddress = await pool.query(
-      `SELECT * FROM useraddresses WHERE userAddresses.userid = ${userid}`
+      `SELECT * FROM useraddresses WHERE userAddresses.userid = $1`,
+      [userid]
     )
     res.status(200).send(userAddress.rows)
   } catch (err) {
@@ -22,7 +19,8 @@ const addUserAddress = async (req, res) => {
   const { userid } = req.user
   try {
     const userAddress = await pool.query(
-      `INSERT INTO useraddresses (address,userid,category) VALUES ('${address}','${userid}','${category}') RETURNING *`
+      `INSERT INTO useraddresses (address,userid,category) VALUES ($1,$2,$3) RETURNING *`,
+      [address, userid, category]
     )
     res.status(201).send(userAddress.rows)
   } catch (err) {
@@ -35,7 +33,8 @@ const updateUserAddress = async (req, res) => {
   const { addressid } = req.params
   try {
     const updatedUserAddress = await pool.query(
-      `UPDATE userAddresses SET address = ${address} WHERE addressid = ${addressid} RETURNING *`
+      `UPDATE userAddresses SET address = $1 WHERE addressid = $2 RETURNING *`,
+      [address, addressid]
     )
     res.status(200).send(updatedUserAddress.rows)
   } catch (err) {
@@ -45,12 +44,11 @@ const updateUserAddress = async (req, res) => {
 
 const deleteUserAddress = async (req, res) => {
   const { addressid } = req.params
-  console.log(addressid)
   try {
     const userAddresses = await pool.query(
-      `DELETE FROM userAddresses WHERE addressid = ${addressid} RETURNING *`
+      `DELETE FROM useraddresses WHERE addressid = $1 RETURNING *`,
+      [addressid]
     )
-    console.log(userAddresses.rows)
     res.status(200).send(userAddresses.rows)
   } catch (err) {
     res.status(500).json({ Msg: 'There was an error please try again later' })

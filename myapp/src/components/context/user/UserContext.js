@@ -26,7 +26,7 @@ export const UserContextProvider = props => {
     }
   }, [])
   useEffect(() => {
-    getCart()
+    isLoggedIn && getCart()
   }, [isLoggedIn])
 
   const request = async (params, method, body) => {
@@ -78,7 +78,7 @@ export const UserContextProvider = props => {
             addToCart(cartitem, cartitem.shopname)
           })
         } else {
-          const data = await window.fetch('/cart')
+          const data = await request('cart', 'GET')
           if (!data.ok) {
             throw data
           }
@@ -221,6 +221,7 @@ export const UserContextProvider = props => {
         setShowRegister,
         isLoggedIn,
         userDetails,
+        setUserDetails,
         setIsLoggedIn,
         deliveryAddress,
         setDeliveryAddress,

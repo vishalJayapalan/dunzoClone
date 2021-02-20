@@ -2,12 +2,11 @@ const { pool } = require('../util/database')
 
 const getOrder = async (req, res) => {
   const { orderid } = req.params
-  // console.log('orderid', orderid)
   try {
     const order = await pool.query(
-      `SELECT * FROM orders WHERE orders.orderid = ${orderid}`
+      `SELECT * FROM orders WHERE orders.orderid = $1`,
+      [orderid]
     )
-    // console.log(order.rowCount)
     if (order.rowCount) return res.status(200).send(order.rows)
     else return res.status(400).send({ Msg: 'The order id is wrong' })
   } catch (err) {
@@ -22,7 +21,8 @@ const getAllUserOrders = async (req, res) => {
   const { userid } = req.user
   try {
     const orders = await pool.query(
-      `SELECT * FROM orders where orders.userid = ${userid}`
+      `SELECT * FROM orders where orders.userid = $1 ORDER BY orderid ASC`,
+      [userid]
     )
     res.status(200).send(orders.rows)
   } catch (err) {
@@ -34,7 +34,8 @@ const getDeliveryGuyOrder = async (req, res) => {
   const { deliveryguyid } = req.deliveryguy
   try {
     const order = await pool.query(
-      `SELECT * FROM orders WHERE orders.deliverypartnerid = ${deliveryguyid} AND orders.delivered = ${false}`
+      `SELECT * FROM orders WHERE orders.deliverypartnerid = $1 AND orders.delivered = $2`,
+      [deliveryguyid, false]
     )
     res.status(200).send(order.rows)
   } catch (err) {
@@ -47,7 +48,8 @@ const addOrder = async (req, res) => {
   const { deliveryaddress, shopaddress } = req.body
   try {
     const order = await pool.query(
-      `INSERT INTO orders (userid,deliverypartnerid,deliveryaddress,shopaddress,orderpickedup,delivered) VALUES ('${userid}',0,'${deliveryaddress}','${shopaddress}','${false}','${false}') RETURNING *`
+      `INSERT INTO orders (userid,deliverypartnerid,deliveryaddress,shopaddress,orderpickedup,delivered) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
+      [userid, 0, deliveryaddress, shopaddress, false, false]
     )
     res.status(201).send(order.rows)
   } catch (err) {
@@ -58,10 +60,10 @@ const addOrder = async (req, res) => {
 const updateOrder = async (req, res) => {
   const { orderid } = req.params
   const { name, value } = req.body
-  console.log(name, value)
   try {
     const updatedOrder = await pool.query(
-      `UPDATE orders SET ${name} = '${value}' where orderid = ${orderid} RETURNING *`
+      `UPDATE orders SET $1 = $2 where orderid = $3 RETURNING *`,
+      [name, value, orderid]
     )
     res.status(200).send(updatedOrder.rows)
   } catch (err) {

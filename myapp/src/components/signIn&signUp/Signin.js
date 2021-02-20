@@ -4,9 +4,13 @@ import { UserContext } from '../context/user/UserContext'
 import { setCookie } from '../util/cookies'
 
 export default function Signin () {
-  const { setShowLogin, setShowRegister, setIsLoggedIn, getCart } = useContext(
-    UserContext
-  )
+  const {
+    setShowLogin,
+    setShowRegister,
+    setIsLoggedIn,
+    getCart,
+    setUserDetails
+  } = useContext(UserContext)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errorMsg, setErrorMsg] = useState('')
@@ -22,10 +26,12 @@ export default function Signin () {
       })
       if (response.ok) {
         const jsonData = await response.json()
-        setCookie('x-auth-token', jsonData.accessToken)
+        // console.log(jsonData, 'jsonData')
+        // setCookie('x-auth-token', jsonData.accessToken)
         setEmail('')
         setPassword('')
         setShowLogin(false)
+        setUserDetails(jsonData)
         setIsLoggedIn(jsonData.userid)
         getCart()
       } else {

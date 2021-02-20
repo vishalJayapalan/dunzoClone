@@ -1,14 +1,15 @@
-const { pool } = require('../util/database')
+// const { pool } = require('../util/database')
 
-const getCategoriesFromDb = async () => {
-  try {
-    const categories = await pool.query(
-      'SELECT * FROM categories ORDER BY categoryid ASC'
-    )
-    return { categories, error: false }
-  } catch (e) {
-    return { error: e }
+const { getCategoriesFromDb } = require('./model')
+
+const getCategories = async (req, res) => {
+  const { error, categories } = await getCategoriesFromDb()
+  if (error) {
+    return res
+      .status(500)
+      .json({ Msg: 'There was an error please try again later' })
   }
+  res.status(200).send(categories.rows)
 }
 
 // const postCategories = async (req, res) => {
@@ -21,4 +22,4 @@ const getCategoriesFromDb = async () => {
 //   }
 // }
 
-module.exports = { getCategoriesFromDb }
+module.exports = { getCategories }

@@ -2,22 +2,19 @@
 
 const { pool } = require('../util/database')
 
-const getItems = async (req, res) => {
+const getItemsFromDb = async shopid => {
   try {
-    pool.query(
-      `SELECT * FROM items WHERE shopid = '${req.params.shopid}' ORDER BY subcategory`,
-      (error, results) => {
-        if (error) throw error
-        res.status(200).send(results.rows)
-      }
+    const items = await pool.query(
+      `SELECT * FROM items WHERE shopid = $1 ORDER BY subcategory`,
+      [shopid]
     )
+    return { items: items.rows, error: false }
   } catch (err) {
-    res.status(500).json({ Msg: 'There was an error please try again later' })
+    return { error: err }
   }
 }
 
-// todo remove the try catch
-
+module.exports = { getItemsFromDb }
 // INSERT INTO items(itemname,subcategory,itemsize,itemprice,quantity,shopid) VALUES ('Bread','Breadfast & Diary','400 Gms',34.99 ,100 ,1 );
 // INSERT INTO items(itemname,subcategory,itemsize,itemprice,quantity,shopid) VALUES ('Cheese Slices','Breadfast & Diary','10 Slices', 99.99, 30 , 1 );
 // INSERT INTO items(itemname,subcategory,itemsize,itemprice,quantity,shopid) VALUES ('Eggs','Breadfast & Diary','6 Eggs', 49 , 54,1 );
@@ -36,5 +33,3 @@ const getItems = async (req, res) => {
 // INSERT INTO items(itemname,subcategory,itemsize,itemprice,quantity,shopid) VALUES ('Red Rajma','Provisions','500 Gms', 87.99, 29, 2);
 
 // INSERT INTO items(itemname,subcategory,itemsize,itemprice,quantity,shopid) VALUES ('','','', , , );
-
-module.exports = { getItems }

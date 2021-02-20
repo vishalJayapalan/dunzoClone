@@ -12,14 +12,14 @@ const registerDeliveryGuy = async (req, res) => {
   }
   try {
     const duplicateUser = await pool.query(
-      `SELECT * FROM deliveryguys where emailid='${email}'`
+      `SELECT * FROM deliveryguys where emailid=$1`,
+      [email]
     )
     if (!duplicateUser.rowCount) {
-      // console.log('inhere')
       password = await bcrypt.hash(password, 10)
-      // console.log(name, email, password)
       const newDeliveryGuy = await pool.query(
-        `INSERT INTO deliveryguys (deliveryguyname,emailid,password) VALUES ('${name}','${email}','${password}') RETURNING *`
+        `INSERT INTO deliveryguys (deliveryguyname,emailid,password) VALUES ($1,$2,$3) RETURNING *`,
+        [name, email, password]
       )
       const accessToken = jwt.sign(
         { userid: newDeliveryGuy.rows[0].userid },
@@ -45,10 +45,9 @@ const loginDeliveryGuy = async (req, res) => {
   if (!email || !password)
     return res.status(200).json({ msg: 'Please Enter all fields' })
   try {
-    // const all = await pool.query(`select * from deliveryguys`)
-    // console.log(all.rows)
     const deliveryGuy = await pool.query(
-      `SELECT * FROM deliveryguys WHERE emailid='${email}'`
+      `SELECT * FROM deliveryguys WHERE emailid= $1 `,
+      [email]
     )
     if (!deliveryGuy.rowCount) {
       return res.status(400).json({ msg: 'your email or password is wrong' })
@@ -75,13 +74,12 @@ const loginDeliveryGuy = async (req, res) => {
 }
 
 const getCurrentDeliveryGuy = async (req, res) => {
-  // const userId = req.params.userid
-  //   const { deliveryguyid } = req.deliveryguy
   const { deliveryguyid } = req.deliveryguy
   try {
     if (!deliveryguyid) res.status(401).json({ message: 'not authenticated' })
     const deliveryGuy = await pool.query(
-      `SELECT deliveryguyid, deliveryguyname FROM deliveryguys WHERE deliveryguyid = ${deliveryguyid}`
+      `SELECT deliveryguyid, deliveryguyname FROM deliveryguys WHERE deliveryguyid = $1`,
+      [deliveryguyid]
     )
 
     if (!deliveryGuy.rowCount) {

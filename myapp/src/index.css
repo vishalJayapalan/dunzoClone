@@ -58,7 +58,7 @@ button{
   margin-top: 5%;
   border: solid 1px lightgray;
   border-radius: 2.5px;
-  box-shadow: 0.5px 0.5px 0.5px;
+  /* box-shadow: 0.5px 0.5px 0.5px; */
   display: flex;
   padding: 1rem;
   align-items: center;
@@ -93,7 +93,7 @@ button{
 
 .category-name-inshop-container {
   /* position: fixed; */
-  width: 100vw;
+  /* width: 100vw; */
   /* top: 10%; */
   margin: 5em 0 0 0;
   padding: 1em 0;
@@ -103,7 +103,7 @@ button{
 }
 
 .category-name-inshop-img {
-  margin: 0 0 0 15%;
+  margin: 0 0 0 13%;
   /* height: 5rem; */
   color: white;
   border-radius: 5px;
@@ -133,7 +133,7 @@ button{
   margin-top: 5%;
   border: solid 1px lightgray;
   border-radius: 7.5px;
-  box-shadow: 0.5px 0.5px 0.5px;
+  /* box-shadow: 0.5px 0.5px 0.5px; */
   display: flex;
   padding: 1rem;
   align-items: center;
@@ -491,7 +491,7 @@ display: none;
 }
 
 .app-name {
-  font-size: 400%;
+  font-size: 200%;
   color: white;
   -webkit-user-select: none; /* Safari */        
   -moz-user-select: none; /* Firefox */

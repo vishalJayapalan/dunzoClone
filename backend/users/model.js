@@ -12,12 +12,14 @@ const registerUser = async (req, res) => {
 
   try {
     const duplicateUser = await pool.query(
-      `SELECT * FROM users where email='${email}'`
+      `SELECT * FROM users where email=$1`,
+      [email]
     )
     if (!duplicateUser.rowCount) {
       password = await bcrypt.hash(password, 10)
       const newUser = await pool.query(
-        `INSERT INTO users (fullname,email,password) VALUES ('${fullname}','${email}','${password}') RETURNING *`
+        `INSERT INTO users (fullname,email,password) VALUES ($1,$2,$3) RETURNING *`,
+        [fullname, email, password]
       )
       const accessToken = jwt.sign(
         { userid: newUser.rows[0].userid },
@@ -40,7 +42,7 @@ const loginUser = async (req, res) => {
   if (!email || !password)
     return res.status(200).json({ msg: 'Please Enter all fields' })
   try {
-    const user = await pool.query(`SELECT * FROM users WHERE email='${email}'`)
+    const user = await pool.query(`SELECT * FROM users WHERE email=$1`, [email])
     if (!user.rowCount) {
       return res.status(400).json({ msg: 'your email or password is wrong' })
     }
@@ -72,7 +74,8 @@ const getCurrentUser = async (req, res) => {
   const { userid } = req.user
   try {
     const user = await pool.query(
-      `SELECT userid, fullname,email FROM users WHERE userid = ${userid}`
+      `SELECT userid, fullname,email FROM users WHERE userid = $1`,
+      [userid]
     )
 
     if (!user.rowCount) {

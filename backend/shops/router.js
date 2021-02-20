@@ -1,6 +1,6 @@
 const Router = require('express').Router()
 
-const { getShops, getShop } = require('./model')
+const { getShops, getShop } = require('./controller')
 
 Router.get('/:categoryid', getShops)
 

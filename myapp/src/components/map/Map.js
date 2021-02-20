@@ -11,7 +11,7 @@ import Navbar from '../navbar/Navbar'
 
 import { getCookie } from '../util/cookies'
 
-import io from 'socket.io-client'
+import { io } from 'socket.io-client'
 const endpoint = '/'
 const socket = io(endpoint)
 

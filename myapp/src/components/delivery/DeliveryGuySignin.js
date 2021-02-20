@@ -22,7 +22,7 @@ export default function DeliveryGuySignin ({
       })
       if (response.ok) {
         const jsonData = await response.json()
-        setCookie('delivery-token', jsonData.accessToken)
+        // setCookie('delivery-token', jsonData.accessToken)
         setEmail('')
         setPassword('')
         setShowLogin(false)

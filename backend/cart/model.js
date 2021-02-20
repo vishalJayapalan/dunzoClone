@@ -4,14 +4,15 @@ const { pool } = require('../util/database')
 http://localhost:5000/cart
 */
 
-const getCartItems = async (req, res) => {
+const getCartItemsFromDb = async userid => {
   try {
-    const cartItems = await pool.query(
-      'SELECT * FROM cart JOIN items ON cart.itemid = items.itemid ORDER BY cartid ASC'
+    const { rows } = await pool.query(
+      'SELECT * FROM cart JOIN items ON cart.itemid = items.itemid where cart.userid= $1 ORDER BY cartid ASC',
+      [userid]
     )
-    res.status(200).send(cartItems.rows)
-  } catch (err) {
-    res.status(500).json({ Msg: 'There was an error please try again later' })
+    return { cartItems: rows }
+  } catch (e) {
+    return { error: e }
   }
 }
 
@@ -20,21 +21,21 @@ http://localhost:5000/cart
 body: itemid,shopname
 */
 
-const addItemToCart = async (req, res) => {
-  const { itemid, itemname, shopname, cartitemquantity, item } = req.body
-  const { userid } = req.user
+const addItemToCartInDb = async (
+  itemid,
+  itemname,
+  shopname,
+  cartitemquantity,
+  userid
+) => {
   try {
-    const cartItems = await pool.query(
-      `INSERT INTO cart (itemid,itemname,shopname,cartitemquantity,userid) VALUES ('${itemid}','${itemname}','${shopname}','${cartitemquantity}','${userid}') RETURNING *`
+    const cartItem = await pool.query(
+      `INSERT INTO cart (itemid,itemname,shopname,cartitemquantity,userid) VALUES ($1,$2,$3,$4,$5) RETURNING *`,
+      [itemid, itemname, shopname, cartitemquantity, userid]
     )
-    // console.log(addedCartId)
-    // const cartJoinItem = await pool.query(
-    //   `SELECT * FROM cart JOIN items ON cart.itemid = items.itemid WHERE cartid = ${cartItems}`
-    // )
-    // console.log(cartJoinItem.rows)
-    res.status(201).send(cartItems.rows)
-  } catch (err) {
-    res.status(500).json({ Msg: err })
+    return { cartItem: cartItem.rows }
+  } catch (e) {
+    return { error: e }
   }
 }
 
@@ -42,12 +43,15 @@ const addItemToCart = async (req, res) => {
 http://localhost:5000/cart/:cartid
 */
 
-const deleteItemFromCart = async (req, res) => {
+const deleteItemFromCartInDb = async cartid => {
   try {
-    await pool.query(`DELETE FROM cart where cartid = ${req.params.cartid}`)
-    res.status(200).send({ Msg: 'DeletedSuccesfully' })
-  } catch (err) {
-    res.status(500).json({ Msg: 'There was an error please try again later' })
+    const { rows } = await pool.query(
+      `DELETE FROM cart where cartid = $1 RETURNING *`,
+      [cartid]
+    )
+    return { deletedItemFromCart: rows }
+  } catch (error) {
+    return { error: error }
   }
 }
 
@@ -55,15 +59,14 @@ const deleteItemFromCart = async (req, res) => {
 http://localhost:5000/cart/all
 */
 
-const deleteAllItemsFromCart = async (req, res) => {
-  const { userid } = req.user
+const deleteAllItemsFromCartInDb = async userid => {
   try {
-    await pool.query(`DELETE FROM cart WHERE userid=${userid}`)
-    res
-      .status(200)
-      .send({ Msg: 'Deleted ALL items in cart of user Succesfully' })
-  } catch (err) {
-    res.status(500).json({ Msg: 'There was an error please try again later' })
+    const { rows } = await pool.query(`DELETE FROM cart WHERE userid = $1`, [
+      userid
+    ])
+    return { deletedItemsFromCart: rows }
+  } catch (error) {
+    return { error: error }
   }
 }
 
@@ -72,30 +75,12 @@ http://localhost:5000/cart/:cartid
 body: cartitemquantity
 */
 
-const updateCartItem = async (req, res) => {
-  let { cartitemquantity, type } = req.body
-  const { cartid } = req.params
-  if (type === '+') {
-    cartitemquantity++
-  } else {
-    cartitemquantity--
-  }
-  try {
-    const updatedCartItem = await pool.query(
-      `UPDATE cart SET cartitemquantity = ${cartitemquantity} WHERE cartid = ${cartid} RETURNING *`
-    )
-    res.status(200).send(updatedCartItem.rows)
-  } catch (err) {
-    res.status(500).json({ Msg: 'There was an error please try again later' })
-  }
-}
-
-// update cart send the quantity from frontend
+const updateCartItemFromDb = async () => {}
 
 module.exports = {
-  getCartItems,
-  addItemToCart,
-  updateCartItem,
-  deleteAllItemsFromCart,
-  deleteItemFromCart
+  getCartItemsFromDb,
+  addItemToCartInDb,
+  updateCartItemFromDb,
+  deleteAllItemsFromCartInDb,
+  deleteItemFromCartInDb
 }

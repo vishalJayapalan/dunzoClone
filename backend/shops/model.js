@@ -1,25 +1,25 @@
 const { pool } = require('../util/database')
 
-const getShops = async (req, res) => {
-  const { categoryid } = req.params
-  // console.log('categoryid', categoryid)
+const getShopsFromDb = async categoryid => {
   try {
     const shops = await pool.query(
-      `select * from shops JOIN categories_join_shops ON shops.shopid = categories_join_shops.shopid AND categories_join_shops.categoryId =${categoryid} ORDER BY shops.shopid;`
+      `select * from shops JOIN categories_join_shops ON shops.shopid = categories_join_shops.shopid AND categories_join_shops.categoryId =$1 ORDER BY shops.shopid;`,
+      [categoryid]
     )
-    res.status(200).send(shops.rows)
-  } catch (err) {
-    res.status(500).json({ Msg: 'There was an error please try again later' })
+    return { shops, error: false }
+  } catch (e) {
+    return { error: e }
   }
 }
 
-const getShop = async (req, res) => {
-  const { shopid } = req.params
+const getShopFromDb = async shopid => {
   try {
-    const shop = await pool.query(`SELECT * FROM shops WHERE shopid=${shopid}`)
-    res.status(200).send(shop.rows)
-  } catch (err) {
-    res.status(500).json({ Msg: 'There was an error please try again later' })
+    const shop = await pool.query(`SELECT * FROM shops WHERE shopid=$1`, [
+      shopid
+    ])
+    return { shop, error: false }
+  } catch (e) {
+    return { error: e }
   }
 }
 
@@ -31,4 +31,4 @@ const getShop = async (req, res) => {
 // INSERT INTO shops(shopname) VALUES ('Munmun Florist');
 // INSERT INTO shops(shopname) VALUES ('Black Tulip Flower International');
 
-module.exports = { getShops, getShop }
+module.exports = { getShopsFromDb, getShopFromDb }

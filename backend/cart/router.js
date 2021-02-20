@@ -8,9 +8,9 @@ const {
   deleteAllItemsFromCart,
   deleteItemFromCart,
   updateCartItem
-} = require('./model')
+} = require('./controller')
 
-router.get('/', getCartItems)
+router.get('/', auth, getCartItems)
 
 router.post('/', auth, addItemToCart)
 

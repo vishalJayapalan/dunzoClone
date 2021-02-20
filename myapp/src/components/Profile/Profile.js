@@ -23,7 +23,7 @@ export default function Profile () {
   const [userAddresses, setUserAddresses] = useState([])
 
   const [addNewAddress, setAddNewAddress] = useState(false)
-
+  // console.log('userDetails', userDetails)
   const getUserAddress = async () => {
     const data = await window.fetch(`/userAddress/${isLoggedIn}/`, {
       method: 'GET',
@@ -36,6 +36,7 @@ export default function Profile () {
       const jsonData = await data.json()
       setUserAddresses(jsonData)
     } else {
+      // console.log('yHere')
     }
   }
 

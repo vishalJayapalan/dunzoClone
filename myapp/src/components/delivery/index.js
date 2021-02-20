@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import './delivery.css'
-import io from 'socket.io-client'
+import { io } from 'socket.io-client'
 
 import Nominatim from 'nominatim-geocoder'
 
@@ -42,7 +42,7 @@ export default function Delivery () {
       method: 'GET',
       headers: {
         'Content-type': 'application/json',
-        'deliveryguy-token': getCookie('delivery-token')
+        'deliveryguy-token': getCookie('deliveryguy-token')
       }
     })
     const jsonData = await data.json()
