@@ -18,18 +18,18 @@ const registerUser = async (req, res) => {
     if (!duplicateUser.rowCount) {
       password = await bcrypt.hash(password, 10)
       const newUser = await pool.query(
-        `INSERT INTO users (fullname,email,password) VALUES ($1,$2,$3) RETURNING *`,
+        `INSERT INTO users (full_name,email,password) VALUES ($1,$2,$3) RETURNING *`,
         [fullname, email, password]
       )
       const accessToken = jwt.sign(
-        { userid: newUser.rows[0].userid },
+        { id: newUser.rows[0].id },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: 3600 }
       )
       return res
         .status(201)
         .cookie('x-auth-token', accessToken, { maxAge: 3600000 })
-        .json({ userid: newUser.rows[0].userid, accessToken })
+        .json(newUser.rows)
     }
     return res.status(400).json({ msg: 'Email already exists' })
   } catch (err) {
@@ -51,18 +51,14 @@ const loginUser = async (req, res) => {
       return res.status(400).json({ msg: 'your email or password is wrong' })
     }
     const accessToken = jwt.sign(
-      { userid: user.rows[0].userid },
+      { id: user.rows[0].id },
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: 3600 }
     )
     return res
       .status(200)
       .cookie('x-auth-token', accessToken, { maxAge: 3600000 })
-      .json({
-        userid: user.rows[0].userid,
-        fullname: user.rows[0].fullname,
-        accessToken
-      })
+      .json(user.rows)
   } catch (err) {
     return res.status(500).json({ msg: 'Some error occured' })
   }
@@ -71,17 +67,17 @@ const loginUser = async (req, res) => {
 const getCurrentUser = async (req, res) => {
   if (!req.user) return res.status(400).json({ message: 'User not found' })
 
-  const { userid } = req.user
+  const userId = req.user.id
   try {
     const user = await pool.query(
-      `SELECT userid, fullname,email FROM users WHERE userid = $1`,
-      [userid]
+      `SELECT id, full_name,email FROM users WHERE id = $1`,
+      [userId]
     )
 
     if (!user.rowCount) {
       return res.status(400).json({ message: 'User not found' })
     }
-    return res.status(200).json(user.rows[0])
+    return res.status(200).json(user.rows)
   } catch (err) {
     return res.status(500).json({ message: "Can't find User" })
   }

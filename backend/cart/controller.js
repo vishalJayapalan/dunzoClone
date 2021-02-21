@@ -17,8 +17,8 @@ const getCartItems = async (req, res) => {
     return res.status(400).json({ message: 'User not found' })
   }
 
-  const { userid } = req.user
-  const { error, cartItems } = await getCartItemsFromDb(userid)
+  const userId = req.user.id
+  const { error, cartItems } = await getCartItemsFromDb(userId)
   if (error) {
     return res
       .status(500)
@@ -33,20 +33,19 @@ body: itemid,shopname
 */
 
 const addItemToCart = async (req, res) => {
-  const { itemid, itemname, shopname, cartitemquantity, item } = req.body
-  const { userid } = req.user
+  const { itemId, shopId, itemQuantity } = req.body
+  const userId = req.user.id
   const { cartItem, error } = await addItemToCartInDb(
-    itemid,
-    itemname,
-    shopname,
-    cartitemquantity,
-    userid
+    itemId,
+    shopId,
+    itemQuantity,
+    userId
   )
 
   if (error) {
     return res.status(500).json({ Msg: error })``
   }
-  res.status(201).send(cartItem)
+  res.status(201).json(cartItem)
 }
 
 /* 
@@ -55,8 +54,8 @@ http://localhost:5000/cart/:cartid
 
 const deleteItemFromCart = async (req, res) => {
   // await pool.query(`DELETE FROM cart where cartid = $1`, [req.params.cartid])
-  const { cartid } = req.params
-  const { error, deletedItemFromCart } = await deleteItemFromCartInDb(cartid)
+  const { cartId } = req.params
+  const { error, deletedItemFromCart } = await deleteItemFromCartInDb(cartId)
   if (error) {
     return res
       .status(500)
@@ -71,9 +70,9 @@ http://localhost:5000/cart/all
 */
 
 const deleteAllItemsFromCart = async (req, res) => {
-  const { userid } = req.user
+  const userId = req.user.id
   const { deletedItemsFromCart, error } = await deleteAllItemsFromCartInDb(
-    userid
+    userId
   )
   if (error) {
     return res
@@ -89,17 +88,17 @@ body: cartitemquantity
 */
 
 const updateCartItem = async (req, res) => {
-  let { cartitemquantity, type } = req.body
-  const { cartid } = req.params
+  let { quantity, type } = req.body
+  const { cartId } = req.params
   if (type === '+') {
-    cartitemquantity++
+    quantity++
   } else {
-    cartitemquantity--
+    quantity--
   }
   try {
     const updatedCartItem = await pool.query(
-      `UPDATE cart SET cartitemquantity = $1 WHERE cartid = $2 RETURNING *`,
-      [cartitemquantity, cartid]
+      `UPDATE cart_item SET quantity = $1 WHERE id = $2 RETURNING *`,
+      [quantity, cartId]
     )
     res.status(200).send(updatedCartItem.rows)
   } catch (err) {

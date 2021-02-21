@@ -16,8 +16,8 @@ router.post('/', auth, addItemToCart)
 
 router.delete('/all', auth, deleteAllItemsFromCart)
 
-router.delete('/:cartid', auth, deleteItemFromCart)
+router.delete('/:cartId', auth, deleteItemFromCart)
 
-router.put('/:cartid', updateCartItem)
+router.put('/:cartId', updateCartItem)
 
 module.exports = router

@@ -3,9 +3,10 @@
 const { pool } = require('../util/database')
 
 const getItemsFromDb = async shopid => {
+  console.log('SHOPID', shopid)
   try {
     const items = await pool.query(
-      `SELECT * FROM items WHERE shopid = $1 ORDER BY subcategory`,
+      `SELECT * FROM item WHERE shop_id = $1 ORDER BY sub_category`,
       [shopid]
     )
     return { items: items.rows, error: false }

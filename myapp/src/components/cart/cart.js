@@ -8,9 +8,10 @@ import { UserContext } from '../context/user/UserContext'
 
 export default function Cart (props) {
   const { cart } = useContext(UserContext)
+  console.log('CART', cart)
   let totalPrice = 0
   cart.forEach(cartItem => {
-    totalPrice += cartItem.itemprice * cartItem.cartitemquantity
+    totalPrice += cartItem.price * cartItem.quantity
   })
 
   return (
@@ -32,7 +33,7 @@ export default function Cart (props) {
           <p>Add items to get started</p>
         </div>
       ) : (
-        <div className='cart-shopname'>{cart[0].shopname}</div>
+        <div className='cart-shopname'>{cart[0].shop_name}</div>
       )}
       <CartItems />
       {cart.length !== 0 && (

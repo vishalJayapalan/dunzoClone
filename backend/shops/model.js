@@ -3,7 +3,7 @@ const { pool } = require('../util/database')
 const getShopsFromDb = async categoryid => {
   try {
     const shops = await pool.query(
-      `select * from shops JOIN categories_join_shops ON shops.shopid = categories_join_shops.shopid AND categories_join_shops.categoryId =$1 ORDER BY shops.shopid;`,
+      `select * from shop JOIN category_shop ON shop.id = category_shop.shop_id AND category_shop.category_id =$1 ORDER BY shop.id;`,
       [categoryid]
     )
     return { shops, error: false }
@@ -12,11 +12,9 @@ const getShopsFromDb = async categoryid => {
   }
 }
 
-const getShopFromDb = async shopid => {
+const getShopFromDb = async id => {
   try {
-    const shop = await pool.query(`SELECT * FROM shops WHERE shopid=$1`, [
-      shopid
-    ])
+    const shop = await pool.query(`SELECT * FROM shop WHERE id=$1`, [id])
     return { shop, error: false }
   } catch (e) {
     return { error: e }

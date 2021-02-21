@@ -4,19 +4,17 @@ import { UserContext } from '../context/user/UserContext'
 
 import CartButton from '../cart/cartButton'
 
-export default function Item (props) {
+export default function Item ({ item, shopName }) {
   const { cart, addToCart, setClearCartPopup } = useContext(UserContext)
   // console.log(props.item)
   let inCart = null
   cart.forEach(cartItem => {
-    if (cartItem.itemid === props.item.itemid) {
+    if (cartItem.item_id === item.id) {
       inCart = cartItem
     }
   })
   return (
-    <div
-      className={`item-container ${props.item.quantity == 0 ? 'disabled' : ''}`}
-    >
+    <div className={`item-container ${item.quantity == 0 ? 'disabled' : ''}`}>
       <div className='item-image-container'>
         <img
           src='/images/groceries.jpeg'
@@ -25,15 +23,15 @@ export default function Item (props) {
         ></img>
       </div>
       <div className='item-name-container'>
-        <p className='item-name'>{props.item.itemname}</p>
-        <p>₹ {props.item.itemprice}</p>
-        <p>{props.item.itemsize}</p>
-        {props.item.quantity < 5 && props.item.quantity != 0 && (
+        <p className='item-name'>{item.name}</p>
+        <p>₹ {item.price}</p>
+        <p>{item.description}</p>
+        {item.quantity < 5 && item.quantity != 0 && (
           <p className='few-indicator'>Only few items left</p>
         )}
       </div>
       <div className='item-button-container'>
-        {props.item.quantity == 0 ? (
+        {item.quantity == 0 ? (
           <span className='msg-unavailable'>Unavailable</span>
         ) : inCart ? (
           <CartButton inCart={inCart} />
@@ -41,10 +39,10 @@ export default function Item (props) {
           <button
             className={`item-button-add`}
             onClick={() => {
-              if (cart.length && cart[0].shopname !== props.shopname) {
+              if (cart.length && cart[0].shop_name !== shopName) {
                 return setClearCartPopup(true)
               }
-              addToCart(props.item, props.shopname)
+              addToCart(item, shopName)
             }}
           >
             + Add

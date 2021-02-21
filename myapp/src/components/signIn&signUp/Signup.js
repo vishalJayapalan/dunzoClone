@@ -1,12 +1,16 @@
 import React, { useState, useContext } from 'react'
 
 import { UserContext } from '../context/user/UserContext'
-import { setCookie } from '../util/cookies'
+// import { setCookie } from '../util/cookies'
 
 export default function Signup () {
-  const { setShowRegister, setShowLogin, setIsLoggedIn, getCart } = useContext(
-    UserContext
-  )
+  const {
+    setShowRegister,
+    setShowLogin,
+    setIsLoggedIn,
+    getCart,
+    setUserDetails
+  } = useContext(UserContext)
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -32,8 +36,10 @@ export default function Signup () {
         setEmail('')
         setFullname('')
         setPassword('')
-        setCookie('x-auth-token', jsonData.accessToken)
-        setIsLoggedIn(jsonData.userid)
+        // setCookie('x-auth-token', jsonData.accessToken)
+        setUserDetails(jsonData[0])
+        setIsLoggedIn(jsonData[0].id)
+        setShowRegister(false)
         getCart()
       } else {
         throw response

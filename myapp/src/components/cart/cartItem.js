@@ -6,16 +6,11 @@ export default function cartItem (props) {
   return (
     <div className='cart-item-container'>
       <div className='cart-item-description'>
-        <p>{props.cartItem.itemname}</p>
-        <p>{props.cartItem.itemsize}</p>
+        <p>{props.cartItem.name}</p>
+        <p>{props.cartItem.description}</p>
       </div>
       <CartButton inCart={props.cartItem} /> {/* can removeupdateCart */}
-      <p>
-        ₹{' '}
-        {(props.cartItem.itemprice * props.cartItem.cartitemquantity).toFixed(
-          2
-        )}
-      </p>
+      <p>₹ {(props.cartItem.price * props.cartItem.quantity).toFixed(2)}</p>
     </div>
   )
 }

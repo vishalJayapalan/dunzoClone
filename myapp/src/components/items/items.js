@@ -10,12 +10,14 @@ import ClearCartPopup from '../cart/clearCartPopup'
 import { UserContext } from '../context/user/UserContext'
 
 export default function Items (props) {
+  const { shopId, shopName } = props.match.params
+  // console.log('SHOPID', shopId, 'SHOPNAME', shopName)
   const { items, getItems, updateItems, clearCartPopup } = useContext(
     UserContext
   )
 
   useEffect(() => {
-    getItems(props.match.params.shopid)
+    getItems(shopId)
   }, [])
 
   let lastSubCategory = null
@@ -23,47 +25,46 @@ export default function Items (props) {
   const subcategories = []
 
   items.forEach(item => {
-    if (lastSubCategory !== item.subcategory) {
-      lastSubCategory = item.subcategory
+    if (lastSubCategory !== item.sub_category) {
+      lastSubCategory = item.sub_category
       disp.push(
         <SubCategoryName
           key={
-            item.subcategory === 'Search Results'
-              ? item.itemid + 'searchResults'
-              : item.itemid + 'subname'
+            item.sub_category === 'Search Results'
+              ? item.id + 'searchResults'
+              : item.id + 'subname'
           }
-          itemId={item.itemid}
-          subcategory={item.subcategory}
+          itemId={item.id}
+          subcategory={item.sub_category}
         />
       )
       subcategories.push(
         <Subcategories
           key={
-            item.subcategory === 'Search Results'
-              ? item.itemid + 'searchResultsCat'
-              : item.itemid + 'subcat'
+            item.sub_category === 'Search Results'
+              ? item.id + 'searchResultsCat'
+              : item.id + 'subcat'
           }
-          itemId={item.itemid}
-          subcategory={item.subcategory}
+          itemId={item.id}
+          subcategory={item.sub_category}
         />
       )
     }
     disp.push(
       <Item
         key={
-          item.subcategory === 'Search Results'
-            ? item.itemid + 'searchResultsItem'
-            : item.itemid
+          item.sub_category === 'Search Results'
+            ? item.id + 'searchResultsItem'
+            : item.id
         }
-        userid
         item={item}
-        shopname={props.match.params.shopname}
+        shopName={shopName}
       />
     )
   })
 
   const includeSearchResults = newItems => {
-    updateItems(props.match.params.shopid, newItems)
+    updateItems(shopId, newItems)
   }
 
   return (
@@ -77,7 +78,7 @@ export default function Items (props) {
           src={`/images/${props.match.params}.png`}
           alt='catimg'
         /> */}
-        <h1 className='items-shop-name'>{props.match.params.shopname}</h1>
+        <h1 className='items-shop-name'>{shopName}</h1>
       </div>
       <div className='items-flex-container'>
         <Search includeSearchResults={includeSearchResults} />

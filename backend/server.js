@@ -40,9 +40,9 @@ if (process.env.NODE_ENV === 'production') {
 app.use(cors())
 app.use(express.json())
 
-app.use('/items', itemRoutes)
-app.use('/categories', categoryRoutes)
-app.use('/shops', shopRoutes)
+app.use('/item', itemRoutes)
+app.use('/category', categoryRoutes)
+app.use('/shop', shopRoutes)
 app.use('/cart', cartRoutes)
 app.use('/user', userRoutes)
 app.use('/useraddress', userAddressRoutes)

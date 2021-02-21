@@ -3,7 +3,7 @@ const { pool } = require('../util/database')
 const getCategoriesFromDb = async () => {
   try {
     const categories = await pool.query(
-      'SELECT * FROM categories ORDER BY categoryid ASC'
+      'SELECT * FROM category ORDER BY id ASC'
     )
     return { categories, error: false }
   } catch (e) {

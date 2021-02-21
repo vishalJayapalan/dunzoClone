@@ -13,8 +13,8 @@ const getShops = async (req, res) => {
 }
 
 const getShop = async (req, res) => {
-  const { shopid } = req.params
-  const { shop, error } = await getShopFromDb(shopid)
+  const { id } = req.params
+  const { shop, error } = await getShopFromDb(id)
   if (error) {
     return res
       .status(500)

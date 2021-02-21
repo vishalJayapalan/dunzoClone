@@ -8,7 +8,7 @@ export default function CartItems () {
   return (
     <div className='cart-items-container'>
       {cart.map(cartItem => (
-        <CartItem key={cartItem.cartid} cartItem={cartItem} />
+        <CartItem key={cartItem.id} cartItem={cartItem} />
       ))}
     </div>
   )

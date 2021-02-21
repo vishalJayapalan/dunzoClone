@@ -40,9 +40,7 @@ export default (state, action) => {
     case DELETE_ITEM_FROM_CART: {
       return {
         ...state,
-        cart: state.cart.filter(
-          cartItem => cartItem.cartid !== action.payload.cartid
-        )
+        cart: state.cart.filter(cartItem => cartItem.id !== action.payload.id)
       }
     }
     case DELETE_ALL_ITEM_FROM_CART: {
@@ -53,9 +51,9 @@ export default (state, action) => {
     }
     case DECREMENT_ITEMCOUNT_FROM_CART: {
       const newCart = state.cart.map(cartItem => {
-        if (cartItem.cartid === action.payload.cartid) {
+        if (cartItem.id === action.payload.id) {
           const newCartItem = { ...cartItem }
-          newCartItem.cartitemquantity--
+          newCartItem.quantity--
           return newCartItem
         }
         return cartItem
@@ -67,9 +65,9 @@ export default (state, action) => {
     }
     case INCREMENT_ITEMCOUNT_FROM_CART: {
       const newCart = state.cart.map(cartItem => {
-        if (cartItem.cartid === action.payload.cartid) {
+        if (cartItem.id === action.payload.id) {
           const newCartItem = { ...cartItem }
-          newCartItem.cartitemquantity++
+          newCartItem.quantity++
           return newCartItem
         }
         return cartItem

@@ -100,7 +100,7 @@ export default function Profile () {
             {userDetails && (
               <div>
                 <p>
-                  <b>{userDetails.fullname}</b>
+                  <b>{userDetails.full_name}</b>
                 </p>
                 <p>{userDetails.email}</p>
               </div>

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 
 import { UserContext } from '../context/user/UserContext'
-import { setCookie } from '../util/cookies'
+// import { setCookie } from '../util/cookies'
 
 export default function Signin () {
   const {
@@ -26,13 +26,12 @@ export default function Signin () {
       })
       if (response.ok) {
         const jsonData = await response.json()
-        // console.log(jsonData, 'jsonData')
         // setCookie('x-auth-token', jsonData.accessToken)
         setEmail('')
         setPassword('')
         setShowLogin(false)
-        setUserDetails(jsonData)
-        setIsLoggedIn(jsonData.userid)
+        setUserDetails(jsonData[0])
+        setIsLoggedIn(jsonData[0].id)
         getCart()
       } else {
         throw response

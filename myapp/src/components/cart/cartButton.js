@@ -11,7 +11,7 @@ export default function CartButton (props) {
         <button className='minus' onClick={() => updateCart(props.inCart, '-')}>
           -
         </button>
-        <div>{props.inCart.cartitemquantity}</div>
+        <div>{props.inCart.quantity}</div>
         <button className='plus' onClick={() => updateCart(props.inCart, '+')}>
           +
         </button>

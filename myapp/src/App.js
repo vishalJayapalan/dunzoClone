@@ -25,7 +25,7 @@ function App () {
           <Switch>
             <Route path='/' exact component={Categories} />
             <Route
-              path='/stores/:categoryname/:categoryid'
+              path='/stores/:categoryName/:categoryId'
               exact
               component={Shops}
             />
@@ -34,7 +34,7 @@ function App () {
             <Route path='/checkout/:shopid' component={Checkout} />
             <Route path='/business' component={Business} />
             <Route
-              path='/:categoryid/shop/:shopname/:shopid'
+              path='/:categoryid/shop/:shopName/:shopId'
               component={Items}
             />
             <Route path='/delivery' exact component={DeliveryHome} />

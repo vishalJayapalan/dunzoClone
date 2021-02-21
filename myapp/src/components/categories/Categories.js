@@ -7,7 +7,7 @@ export default function Categories () {
   const [categories, setCategories] = useState([])
 
   const fetchCategories = async () => {
-    const data = await window.fetch('categories/', {
+    const data = await window.fetch('category/', {
       method: 'GET',
       headers: {
         'Content-type': 'application/json',
@@ -28,7 +28,7 @@ export default function Categories () {
       <h1 className='category-title'>What Do you Want To Get Done?</h1>
       <div className='categories-container'>
         {categories.map(category => (
-          <Category key={category.categoryid} category={category} />
+          <Category key={category.id} category={category} />
         ))}
       </div>
     </div>

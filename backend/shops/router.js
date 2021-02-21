@@ -4,6 +4,6 @@ const { getShops, getShop } = require('./controller')
 
 Router.get('/:categoryid', getShops)
 
-Router.get('/shop/:shopid', getShop)
+Router.get('/shop/:id', getShop)
 
 module.exports = Router

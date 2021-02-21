@@ -4,14 +4,28 @@ const { pool } = require('../util/database')
 http://localhost:5000/cart
 */
 
-const getCartItemsFromDb = async userid => {
+const getCartItemsFromDb = async userId => {
   try {
     const { rows } = await pool.query(
-      'SELECT * FROM cart JOIN items ON cart.itemid = items.itemid where cart.userid= $1 ORDER BY cartid ASC',
-      [userid]
+      `SELECT 
+      s.name AS shop_name,
+      s.id AS shop_id,
+      i.name AS name,
+      i.id AS item_id,
+      i.description AS description,
+      i.price AS price,
+      c.quantity as quantity,
+      c.id as id
+       FROM cart_item c JOIN item i ON c.item_id = i.id JOIN shop s ON i.shop_id = s.id where c.user_id= $1 ORDER BY c.id ASC`,
+      [userId]
     )
+    // const { rows } = await pool.query(
+    //   `SELECT * FROM cart_item JOIN item ON cart_item.item_id = item.id where cart_item.user_id= $1 ORDER BY cart_item.id ASC`,
+    //   [userId]
+    // )
     return { cartItems: rows }
   } catch (e) {
+    console.log('ERROR', e)
     return { error: e }
   }
 }
@@ -21,19 +35,13 @@ http://localhost:5000/cart
 body: itemid,shopname
 */
 
-const addItemToCartInDb = async (
-  itemid,
-  itemname,
-  shopname,
-  cartitemquantity,
-  userid
-) => {
+const addItemToCartInDb = async (itemId, shopId, quantity, userId) => {
   try {
-    const cartItem = await pool.query(
-      `INSERT INTO cart (itemid,itemname,shopname,cartitemquantity,userid) VALUES ($1,$2,$3,$4,$5) RETURNING *`,
-      [itemid, itemname, shopname, cartitemquantity, userid]
+    const { rows } = await pool.query(
+      `INSERT INTO cart_item (item_id,shop_id,quantity,user_id) VALUES ($1,$2,$3,$4) RETURNING *`,
+      [itemId, shopId, quantity, userId]
     )
-    return { cartItem: cartItem.rows }
+    return { cartItem: rows }
   } catch (e) {
     return { error: e }
   }
@@ -43,11 +51,11 @@ const addItemToCartInDb = async (
 http://localhost:5000/cart/:cartid
 */
 
-const deleteItemFromCartInDb = async cartid => {
+const deleteItemFromCartInDb = async cartId => {
   try {
     const { rows } = await pool.query(
-      `DELETE FROM cart where cartid = $1 RETURNING *`,
-      [cartid]
+      `DELETE FROM cart_item where id = $1 RETURNING *`,
+      [cartId]
     )
     return { deletedItemFromCart: rows }
   } catch (error) {
@@ -59,11 +67,12 @@ const deleteItemFromCartInDb = async cartid => {
 http://localhost:5000/cart/all
 */
 
-const deleteAllItemsFromCartInDb = async userid => {
+const deleteAllItemsFromCartInDb = async userId => {
   try {
-    const { rows } = await pool.query(`DELETE FROM cart WHERE userid = $1`, [
-      userid
-    ])
+    const { rows } = await pool.query(
+      `DELETE FROM cart_item WHERE user_id = $1`,
+      [userId]
+    )
     return { deletedItemsFromCart: rows }
   } catch (error) {
     return { error: error }
