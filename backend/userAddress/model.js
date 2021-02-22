@@ -1,63 +1,52 @@
 const { pool } = require('../util/database')
 
-const getUserAddress = async (req, res) => {
-  if (!req.user) return res.status(404).json({ Msg: 'Not Authenticated' })
-  const { userid } = req.user
+const getUserAddressFromDb = async userId => {
   try {
-    const userAddress = await pool.query(
+    const { rows } = await pool.query(
       `SELECT * FROM useraddresses WHERE userAddresses.userid = $1`,
-      [userid]
+      [userId]
     )
-    res.status(200).send(userAddress.rows)
-  } catch (err) {
-    res.status(500).json({ Msg: 'There was an error please try again later' })
+    return { userAddress: rows }
+  } catch (error) {
+    return { error }
   }
 }
 
-const addUserAddress = async (req, res) => {
-  const { address, category } = req.body
-  const { userid } = req.user
+const addUserAddressInDb = async (address, userId, category) => {
+  const { rows } = await pool.query(
+    `INSERT INTO useraddress (address,userid,category) VALUES ($1,$2,$3) RETURNING *`,
+    [address, userId, category]
+  )
+  return { userAddress: rows }
+}
+
+const updateUserAddressInDb = async (address, addressId) => {
   try {
-    const userAddress = await pool.query(
-      `INSERT INTO useraddresses (address,userid,category) VALUES ($1,$2,$3) RETURNING *`,
-      [address, userid, category]
+    const { rows } = await pool.query(
+      `UPDATE userAddress SET address = $1 WHERE addressid = $2 RETURNING *`,
+      [address, addressId]
     )
-    res.status(201).send(userAddress.rows)
-  } catch (err) {
-    res.status(500).json({ Msg: err })
+    return { updatedUserAddress: rows }
+  } catch (error) {
+    return { error }
   }
 }
 
-const updateUserAddress = async (req, res) => {
-  let { address } = req.body
-  const { addressid } = req.params
+const deleteUserAddressInDb = async addressId => {
   try {
-    const updatedUserAddress = await pool.query(
-      `UPDATE userAddresses SET address = $1 WHERE addressid = $2 RETURNING *`,
-      [address, addressid]
+    const { rows } = await pool.query(
+      `DELETE FROM useraddress WHERE addressid = $1 RETURNING *`,
+      [addressId]
     )
-    res.status(200).send(updatedUserAddress.rows)
-  } catch (err) {
-    res.status(500).json({ Msg: 'There was an error please try again later' })
-  }
-}
-
-const deleteUserAddress = async (req, res) => {
-  const { addressid } = req.params
-  try {
-    const userAddresses = await pool.query(
-      `DELETE FROM useraddresses WHERE addressid = $1 RETURNING *`,
-      [addressid]
-    )
-    res.status(200).send(userAddresses.rows)
-  } catch (err) {
-    res.status(500).json({ Msg: 'There was an error please try again later' })
+    return { deletedUserAddress: rows }
+  } catch (error) {
+    return { error }
   }
 }
 
 module.exports = {
-  getUserAddress,
-  addUserAddress,
-  updateUserAddress,
-  deleteUserAddress
+  getUserAddressFromDb,
+  addUserAddressInDb,
+  updateUserAddressInDb,
+  deleteUserAddressInDb
 }

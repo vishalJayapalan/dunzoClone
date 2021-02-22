@@ -8,7 +8,7 @@ import { UserContext } from '../context/user/UserContext'
 
 export default function Cart (props) {
   const { cart } = useContext(UserContext)
-  console.log('CART', cart)
+  // console.log('CART', cart)
   let totalPrice = 0
   cart.forEach(cartItem => {
     totalPrice += cartItem.price * cartItem.quantity

@@ -5,9 +5,8 @@ const deliveryAuth = require('../middleware/deliveryAuth')
 const {
   registerDeliveryGuy,
   loginDeliveryGuy,
-  getCurrentDeliveryGuy,
-  onProcessOrderDelivery
-} = require('./model')
+  getCurrentDeliveryGuy
+} = require('./controller')
 
 Router.get('/', deliveryAuth, getCurrentDeliveryGuy)
 

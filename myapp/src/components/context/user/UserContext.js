@@ -75,7 +75,7 @@ export const UserContextProvider = props => {
         if (localCart && localCart.length) {
           deleteAllItemsFromCart()
           localCart.forEach(cartitem => {
-            addToCart(cartitem, cartitem.shopname)
+            addToCart(cartitem, cartitem.shop_name)
           })
         } else {
           const data = await request('cart', 'GET')
@@ -99,7 +99,7 @@ export const UserContextProvider = props => {
       let jsonData = []
       if (isLoggedIn) {
         const data = await request('cart', 'POST', {
-          itemId: item.id,
+          itemId: item.item_id,
           shopId: item.shop_id,
           itemQuantity: 1
         })

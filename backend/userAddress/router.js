@@ -7,7 +7,7 @@ const {
   addUserAddress,
   updateUserAddress,
   deleteUserAddress
-} = require('./model')
+} = require('./controller')
 
 router.get('/:userid', auth, getUserAddress)
 

@@ -1,80 +1,69 @@
 const { pool } = require('../util/database')
 
-const getOrder = async (req, res) => {
-  const { orderid } = req.params
+const getOrderFromDb = async orderId => {
   try {
-    const order = await pool.query(
-      `SELECT * FROM orders WHERE orders.orderid = $1`,
-      [orderid]
+    const { rows } = await pool.query(
+      `SELECT * FROM orders WHERE orders.id = $1`,
+      [orderId]
     )
-    if (order.rowCount) return res.status(200).send(order.rows)
-    else return res.status(400).send({ Msg: 'The order id is wrong' })
-  } catch (err) {
-    res.status(500).json({ Msg: 'There was an error please try again later' })
+    return { order: rows }
+  } catch (error) {
+    return { error }
   }
 }
 
-const getAllUserOrders = async (req, res) => {
-  if (!req.user) {
-    return res.status(400).json({ Msg: 'No valid user details found' })
-  }
-  const { userid } = req.user
+const getAllUserOrdersFromDb = async userId => {
   try {
-    const orders = await pool.query(
-      `SELECT * FROM orders where orders.userid = $1 ORDER BY orderid ASC`,
-      [userid]
+    const { rows } = await pool.query(
+      `SELECT * FROM orders where orders.user_id = $1 ORDER BY orderid ASC`,
+      [userId]
     )
-    res.status(200).send(orders.rows)
-  } catch (err) {
-    res.status(500).json({ Msg: 'There was an error please try again later' })
+    return { orders: rows }
+  } catch (error) {
+    return { error }
   }
 }
 
-const getDeliveryGuyOrder = async (req, res) => {
-  const { deliveryguyid } = req.deliveryguy
+const getDeliveryGuyOrderFromDb = async deliverGuyId => {
   try {
-    const order = await pool.query(
+    const { rows } = await pool.query(
       `SELECT * FROM orders WHERE orders.deliverypartnerid = $1 AND orders.delivered = $2`,
-      [deliveryguyid, false]
+      [deliverGuyId, false]
     )
-    res.status(200).send(order.rows)
-  } catch (err) {
-    res.status(500).json({ Msg: 'There was an error please try again later' })
+    return { order: rows }
+  } catch (error) {
+    return { error }
   }
 }
 
-const addOrder = async (req, res) => {
-  const { userid } = req.user
-  const { deliveryaddress, shopaddress } = req.body
+const addOrderInDb = async (userId, deliveryaddress, shopaddress) => {
   try {
-    const order = await pool.query(
-      `INSERT INTO orders (userid,deliverypartnerid,deliveryaddress,shopaddress,orderpickedup,delivered) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
-      [userid, 0, deliveryaddress, shopaddress, false, false]
+    const { rows } = await pool.query(
+      `INSERT INTO orders (user_id,delivery_guy_id,delivery_address,shop_address,status) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
+      [userId, 0, deliveryaddress, shopaddress, false, false]
     )
-    res.status(201).send(order.rows)
-  } catch (err) {
-    res.status(500).json({ Msg: 'There was an error please try again later' })
+    return { addedOrder: rows }
+  } catch (error) {
+    return { error }
   }
 }
 
-const updateOrder = async (req, res) => {
-  const { orderid } = req.params
-  const { name, value } = req.body
+const updateOrderInDb = async (name, value, id) => {
   try {
-    const updatedOrder = await pool.query(
-      `UPDATE orders SET $1 = $2 where orderid = $3 RETURNING *`,
-      [name, value, orderid]
+    const { rows } = await pool.query(
+      `UPDATE orders SET $1 = $2 where id = $3 RETURNING *`,
+      [name, value, id]
     )
-    res.status(200).send(updatedOrder.rows)
-  } catch (err) {
-    res.status(500).json({ Msg: 'There was an error please try again later' })
+    return { updatedOrder: rows }
+  } catch (error) {
+    return { error }
   }
 }
 
 module.exports = {
-  getOrder,
-  getAllUserOrders,
-  getDeliveryGuyOrder,
-  addOrder,
-  updateOrder
+  getOrderFromDb,
+  getAllUserOrdersFromDb,
+  getDeliveryGuyOrderFromDb,
+  addOrderInDb,
+  updateOrderInDb
 }

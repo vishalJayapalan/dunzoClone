@@ -10,7 +10,7 @@ const {
   updateOrder,
   getDeliveryGuyOrder,
   getAllUserOrders
-} = require('./model')
+} = require('./controller')
 
 Router.get('/all', auth, getAllUserOrders)
 

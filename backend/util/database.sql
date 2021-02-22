@@ -96,7 +96,7 @@ INSERT INTO category_shop (shop_id,category_id) values (26,8);
 -- DELIVERY GUYS -- 
 
 
-CREATE TABLE IF NOT EXISTS deliveryguy (
+CREATE TABLE IF NOT EXISTS delivery_guy (
   id BIGSERIAL PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
   email VARCHAR(150) UNIQUE NOT NULL,
@@ -139,16 +139,16 @@ INSERT INTO item (name,sub_category,description,price,quantity,shop_id) values (
 -- ORDERS --
 
 
-CREATE TABLE IF NOT EXISTS order (
+CREATE TABLE IF NOT EXISTS orders (
   id BIGSERIAL PRIMARY KEY,
-  userid BIGINT NOT NULL,
-  deliverypartnerid BIGINT NOT NULL,
-  deliveryaddress VARCHAR(255) NOT NULL,
-  shopaddress VARCHAR(255) NOT NULL,
+  user_id BIGINT NOT NULL,
+  delivery_guy_id BIGINT NOT NULL,
+  delivery_address VARCHAR(255) NOT NULL,
+  shop_address VARCHAR(255) NOT NULL,
   status VARCHAR(255) NOT NULL
 );
 
-INSERT INTO order (userid,deliverypartnerid,deliveryaddress,shopaddress,status) VALUES (,,'','',)
+INSERT INTO order (user_id,delivery_guy_id,delivery_address,shop_address,status) VALUES (,,'','',)
 
 
 -- USERADDRESSES --
@@ -156,12 +156,12 @@ INSERT INTO order (userid,deliverypartnerid,deliveryaddress,shopaddress,status) 
 
 CREATE TABLE IF NOT EXISTS useraddress (
   id BIGSERIAL PRIMARY KEY,
-  userid BIGINT NOT NULL,
+  user_id BIGINT NOT NULL,
   address VARCHAR(255) NOT NULL,
   category VARCHAR(100) NOT NULL
 );
 
-INSERT INTO useraddresses (userid,address,category) VALUES (,'','')
+INSERT INTO useraddresses (user_id,address,category) VALUES (,'','')
 
 
 
