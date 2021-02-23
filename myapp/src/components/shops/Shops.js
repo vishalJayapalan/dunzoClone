@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Shop from './Shop'
 import Navbar from '../navbar/Navbar'
 import { getCookie } from '../util/cookies'
+import BreadCrumbs from '../breadcrumbs'
 
 export default function Shops (props) {
   const { categoryName, categoryId } = props.match.params
@@ -36,6 +37,7 @@ export default function Shops (props) {
         <h3 className='category-name-inshop'>{categoryName}</h3>
       </div>
       <div className='shops-page'>
+        <BreadCrumbs />
         <div className='shops-container'>
           {shops.map(shop => (
             <Shop key={shop.id} shop={shop} />

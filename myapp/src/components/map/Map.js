@@ -11,7 +11,7 @@ import Navbar from '../navbar/Navbar'
 
 import { getCookie } from '../util/cookies'
 
-import { io } from 'socket.io-client'
+import io from 'socket.io-client'
 const endpoint = '/'
 const socket = io(endpoint)
 
@@ -35,14 +35,17 @@ export default function Map (props) {
   const geocoding = async address => {
     const geocoder = new Nominatim()
     const addressArr = address.split(',')
-
-    address = addressArr.slice(0, 9)
+    // console.log('addressArr', addressArr)
+    address = addressArr.slice(0, 6)
     address = address.join(',')
+    // console.log('ADDRESSSSSSS', address)
     const latlong = await geocoder.search({ q: address })
+    console.log('LATLONG', latlong)
     return [latlong[0].lat, latlong[0].lon]
   }
 
   const map = () => {
+    // console.log('DELIVERYLOCATION', deliveryLocation)
     mapRef.current = Leaflet.map('mapid').setView(deliveryLocation, 10)
     Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors'
@@ -58,6 +61,7 @@ export default function Map (props) {
   }
 
   const getOrderDetails = async () => {
+    // console.log(orderid)
     try {
       const data = await window.fetch(`/order/${orderid}/`, {
         method: 'GET',
@@ -68,14 +72,19 @@ export default function Map (props) {
       })
       if (data.ok) {
         const jsonData = await data.json()
+        // console.log('JSONDATA', jsonData)
         setOrder(jsonData[0])
-        partnerAlreadyAssigned = Number(jsonData[0].deliverypartnerid)
-        if (jsonData[0].delivered) orderDelivered = true
+        partnerAlreadyAssigned = Number(jsonData[0].delivery_guy_id)
+        // console.log('STATUS', jsonData[0].status)
+        if (jsonData[0].status === 'delivered') orderDelivered = true
+        // console.log('ORDERDELIVERED', orderDelivered)
 
-        deliveryLocation = await geocoding(jsonData[0].deliveryaddress)
-
-        pickupLocation = await geocoding(jsonData[0].shopaddress)
+        deliveryLocation = await geocoding(jsonData[0].delivery_address)
+        // console.log('DELIVERYLOCATION', deliveryLocation)
+        pickupLocation = await geocoding(jsonData[0].shop_address)
+        // console.log('SHOPLOCATION', pickupLocation)
       } else {
+        // console.log('STATUS', data.status)
         orderIdNotFound = true
         const jsonData = await data.json()
         throw jsonData
@@ -100,23 +109,23 @@ export default function Map (props) {
     }
     socket.on('partnerAssigned', partnerName => {
       setOrder(prevOrder => {
-        return { ...prevOrder, deliverypartnerid: partnerName }
+        return { ...prevOrder, delivery_guy_id: partnerName }
       })
     })
 
     socket.on('orderPickedUp', () => {
       setOrder(prevOrder => {
-        return { ...prevOrder, orderpickedup: true }
+        return { ...prevOrder, status: 'pickedup' }
       })
     })
 
     socket.on('orderDelivered', () => {
       setOrder(prevOrder => {
-        return { ...prevOrder, delivered: true }
+        return { ...prevOrder, status: 'delivered' }
       })
     })
 
-    if (order.deliverypartnerid != 0) {
+    if (order.delivery_guy_id != 0) {
       socket.on('deliveryLiveLocation', location => {
         if (bikeMarker !== null) mapRef.current.removeLayer(bikeMarker)
         bikeMarker = Leaflet.marker([location.lat, location.lng], {
@@ -146,7 +155,7 @@ export default function Map (props) {
     </div>
   ) : Object.keys(order).length === 0 ? (
     <h1>Loading ...</h1>
-  ) : order.delivered ? (
+  ) : order.status === 'delivered' ? (
     <div className='order-completed-container'>
       <Navbar hideLoginAndLogout={true} />
       <div className='order-completed-inner-container'>
@@ -157,7 +166,7 @@ export default function Map (props) {
   ) : (
     <div className='track-order-page'>
       <Navbar hideLoginAndLogout={true} />
-      {order.delivered ? (
+      {order.status === 'delivered' ? (
         <h1>Order Completed</h1>
       ) : (
         <div className='track-order-container'>
@@ -176,16 +185,14 @@ export default function Map (props) {
               </div>
 
               <div className='order-details'>
-                {order.deliverypartnerid != 0 && (
-                  <p>Delivery Partner Assigned</p>
-                )}
+                {order.delivery_guy_id != 0 && <p>Delivery Partner Assigned</p>}
               </div>
 
               <div className='order-details'>
-                {order.orderpickedup && <p>Order picked up</p>}
+                {order.status === 'pickedup' && <p>Order picked up</p>}
               </div>
               <div className='order-details'>
-                {order.delivered && <p>Delivered</p>}
+                {order.status === 'delivered' && <p>Delivered</p>}
               </div>
             </div>
           </div>

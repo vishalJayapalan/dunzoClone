@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import './delivery.css'
-import { io } from 'socket.io-client'
+import io from 'socket.io-client'
 
 import Nominatim from 'nominatim-geocoder'
 
@@ -38,6 +38,7 @@ export default function Delivery () {
   }
 
   const ifOrderNotCompleted = async () => {
+    // console.log('INHEREEE')
     const data = await window.fetch('/order/ongoing/', {
       method: 'GET',
       headers: {
@@ -45,16 +46,22 @@ export default function Delivery () {
         'deliveryguy-token': getCookie('deliveryguy-token')
       }
     })
-    const jsonData = await data.json()
-    if (jsonData.length) {
-      const userDeliveryLocation = await geocoding(jsonData[0].deliveryaddress)
-      const userPickupLocation = await geocoding(jsonData[0].shopaddress)
-      setPickupLocation(userPickupLocation)
-      setOrderPickStatus(jsonData[0].orderpickedup)
-      setDeliveryLocation(userDeliveryLocation)
-      setOrderid(jsonData[0].orderid)
-      setRequirement(jsonData[0].shopaddress)
-      setOrderStatus(true)
+    if (data.ok) {
+      const jsonData = await data.json()
+      if (jsonData.length) {
+        const userDeliveryLocation = await geocoding(
+          jsonData[0].delivery_address
+        )
+        const userPickupLocation = await geocoding(jsonData[0].shop_address)
+        setPickupLocation(userPickupLocation)
+        setOrderPickStatus(jsonData[0].status === 'pickedup')
+        setDeliveryLocation(userDeliveryLocation)
+        setOrderid(jsonData[0].id)
+        setRequirement(jsonData[0].shop_address)
+        setOrderStatus(true)
+      }
+    } else {
+      console.log(data.status)
     }
   }
 
@@ -66,6 +73,7 @@ export default function Delivery () {
     socket.on(
       'toDeliveryPartner',
       ({ shopname, orderid, shopLocation, userLocation }) => {
+        console.log('wowooo')
         setRequirement(shopname)
         setPickupLocation(shopLocation)
         setDeliveryLocation(userLocation)

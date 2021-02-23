@@ -35,7 +35,7 @@ body: itemid,shopname
 const addItemToCart = async (req, res) => {
   const { itemId, shopId, itemQuantity } = req.body
   const userId = req.user.id
-  console.log(itemId, shopId, itemQuantity)
+  // console.log(itemId, shopId, itemQuantity, userId)
   const { cartItem, error } = await addItemToCartInDb(
     itemId,
     shopId,

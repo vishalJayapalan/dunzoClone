@@ -30,11 +30,12 @@ export default function Navbar ({ hideLoginAndLogout }) {
       {!hideLoginAndLogout && (
         <div className='nav-cartimg-signin-container'>
           <div className='nav-cart-container'>
-            <img
+            {/* <img
               src='/images/cart2.png'
               alt='cart-icon'
               className='nav-cart-image'
-            />
+            /> */}
+            <i className='fas fa-shopping-cart'></i>
             {cart.length ? (
               <div className='nav-cart-count'>{cart.length}</div>
             ) : (
@@ -63,6 +64,7 @@ export default function Navbar ({ hideLoginAndLogout }) {
                 src='/images/default-avatar.png'
                 alt='User Avathar'
               ></img>
+              {/* <i className='fas fa-user-circle' /> */}
             </Link>
           ) : (
             <span className='nav-signin-btn' onClick={() => setShowLogin(true)}>

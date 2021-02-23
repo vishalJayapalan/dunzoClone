@@ -38,10 +38,7 @@ function App () {
               component={Items}
             />
             <Route path='/delivery' exact component={DeliveryHome} />
-            <PrivateDeliveryRoute
-              path='/delivery/:deliveryguyid'
-              component={Delivery}
-            />
+            <Route path='/delivery/:deliveryguyid' component={Delivery} />
             <Route path='*' component={PageNotFound} />
           </Switch>
         </UserContextProvider>

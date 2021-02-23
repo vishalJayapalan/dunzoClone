@@ -1,9 +1,10 @@
 // require('dotenv').config()
 
+// TODO: CONFIRM ON ALL OTHER FUNCTIONS OTHER THAN GETTING ITEMS
+
 const { pool } = require('../util/database')
 
 const getItemsFromDb = async shopid => {
-  console.log('SHOPID', shopid)
   try {
     const items = await pool.query(
       `SELECT * FROM item WHERE shop_id = $1 ORDER BY sub_category`,
@@ -15,7 +16,50 @@ const getItemsFromDb = async shopid => {
   }
 }
 
-module.exports = { getItemsFromDb }
+const addItemInDb = async (
+  name,
+  sub_category,
+  description,
+  price,
+  total_quantity,
+  shop_id
+) => {
+  try {
+    const { row } = await pool.query(
+      `INSERT INTO item (name,sub_category,description,price,total_quantity,shop_id) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
+      [name, sub_category, description, price, total_quantity, shop_id]
+    )
+    return { item: rows, error: false }
+  } catch (err) {
+    return { error: err }
+  }
+}
+
+const updateItemInDb = async () => {
+  try {
+    const { rows } = await pool.query(
+      `UPDATE item SET quantity = $1 WHERE id = $2 RETURNING *`,
+      [quantity, cartId]
+    )
+    return { updatedItem: rows }
+  } catch (error) {
+    return { error }
+  }
+}
+
+const deleteItemInDb = async () => {
+  try {
+    const { rows } = await pool.query(
+      `DELETE FROM item where id = $1 RETURNING *`,
+      [cartId]
+    )
+    return { deletedItem: rows }
+  } catch (error) {
+    return { error }
+  }
+}
+
+module.exports = { getItemsFromDb, addItemInDb, updateItemInDb, deleteItemInDb }
 // INSERT INTO items(itemname,subcategory,itemsize,itemprice,quantity,shopid) VALUES ('Bread','Breadfast & Diary','400 Gms',34.99 ,100 ,1 );
 // INSERT INTO items(itemname,subcategory,itemsize,itemprice,quantity,shopid) VALUES ('Cheese Slices','Breadfast & Diary','10 Slices', 99.99, 30 , 1 );
 // INSERT INTO items(itemname,subcategory,itemsize,itemprice,quantity,shopid) VALUES ('Eggs','Breadfast & Diary','6 Eggs', 49 , 54,1 );

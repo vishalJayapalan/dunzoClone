@@ -11,6 +11,7 @@ const {
 
 const registerDeliveryGuy = async (req, res) => {
   let { name, email, password } = req.body
+  // console.log(name, email, password)
   if (!name || !email || !password) {
     return res.status(400).json({ msg: 'Please enter all the fields' })
   }
@@ -18,7 +19,7 @@ const registerDeliveryGuy = async (req, res) => {
   if (error) {
     return res.status(500).json({ msg: 'Some error occured' })
   }
-  if (!duplicateUser.rowCount) {
+  if (!deliveryGuy.rowCount) {
     password = await bcrypt.hash(password, 10)
     const { newDeliveryGuy, error } = await registerNewDeliveryGuy(
       name,
@@ -29,7 +30,7 @@ const registerDeliveryGuy = async (req, res) => {
       return res.status(500).json({ msg: 'Some error occured' })
     }
     const accessToken = jwt.sign(
-      { userid: newDeliveryGuy[0].userid },
+      { id: newDeliveryGuy[0].id },
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: 3600 }
     )
@@ -37,7 +38,7 @@ const registerDeliveryGuy = async (req, res) => {
       .status(201)
       .cookie('deliveryguy-token', accessToken, { maxAge: 3600000 })
       .json({
-        deliveryguy: newDeliveryGuy[0].deliveryguyid,
+        id: newDeliveryGuy[0].id,
         accessToken
       })
   }
@@ -60,15 +61,16 @@ const loginDeliveryGuy = async (req, res) => {
     return res.status(400).json({ msg: 'your email or password is wrong' })
   }
   const accessToken = jwt.sign(
-    { deliveryguyid: deliveryGuy.rows[0].deliveryguyid },
+    { id: deliveryGuy.rows[0].id },
     process.env.ACCESS_TOKEN_SECRET,
     { expiresIn: 3600 }
   )
+  // console.log(deliveryGuy.rows)
   return res
     .status(200)
     .cookie('deliveryguy-token', accessToken, { maxAge: 3600000 })
     .json({
-      deliveryguyid: deliveryGuy.rows[0].deliveryguyid,
+      id: deliveryGuy.rows[0].id,
       accessToken
     })
 }
@@ -87,8 +89,8 @@ const getCurrentDeliveryGuy = async (req, res) => {
     return res.status(400).json({ message: 'User not found' })
   }
   return res.status(200).json({
-    deliveryguyid: deliveryGuy.rows[0].deliveryguyid,
-    deliveryguyname: deliveryGuy.rows[0].deliveryguyname
+    deliveryguyid: currentDeliveryGuy.rows[0].deliveryguyid,
+    deliveryguyname: currentDeliveryGuy.rows[0].deliveryguyname
   })
 }
 

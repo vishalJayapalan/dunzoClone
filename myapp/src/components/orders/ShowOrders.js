@@ -10,8 +10,6 @@ export default function ShowOrders () {
     getAllUserOrders()
   }, [])
 
-  // console.log(userDetails)
-
   async function getAllUserOrders () {
     const data = await window.fetch('/order/all/', {
       method: 'GET',
@@ -23,13 +21,12 @@ export default function ShowOrders () {
     if (data.ok) {
       const jsonData = await data.json()
       setUserOrders(jsonData)
-      // console.log('ORDERS', jsonData)
     }
   }
 
   return (
     <>
-      {userOrders.lenght === 0 ? (
+      {userOrders.length === 0 ? (
         <h1>No Orders</h1>
       ) : (
         <div className='user-orders-container'>

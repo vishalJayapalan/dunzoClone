@@ -8,7 +8,6 @@ export default function ({
   fromProfile,
   deleteUserAddress
 }) {
-  // console.log(userAddresses)
   return (
     <div className='addresses-container'>
       <div
@@ -21,7 +20,7 @@ export default function ({
       </div>
       {userAddresses.map(userAddress => (
         <UserAddress
-          key={userAddress.addressid}
+          key={userAddress.id}
           userAddress={userAddress}
           setAddressSelected={setAddressSelected}
           fromProfile={fromProfile}

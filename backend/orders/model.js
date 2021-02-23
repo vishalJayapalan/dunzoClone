@@ -2,10 +2,9 @@ const { pool } = require('../util/database')
 
 const getOrderFromDb = async orderId => {
   try {
-    const { rows } = await pool.query(
-      `SELECT * FROM orders WHERE orders.id = $1`,
-      [orderId]
-    )
+    const { rows } = await pool.query(`SELECT * FROM orders WHERE id = $1`, [
+      orderId
+    ])
     return { order: rows }
   } catch (error) {
     return { error }
@@ -15,7 +14,7 @@ const getOrderFromDb = async orderId => {
 const getAllUserOrdersFromDb = async userId => {
   try {
     const { rows } = await pool.query(
-      `SELECT * FROM orders where orders.user_id = $1 ORDER BY orderid ASC`,
+      `SELECT * FROM orders where orders.user_id = $1 ORDER BY id ASC`,
       [userId]
     )
     return { orders: rows }
@@ -27,7 +26,7 @@ const getAllUserOrdersFromDb = async userId => {
 const getDeliveryGuyOrderFromDb = async deliverGuyId => {
   try {
     const { rows } = await pool.query(
-      `SELECT * FROM orders WHERE orders.deliverypartnerid = $1 AND orders.delivered = $2`,
+      `SELECT * FROM orders WHERE orders.delivery_guy_id = $1 AND orders.status = $2`,
       [deliverGuyId, false]
     )
     return { order: rows }
@@ -39,11 +38,12 @@ const getDeliveryGuyOrderFromDb = async deliverGuyId => {
 const addOrderInDb = async (userId, deliveryaddress, shopaddress) => {
   try {
     const { rows } = await pool.query(
-      `INSERT INTO orders (user_id,delivery_guy_id,delivery_address,shop_address,status) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
-      [userId, 0, deliveryaddress, shopaddress, false, false]
+      `INSERT INTO orders (user_id,delivery_guy_id,delivery_address,shop_address,status) VALUES ($1,$2,$3,$4,$5) RETURNING *`,
+      [userId, 0, deliveryaddress, shopaddress, 'ready']
     )
     return { addedOrder: rows }
   } catch (error) {
+    console.log(error)
     return { error }
   }
 }

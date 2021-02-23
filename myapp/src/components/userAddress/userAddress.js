@@ -17,7 +17,7 @@ export default function UserAddress ({
       <p>{userAddress.address}</p>
       {fromProfile && (
         <button
-          onClick={() => deleteUserAddress(userAddress.addressid)}
+          onClick={() => deleteUserAddress(userAddress.id)}
           className='delete-address'
         >
           Delete

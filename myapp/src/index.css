@@ -85,6 +85,28 @@ button{
   padding: 1rem;
 }
 
+/* BREADCRUMPS COMTAINER */
+
+.breadcrumps-container{
+  padding: 2em;
+  /* font-size: 90%; */
+  display: flex;
+  align-items: center;
+}
+
+.breadcrum{
+  color: rgb(0, 179, 122);
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 80%;
+}
+
+.fa-arrow-right{
+  font-size: 70%;
+  color: grey;
+  margin: 0 2em;
+}
+
 /* SHOPS PAGE */
 
 .shops-page {
@@ -118,7 +140,7 @@ button{
 .shops-container {
   /* position: fixed; */
   /* top: 35%; */
-  margin: 10% 0;
+  margin: 2% 0;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -525,15 +547,13 @@ display: none;
   }
 }
 
-
-
-.nav-cart-container {
+ .nav-cart-container {
   display: flex;
 }
 
-.nav-cart-image {
-  /* height: 5vh; */
+.fa-shopping-cart{
   height: 25px;
+  font-size: 120%;
   color: white;
 }
 
@@ -558,6 +578,12 @@ display: none;
   height: 2em;
   cursor:pointer;
 }
+
+/* .fa-user-circle{
+  font-size: 200%;
+  cursor:pointer;
+  color: green;
+} */
 
 .nav-signin-btn {
   cursor: pointer;

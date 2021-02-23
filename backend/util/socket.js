@@ -7,6 +7,7 @@ const ioSocket = socket => {
   socket.on(
     'deliveryPartnerRequired',
     ({ shopname, orderid, shopLocation, userLocation }) => {
+      console.log('Inhere')
       socket.broadcast.emit('toDeliveryPartner', {
         shopname,
         orderid,

@@ -29,9 +29,10 @@ export default function Checkout (props) {
   const [shopAddress, setShopAddress] = useState('')
 
   const getShopDetails = async () => {
-    const data = await window.fetch(`/shops/shop/${props.match.params.shopid}/`)
+    const data = await window.fetch(`/shop/shop/${props.match.params.shopid}/`)
     if (data.ok) {
       const jsonData = await data.json()
+      // console.log('JSONDATAAddress', jsonData)
       setShopAddress(jsonData[0].address)
     }
   }
@@ -50,6 +51,7 @@ export default function Checkout (props) {
     })
     if (data.ok) {
       const jsonData = await data.json()
+      // console.log('JSONDATA', jsonData)
       setUserAddresses(jsonData)
     } else {
     }
@@ -73,7 +75,10 @@ export default function Checkout (props) {
     })
     if (data.ok) {
       const order = await data.json()
-      setNewOrderId(order[0].orderid)
+      console.log('JSONDATAORDER', order)
+      setNewOrderId(order[0].id)
+    } else {
+      console.log(data.status)
     }
   }
 

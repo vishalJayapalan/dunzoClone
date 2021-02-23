@@ -8,7 +8,6 @@ import { UserContext } from '../context/user/UserContext'
 
 export default function Cart (props) {
   const { cart } = useContext(UserContext)
-  // console.log('CART', cart)
   let totalPrice = 0
   cart.forEach(cartItem => {
     totalPrice += cartItem.price * cartItem.quantity
@@ -46,7 +45,7 @@ export default function Cart (props) {
         <div className='checkout-button-container'>
           <Link
             className='proceed-to-checkout-btn'
-            to={{ pathname: `/checkout/${cart[0].shopid}`, state: 'test' }}
+            to={{ pathname: `/checkout/${cart[0].shop_id}`, state: 'test' }}
           >
             Proceed To Checkout
           </Link>

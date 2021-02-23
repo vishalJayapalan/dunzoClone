@@ -26,7 +26,7 @@ export default function DeliveryGuySignin ({
         setEmail('')
         setPassword('')
         setShowLogin(false)
-        setIsLoggedIn(jsonData.deliveryguyid)
+        setIsLoggedIn(jsonData.id)
       } else {
         throw response
       }

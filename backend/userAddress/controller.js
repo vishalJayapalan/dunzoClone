@@ -8,6 +8,7 @@ const {
 const getUserAddress = async (req, res) => {
   if (!req.user) return res.status(404).json({ Msg: 'Not Authenticated' })
   const userId = req.user.id
+  console.log('USERID', userId)
   const { userAddress, error } = await getUserAddressFromDb(userId)
   if (error) {
     return res

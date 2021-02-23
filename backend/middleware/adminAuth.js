@@ -17,14 +17,12 @@ module.exports = (req, res, next) => {
   // }
   const accessToken =
     req.headers['x-auth-token'] || req.headers['authorization']
-  // console.log('ACCESSTOKEN', accessToken)
   try {
     if (!accessToken) {
       res.user = null
       next()
     } else {
       const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)
-      // console.log('DECODED', decoded)
       req.user = decoded
       next()
     }

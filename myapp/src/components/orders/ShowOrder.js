@@ -23,7 +23,7 @@ export default function ShowOrder ({ userOrder }) {
         <Link
           className='track-order'
           style={{ textDecoration: 'none' }}
-          to={`/track-order/${userOrder.orderid}`}
+          to={`/track-order/${userOrder.id}`}
         >
           Track Order
         </Link>
