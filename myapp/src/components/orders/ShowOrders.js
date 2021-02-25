@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { getCookie } from '../util/cookies'
+// import { getCookie } from '../util/cookies'
 import ShowOrder from './ShowOrder'
 import './showOrders.css'
 
@@ -14,8 +14,8 @@ export default function ShowOrders () {
     const data = await window.fetch('/order/all/', {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
-        'x-auth-token': getCookie('x-auth-token')
+        'Content-Type': 'application/json'
+        // 'x-auth-token': getCookie('x-auth-token')
       }
     })
     if (data.ok) {

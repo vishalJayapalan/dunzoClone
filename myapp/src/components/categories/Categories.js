@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Category from './Category'
 import Navbar from '../navbar/Navbar'
-import { getCookie } from '../util/cookies'
+// import { getCookie } from '../util/cookies'
 
 export default function Categories () {
   const [categories, setCategories] = useState([])
@@ -10,8 +10,8 @@ export default function Categories () {
     const data = await window.fetch('category/', {
       method: 'GET',
       headers: {
-        'Content-type': 'application/json',
-        'x-auth-token': getCookie('x-auth-token')
+        'Content-type': 'application/json'
+        // 'x-auth-token': getCookie('x-auth-token')
       }
     })
     const jsonData = await data.json()

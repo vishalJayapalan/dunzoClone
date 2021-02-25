@@ -1,5 +1,5 @@
 import React, { useReducer, createContext } from 'react'
-import { getCookie } from '../../util/cookies'
+// import { getCookie } from '../../util/cookies'
 import DeliveryReducer from './DeliveryReducer'
 
 export const DeliveryContext = createContext()
@@ -10,10 +10,10 @@ export const UserContextProvider = props => {
   const [deliveryUserDetails, setDeliveryUserDetails] = useState(null)
 
   useEffect(() => {
-    const token = getCookie('deliveryguy-token')
-    if (token) {
-      getDeliveryUser()
-    }
+    // const token = getCookie('deliveryguy-token')
+    // if (token) {
+    getDeliveryUser()
+    // }
   }, [])
   useEffect(() => {
     getCart()

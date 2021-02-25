@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { setCookie } from '../util/cookies'
+// import { setCookie } from '../util/cookies'
 
 export default function DeliveryGuySignin ({
   setShowLogin,

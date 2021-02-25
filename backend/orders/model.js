@@ -2,11 +2,11 @@ const { pool } = require('../util/database')
 
 const getOrderFromDb = async orderId => {
   try {
-    console.log('ORDERID', orderId)
+    // console.log('ORDERID', orderId)
     const { rows } = await pool.query(`SELECT * FROM orders WHERE id = $1`, [
       orderId
     ])
-    console.log(rows)
+    // console.log(rows)
     return { order: rows }
   } catch (error) {
     return { error }

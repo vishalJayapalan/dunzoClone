@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 
-import { getCookie } from '../util/cookies'
+// import { getCookie } from '../util/cookies'
 
 import Navbar from '../navbar/Navbar'
 import './Checkout.css'
@@ -45,8 +45,8 @@ export default function Checkout (props) {
     const data = await window.fetch(`/userAddress/${isLoggedIn}/`, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
-        'x-auth-token': getCookie('x-auth-token')
+        'Content-Type': 'application/json'
+        // 'x-auth-token': getCookie('x-auth-token')
       }
     })
     if (data.ok) {
@@ -58,6 +58,7 @@ export default function Checkout (props) {
   }
 
   useEffect(() => {
+    console.log('ISLOGGEDIN', isLoggedIn)
     if (isLoggedIn) getUserAddress()
   }, [isLoggedIn])
 
@@ -65,8 +66,8 @@ export default function Checkout (props) {
     const data = await window.fetch(`/order/`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'x-auth-token': getCookie('x-auth-token')
+        'Content-Type': 'application/json'
+        // 'x-auth-token': getCookie('x-auth-token')
       },
       body: JSON.stringify({
         deliveryaddress: addressSelected,
@@ -87,8 +88,8 @@ export default function Checkout (props) {
       method: 'POST',
       body: JSON.stringify({ address, category: 'Home' }),
       headers: {
-        'Content-Type': 'application/json',
-        'x-auth-token': getCookie('x-auth-token')
+        'Content-Type': 'application/json'
+        // 'x-auth-token': getCookie('x-auth-token')
       }
     })
     if (data.ok) {

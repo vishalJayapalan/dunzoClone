@@ -9,10 +9,10 @@ import Nominatim from 'nominatim-geocoder'
 
 import Navbar from '../navbar/Navbar'
 
-import { getCookie } from '../util/cookies'
+// import { getCookie } from '../util/cookies'
 
 import io from 'socket.io-client'
-const endpoint = '/'
+const endpoint = ''
 const socket = io(endpoint, { query: { id: 1 } })
 
 export default function Map (props) {
@@ -61,8 +61,8 @@ export default function Map (props) {
       const data = await window.fetch(`/order/${orderid}/`, {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': getCookie('x-auth-token')
+          'Content-Type': 'application/json'
+          // 'x-auth-token': getCookie('x-auth-token')
         }
       })
       if (data.ok) {

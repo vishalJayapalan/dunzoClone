@@ -7,10 +7,10 @@ import Nominatim from 'nominatim-geocoder'
 import Leaflet, { routing } from 'leaflet'
 import 'leaflet-routing-machine'
 
-import { getCookie } from '../util/cookies'
+// import { getCookie } from '../util/cookies'
 
 let socket
-const endpoint = '/'
+const endpoint = ''
 
 socket = io(endpoint, { query: { id: 2 } })
 export default function Delivery () {
@@ -42,8 +42,8 @@ export default function Delivery () {
     const data = await window.fetch('/order/ongoing/', {
       method: 'GET',
       headers: {
-        'Content-type': 'application/json',
-        'deliveryguy-token': getCookie('deliveryguy-token')
+        'Content-type': 'application/json'
+        // 'deliveryguy-token': getCookie('deliveryguy-token')
       }
     })
     if (data.ok) {
@@ -91,8 +91,8 @@ export default function Delivery () {
       method: 'PUT',
       body: JSON.stringify({ name, value }),
       headers: {
-        'Content-Type': 'application/json',
-        'x-auth-token': getCookie('x-auth-token')
+        'Content-Type': 'application/json'
+        // 'x-auth-token': getCookie('x-auth-token')
       }
     })
     if (data.ok) {

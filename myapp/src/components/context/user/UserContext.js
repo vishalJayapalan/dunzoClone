@@ -1,5 +1,5 @@
 import React, { useReducer, createContext, useState, useEffect } from 'react'
-import { getCookie } from '../../util/cookies'
+// import { getCookie } from '../../util/cookies'
 import UserReducer from './UserReducer'
 import { v4 as uuidV4 } from 'uuid'
 
@@ -20,10 +20,10 @@ export const UserContextProvider = props => {
   const [clearCartPopup, setClearCartPopup] = useState(false)
 
   useEffect(() => {
-    const token = getCookie('x-auth-token')
-    if (token) {
-      getUser()
-    }
+    // const token = getCookie('x-auth-token')
+    // if (token) {
+    getUser()
+    // }
   }, [])
   useEffect(() => {
     getCart()
@@ -33,8 +33,8 @@ export const UserContextProvider = props => {
     const data = await window.fetch('/' + params, {
       method,
       headers: {
-        'Content-Type': 'application/json',
-        'x-auth-token': getCookie('x-auth-token')
+        'Content-Type': 'application/json'
+        // 'x-auth-token': getCookie('x-auth-token')
       },
       body: JSON.stringify(body)
     })
@@ -222,6 +222,8 @@ export const UserContextProvider = props => {
       const jsonData = await data.json()
       setUserDetails(jsonData[0])
       setIsLoggedIn(jsonData[0].id)
+    } else {
+      console.log(data.status)
     }
   }
 

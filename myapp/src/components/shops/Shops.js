@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import Shop from './Shop'
 import Navbar from '../navbar/Navbar'
-import { getCookie } from '../util/cookies'
+// import { getCookie } from '../util/cookies'
 import BreadCrumbs from '../breadcrumbs'
 
 export default function Shops (props) {
@@ -13,8 +13,8 @@ export default function Shops (props) {
     const data = await window.fetch(`/shop/${categoryId}/`, {
       method: 'GET',
       headers: {
-        'Content-type': 'application/json',
-        'x-auth-token': getCookie('x-auth-token')
+        'Content-type': 'application/json'
+        // 'x-auth-token': getCookie('x-auth-token')
       }
     })
     const jsonData = await data.json()

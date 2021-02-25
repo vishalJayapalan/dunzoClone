@@ -1,9 +1,10 @@
 const ioSocket = socket => {
   const { id } = socket.handshake.query
-  // socket.join(id)
+  socket.join(id)
   // console.log('SOCKETID', socket.handshake.query.id)
   // console.log('SOCKETIDINBUILD', socket.id)
   // console.log('a user connected')
+  socket.removeAllListeners('liveLocation')
   socket.on('liveLocation', liveLocation => {
     const { lat, lng } = liveLocation
     socket.broadcast.emit('deliveryLiveLocation', { lat, lng })
