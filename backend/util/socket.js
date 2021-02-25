@@ -1,5 +1,9 @@
 const ioSocket = socket => {
-  console.log('a user connected')
+  const { id } = socket.handshake.query
+  // socket.join(id)
+  // console.log('SOCKETID', socket.handshake.query.id)
+  // console.log('SOCKETIDINBUILD', socket.id)
+  // console.log('a user connected')
   socket.on('liveLocation', liveLocation => {
     const { lat, lng } = liveLocation
     socket.broadcast.emit('deliveryLiveLocation', { lat, lng })
@@ -16,6 +20,9 @@ const ioSocket = socket => {
       })
     }
   )
+  // socket.on('test', ({ test }) => {
+  //   console.log(test)
+  // })
   socket.on('deliveryPartnerAssigned', name => {
     socket.broadcast.emit('partnerAssigned', name)
   })

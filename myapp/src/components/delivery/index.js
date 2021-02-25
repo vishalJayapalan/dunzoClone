@@ -12,7 +12,7 @@ import { getCookie } from '../util/cookies'
 let socket
 const endpoint = '/'
 
-socket = io(endpoint)
+socket = io(endpoint, { query: { id: 2 } })
 export default function Delivery () {
   const [requirement, setRequirement] = useState(null)
   const [orderPickStatus, setOrderPickStatus] = useState(false)
@@ -31,14 +31,14 @@ export default function Delivery () {
     const geocoder = new Nominatim()
     const addressArr = address.split(',')
 
-    address = addressArr.slice(0, 9)
+    address = addressArr.slice(0, 6)
     address = address.join(',')
     const latlong = await geocoder.search({ q: address })
     return [latlong[0].lat, latlong[0].lon]
   }
 
   const ifOrderNotCompleted = async () => {
-    // console.log('INHEREEE')
+    console.log('INHEREEE')
     const data = await window.fetch('/order/ongoing/', {
       method: 'GET',
       headers: {
@@ -48,6 +48,7 @@ export default function Delivery () {
     })
     if (data.ok) {
       const jsonData = await data.json()
+      console.log('JSONDATA', jsonData)
       if (jsonData.length) {
         const userDeliveryLocation = await geocoding(
           jsonData[0].delivery_address
@@ -70,6 +71,9 @@ export default function Delivery () {
   }, [])
 
   useEffect(() => {
+    // console.log('INHERE')
+    socket.emit('test', { test: 'TEST' })
+
     socket.on(
       'toDeliveryPartner',
       ({ shopname, orderid, shopLocation, userLocation }) => {
@@ -93,23 +97,24 @@ export default function Delivery () {
     })
     if (data.ok) {
       const jsonData = await data.json()
+      // console.log('JSONDATA', jsonData)
     }
   }
 
   function orderStatusUpdation () {
     socket.emit('deliveryPartnerAssigned', 'speedo')
     setOrderStatus(true)
-    updateOrder('deliverypartnerid', 1)
+    updateOrder('delivery_guy_id', 1)
   }
   function orderPickedUp () {
     setOrderPickStatus(true)
     socket.emit('orderPicked')
-    updateOrder('orderpickedup', true)
+    updateOrder('status', 'pickedup')
   }
   function orderCompleted () {
     setIsOrderCompleted(true)
     socket.emit('orderCompleted')
-    updateOrder('delivered', true)
+    updateOrder('status', 'delivered')
   }
 
   function resetOrder () {

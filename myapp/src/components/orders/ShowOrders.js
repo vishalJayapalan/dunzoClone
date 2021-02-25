@@ -31,7 +31,7 @@ export default function ShowOrders () {
       ) : (
         <div className='user-orders-container'>
           {userOrders.map(userOrder => (
-            <ShowOrder key={userOrder.orderid} userOrder={userOrder} />
+            <ShowOrder key={userOrder.id} userOrder={userOrder} />
           ))}
         </div>
       )}

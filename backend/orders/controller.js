@@ -36,7 +36,7 @@ const getAllUserOrders = async (req, res) => {
 
 const getDeliveryGuyOrder = async (req, res) => {
   const { id } = req.deliveryguy
-  // console.log('ID', id)
+  console.log('ID', id)
   const { order, error } = await getDeliveryGuyOrderFromDb(id)
   if (error) {
     return res

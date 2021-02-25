@@ -15,11 +15,11 @@ export default function ShowOrder ({ userOrder }) {
         ></img>
         <span className='user-category'>Groceries &amp; Essentials</span>
       </div>
-      <div className='shop-name'>{userOrder.shopaddress}</div>
-      <div className='user-address'>{userOrder.deliveryaddress}</div>
+      <div className='shop-name'>{userOrder.shop_address}</div>
+      <div className='user-address'>{userOrder.delivery_address}</div>
       <div className='hr'></div>
       <div className='status-track'>
-        {userOrder.delivered && <div>Completed</div>}
+        {userOrder.status === 'completed' && <div>Completed</div>}
         <Link
           className='track-order'
           style={{ textDecoration: 'none' }}

@@ -2,9 +2,11 @@ const { pool } = require('../util/database')
 
 const getOrderFromDb = async orderId => {
   try {
+    console.log('ORDERID', orderId)
     const { rows } = await pool.query(`SELECT * FROM orders WHERE id = $1`, [
       orderId
     ])
+    console.log(rows)
     return { order: rows }
   } catch (error) {
     return { error }
@@ -26,8 +28,8 @@ const getAllUserOrdersFromDb = async userId => {
 const getDeliveryGuyOrderFromDb = async deliverGuyId => {
   try {
     const { rows } = await pool.query(
-      `SELECT * FROM orders WHERE orders.delivery_guy_id = $1 AND orders.status = $2`,
-      [deliverGuyId, false]
+      `SELECT * FROM orders WHERE orders.delivery_guy_id = $1 AND orders.status != $2`,
+      [deliverGuyId, 'delivered']
     )
     return { order: rows }
   } catch (error) {
@@ -50,9 +52,10 @@ const addOrderInDb = async (userId, deliveryaddress, shopaddress) => {
 
 const updateOrderInDb = async (name, value, id) => {
   try {
+    // console.log('INUPDATEORDER', name, value, id)
     const { rows } = await pool.query(
-      `UPDATE orders SET $1 = $2 where id = $3 RETURNING *`,
-      [name, value, id]
+      `UPDATE orders SET ${name} = $1 where id = $2 RETURNING *`,
+      [value, id]
     )
     return { updatedOrder: rows }
   } catch (error) {

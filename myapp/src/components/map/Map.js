@@ -13,7 +13,7 @@ import { getCookie } from '../util/cookies'
 
 import io from 'socket.io-client'
 const endpoint = '/'
-const socket = io(endpoint)
+const socket = io(endpoint, { query: { id: 1 } })
 
 export default function Map (props) {
   let deliveryLocation = ''
@@ -35,17 +35,13 @@ export default function Map (props) {
   const geocoding = async address => {
     const geocoder = new Nominatim()
     const addressArr = address.split(',')
-    // console.log('addressArr', addressArr)
     address = addressArr.slice(0, 6)
     address = address.join(',')
-    // console.log('ADDRESSSSSSS', address)
     const latlong = await geocoder.search({ q: address })
-    console.log('LATLONG', latlong)
     return [latlong[0].lat, latlong[0].lon]
   }
 
   const map = () => {
-    // console.log('DELIVERYLOCATION', deliveryLocation)
     mapRef.current = Leaflet.map('mapid').setView(deliveryLocation, 10)
     Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors'
@@ -61,7 +57,6 @@ export default function Map (props) {
   }
 
   const getOrderDetails = async () => {
-    // console.log(orderid)
     try {
       const data = await window.fetch(`/order/${orderid}/`, {
         method: 'GET',
@@ -72,19 +67,17 @@ export default function Map (props) {
       })
       if (data.ok) {
         const jsonData = await data.json()
-        // console.log('JSONDATA', jsonData)
+        if (jsonData.length === 0) {
+          setNoOrder(true)
+          orderIdNotFound = true
+        }
         setOrder(jsonData[0])
         partnerAlreadyAssigned = Number(jsonData[0].delivery_guy_id)
-        // console.log('STATUS', jsonData[0].status)
         if (jsonData[0].status === 'delivered') orderDelivered = true
-        // console.log('ORDERDELIVERED', orderDelivered)
 
         deliveryLocation = await geocoding(jsonData[0].delivery_address)
-        // console.log('DELIVERYLOCATION', deliveryLocation)
         pickupLocation = await geocoding(jsonData[0].shop_address)
-        // console.log('SHOPLOCATION', pickupLocation)
       } else {
-        // console.log('STATUS', data.status)
         orderIdNotFound = true
         const jsonData = await data.json()
         throw jsonData
@@ -100,6 +93,7 @@ export default function Map (props) {
     setPackingStatus(true)
     map()
     if (!partnerAlreadyAssigned) {
+      // console.log('PARTNERREQUIRED')
       socket.emit('deliveryPartnerRequired', {
         shopname: 'Shoppers Stop',
         orderid,
@@ -107,6 +101,7 @@ export default function Map (props) {
         userLocation: deliveryLocation
       })
     }
+    socket.emit('test', { test: 'TEST' })
     socket.on('partnerAssigned', partnerName => {
       setOrder(prevOrder => {
         return { ...prevOrder, delivery_guy_id: partnerName }

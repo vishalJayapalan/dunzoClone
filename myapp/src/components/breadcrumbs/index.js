@@ -13,7 +13,6 @@ const BreadCrumbs = ({ history, location: { pathname } }) => {
       </span>
       {pathNames.map((pathName, index) => {
         const routeTo = `/${pathNames.slice(0, index + 1).join('/')}`
-        console.log(routeTo)
         return (
           <div key={index}>
             <i className='fas fa-arrow-right' />
@@ -23,7 +22,6 @@ const BreadCrumbs = ({ history, location: { pathname } }) => {
           </div>
         )
       })}
-      {/* <span className='breadcrum'>{categoryName}</span> */}
     </div>
   )
 }
