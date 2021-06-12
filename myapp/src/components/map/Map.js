@@ -18,6 +18,7 @@ const socket = io(endpoint, { query: { id: 1 } })
 export default function Map (props) {
   let deliveryLocation = ''
   let pickupLocation = ''
+  let shopAddress = ''
 
   const [packingStatus, setPackingStatus] = useState(false)
   const [noOrder, setNoOrder] = useState(false)
@@ -31,6 +32,15 @@ export default function Map (props) {
   const orderid = props.match.params.orderid
   let orderDelivered = false
   let partnerAlreadyAssigned = false
+  const [userId, setUserId] = useState(false)
+
+  // useEffect(() => {
+  //   if (userId) {
+  //     socket.emit('active user', {
+  //       userId
+  //     })
+  //   }
+  // }, [userId])
 
   const geocoding = async address => {
     const geocoder = new Nominatim()
@@ -67,6 +77,7 @@ export default function Map (props) {
       })
       if (data.ok) {
         const jsonData = await data.json()
+        console.log('JSONDATA', jsonData)
         if (jsonData.length === 0) {
           setNoOrder(true)
           orderIdNotFound = true
@@ -77,6 +88,9 @@ export default function Map (props) {
 
         deliveryLocation = await geocoding(jsonData[0].delivery_address)
         pickupLocation = await geocoding(jsonData[0].shop_address)
+        shopAddress = jsonData[0].shop_address
+        setUserId(jsonData[0].user_id)
+        // orderId  = jsonData[0].id
       } else {
         orderIdNotFound = true
         const jsonData = await data.json()
@@ -94,14 +108,16 @@ export default function Map (props) {
     map()
     if (!partnerAlreadyAssigned) {
       // console.log('PARTNERREQUIRED')
+      console.log('Order', order)
+
       socket.emit('deliveryPartnerRequired', {
-        shopname: 'Shoppers Stop',
+        shopAddress,
         orderid,
         shopLocation: pickupLocation,
         userLocation: deliveryLocation
       })
     }
-    socket.emit('test', { test: 'TEST' })
+    // socket.emit('test', { test: 'TEST' })
     socket.on('partnerAssigned', partnerName => {
       setOrder(prevOrder => {
         return { ...prevOrder, delivery_guy_id: partnerName }

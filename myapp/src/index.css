@@ -93,12 +93,17 @@ button{
   display: flex;
   align-items: center;
 }
+.breadcrum-inner-container{
+  display: flex;
+  align-items: center;
+}
 
 .breadcrum{
   color: rgb(0, 179, 122);
   font-weight: 600;
   cursor: pointer;
-  font-size: 80%;
+  /* font-size: 80%; */
+  font-size: .75rem;
 }
 
 .fa-arrow-right{
@@ -571,7 +576,7 @@ display: none;
   align-items: center;
   margin-left: 50%;
   justify-content: space-between;
-  width: 10%;
+  width: 20%;
 }
 
 .user-avatar{
@@ -737,11 +742,10 @@ display: none;
     font-size: 50%;
   }
   .shop-container {
-    min-width: 80%;
-    max-width: 80%;
+    min-width: 25rem;
+    max-width: 25rem;
     padding: 1%;
     height: auto;
-    /* height: 20%; */
   }
 }
 

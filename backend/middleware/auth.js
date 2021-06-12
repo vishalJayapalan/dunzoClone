@@ -17,7 +17,7 @@ module.exports = (req, res, next) => {
       }
     }
   }
-  console.log('TOKEN', token)
+  // console.log('TOKEN', token)
 
   if (!token) return res.status(401).send('Access denied. No token Provided.')
   try {

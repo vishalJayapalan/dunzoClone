@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 export default function ShowOrder ({ userOrder }) {
   // console.log(typeof userOrder.delivered)
   // console.log(userOrder.delivered)
-  // console.log(userOrder)
+  console.log('USERORDER', userOrder)
   return (
     <div className='user-order-container'>
       <div className='order-category-container'>
@@ -19,7 +19,7 @@ export default function ShowOrder ({ userOrder }) {
       <div className='user-address'>{userOrder.delivery_address}</div>
       <div className='hr'></div>
       <div className='status-track'>
-        {userOrder.status === 'completed' && <div>Completed</div>}
+        {userOrder.status === 'delivered' && <div>Completed</div>}
         <Link
           className='track-order'
           style={{ textDecoration: 'none' }}

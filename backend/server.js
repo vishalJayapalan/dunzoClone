@@ -19,14 +19,6 @@ const deliveryGuyRoutes = require('./deliveryGuy/router')
 
 const { ioSocket } = require('./util/socket')
 
-// process.env.PORT
-// app.use(express.static(path.join(__dirname, 'myapp/build')))
-// app.get('*', (req, res, next) => {
-// res.sendFile(path.join(__dirname, '../myapp/build/index.html'))
-// next()
-// })
-// console.log(__dirname)
-// console.log('path', path.join(__dirname, 'myapp', 'build'))
 if (process.env.NODE_ENV === 'production') {
   // serve static content
   app.use(express.static(path.join(__dirname, '..', 'myapp', 'build')))

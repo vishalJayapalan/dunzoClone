@@ -8,6 +8,7 @@ import Search from '../search/search'
 import ClearCartPopup from '../cart/clearCartPopup'
 
 import { UserContext } from '../context/user/UserContext'
+import Breadcrumbs from '../breadcrumbs'
 
 export default function Items (props) {
   const { shopId, shopName } = props.match.params
@@ -80,7 +81,9 @@ export default function Items (props) {
         /> */}
         <h1 className='items-shop-name'>{shopName}</h1>
       </div>
+
       <div className='items-flex-container'>
+        {/* <Breadcrumbs /> */}
         <Search includeSearchResults={includeSearchResults} />
 
         <div className='items-grid-container'>

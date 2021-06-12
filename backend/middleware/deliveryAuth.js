@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
     const cookies = cookieHeaderString.split(';')
     for (const cookie of cookies) {
       const [key, value] = cookie.split('=')
-      if (key === 'deliveryguy-token') {
+      if (key.trim() === 'deliveryguy-token') {
         token = value
         break
       }

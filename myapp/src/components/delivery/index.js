@@ -6,14 +6,14 @@ import Nominatim from 'nominatim-geocoder'
 
 import Leaflet, { routing } from 'leaflet'
 import 'leaflet-routing-machine'
-
-// import { getCookie } from '../util/cookies'
+import { Redirect } from 'react-router-dom'
 
 let socket
 const endpoint = ''
 
 socket = io(endpoint, { query: { id: 2 } })
 export default function Delivery () {
+  const [isLoggedIn, setIsLoggedIn] = useState(true)
   const [requirement, setRequirement] = useState(null)
   const [orderPickStatus, setOrderPickStatus] = useState(false)
   const [orderStatus, setOrderStatus] = useState(false)
@@ -23,6 +23,8 @@ export default function Delivery () {
   const [deliveryLocation, setDeliveryLocation] = useState([])
   const [orderid, setOrderid] = useState(null)
   const [mapShown, setMapShown] = useState(false)
+  const [deliveryGuyId, setDeliveryGuyId] = useState(false)
+  const [userId, setUserId] = useState('')
 
   const mapRef = useRef(null)
   const routingControlRef = useRef(null)
@@ -38,31 +40,33 @@ export default function Delivery () {
   }
 
   const ifOrderNotCompleted = async () => {
-    console.log('INHEREEE')
     const data = await window.fetch('/order/ongoing/', {
       method: 'GET',
       headers: {
         'Content-type': 'application/json'
-        // 'deliveryguy-token': getCookie('deliveryguy-token')
       }
     })
     if (data.ok) {
-      const jsonData = await data.json()
-      console.log('JSONDATA', jsonData)
-      if (jsonData.length) {
-        const userDeliveryLocation = await geocoding(
-          jsonData[0].delivery_address
-        )
-        const userPickupLocation = await geocoding(jsonData[0].shop_address)
+      const [order, id] = await data.json()
+      if (order.length) {
+        const userDeliveryLocation = await geocoding(order[0].delivery_address)
+        const userPickupLocation = await geocoding(order[0].shop_address)
         setPickupLocation(userPickupLocation)
-        setOrderPickStatus(jsonData[0].status === 'pickedup')
+        setOrderPickStatus(order[0].status === 'pickedup')
         setDeliveryLocation(userDeliveryLocation)
-        setOrderid(jsonData[0].id)
-        setRequirement(jsonData[0].shop_address)
+        setOrderid(order[0].id)
+        setRequirement(order[0].shop_address)
         setOrderStatus(true)
+        setDeliveryGuyId(id)
+      } else {
+        console.log('ID', id)
+        setDeliveryGuyId(id)
       }
     } else {
-      console.log(data.status)
+      if (data.status === 401) {
+        console.log(data.status)
+        setIsLoggedIn(false)
+      }
     }
   }
 
@@ -71,17 +75,19 @@ export default function Delivery () {
   }, [])
 
   useEffect(() => {
-    // console.log('INHERE')
-    socket.emit('test', { test: 'TEST' })
+    console.log('DELIVERYGUYID', deliveryGuyId)
+    socket.emit('active delivery partner', { deliveryGuyId: deliveryGuyId })
+  }, [deliveryGuyId])
 
+  useEffect(() => {
     socket.on(
       'toDeliveryPartner',
-      ({ shopname, orderid, shopLocation, userLocation }) => {
-        console.log('wowooo')
-        setRequirement(shopname)
+      ({ shopAddress, orderid, shopLocation, userLocation, userId }) => {
+        setRequirement(shopAddress)
         setPickupLocation(shopLocation)
         setDeliveryLocation(userLocation)
         setOrderid(orderid)
+        setUserId(userId)
       }
     )
   }, [])
@@ -92,28 +98,30 @@ export default function Delivery () {
       body: JSON.stringify({ name, value }),
       headers: {
         'Content-Type': 'application/json'
-        // 'x-auth-token': getCookie('x-auth-token')
       }
     })
     if (data.ok) {
       const jsonData = await data.json()
-      // console.log('JSONDATA', jsonData)
     }
   }
 
   function orderStatusUpdation () {
-    socket.emit('deliveryPartnerAssigned', 'speedo')
+    socket.emit('deliveryPartnerAssigned', {
+      deliveryGuyName: 'speedo',
+      deliveryGuyId,
+      userId
+    })
     setOrderStatus(true)
     updateOrder('delivery_guy_id', 1)
   }
   function orderPickedUp () {
     setOrderPickStatus(true)
-    socket.emit('orderPicked')
+    socket.emit('orderPicked', { userId, deliveryGuyId })
     updateOrder('status', 'pickedup')
   }
   function orderCompleted () {
     setIsOrderCompleted(true)
-    socket.emit('orderCompleted')
+    socket.emit('orderCompleted', { userId, deliveryGuyId })
     updateOrder('status', 'delivered')
   }
 
@@ -163,7 +171,11 @@ export default function Delivery () {
         }
         const interval = setInterval(() => {
           if (marker !== null) mapRef.current.removeLayer(marker)
-          socket.emit('liveLocation', { lat: cord[0].lat, lng: cord[0].lng })
+          socket.emit('liveLocation', {
+            lat: cord[0].lat,
+            lng: cord[0].lng,
+            userId
+          })
 
           marker = Leaflet.marker([cord[0].lat, cord[0].lng], {
             icon: bikeIcon
@@ -178,6 +190,10 @@ export default function Delivery () {
     }
     if (orderStatus) map()
   }, [orderStatus])
+
+  if (!isLoggedIn) {
+    return <Redirect to='/delivery' />
+  }
 
   return isOrderCompleted ? (
     <div>

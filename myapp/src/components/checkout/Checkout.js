@@ -1,17 +1,18 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 
-// import { getCookie } from '../util/cookies'
-
 import Navbar from '../navbar/Navbar'
 import './Checkout.css'
 
 import Cart from '../cart/cart'
 import { UserContext } from '../context/user/UserContext'
 
-// import UserAddress from '../userAddress/userAddress'
 import UserAddresses from '../userAddress/userAddresses'
 import AddUserAddress from '../userAddress/addUserAddress'
+
+// import io from 'socket.io-client'
+// const endpoint = ''
+// const socket = io(endpoint, { query: { id: 1 } })
 
 export default function Checkout (props) {
   const { setShowLogin, isLoggedIn, deleteAllItemsFromCart, cart } = useContext(
@@ -32,7 +33,6 @@ export default function Checkout (props) {
     const data = await window.fetch(`/shop/shop/${props.match.params.shopid}/`)
     if (data.ok) {
       const jsonData = await data.json()
-      // console.log('JSONDATAAddress', jsonData)
       setShopAddress(jsonData[0].address)
     }
   }
@@ -46,12 +46,10 @@ export default function Checkout (props) {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
-        // 'x-auth-token': getCookie('x-auth-token')
       }
     })
     if (data.ok) {
       const jsonData = await data.json()
-      // console.log('JSONDATA', jsonData)
       setUserAddresses(jsonData)
     } else {
     }
@@ -67,7 +65,6 @@ export default function Checkout (props) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
-        // 'x-auth-token': getCookie('x-auth-token')
       },
       body: JSON.stringify({
         deliveryaddress: addressSelected,
@@ -89,7 +86,6 @@ export default function Checkout (props) {
       body: JSON.stringify({ address, category: 'Home' }),
       headers: {
         'Content-Type': 'application/json'
-        // 'x-auth-token': getCookie('x-auth-token')
       }
     })
     if (data.ok) {
