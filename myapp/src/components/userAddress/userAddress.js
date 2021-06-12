@@ -6,8 +6,6 @@ export default function UserAddress ({
   fromProfile,
   deleteUserAddress
 }) {
-  // function deleteUserAddress () {}
-  // console.log(userAddress)
   return (
     <div
       className='address-container'

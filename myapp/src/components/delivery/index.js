@@ -59,7 +59,6 @@ export default function Delivery () {
         setOrderStatus(true)
         setDeliveryGuyId(id)
       } else {
-        console.log('ID', id)
         setDeliveryGuyId(id)
       }
     } else {
@@ -75,7 +74,6 @@ export default function Delivery () {
   }, [])
 
   useEffect(() => {
-    console.log('DELIVERYGUYID', deliveryGuyId)
     socket.emit('active delivery partner', { deliveryGuyId: deliveryGuyId })
   }, [deliveryGuyId])
 

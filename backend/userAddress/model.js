@@ -23,7 +23,7 @@ const addUserAddressInDb = async (address, userId, category) => {
 const updateUserAddressInDb = async (address, addressId) => {
   try {
     const { rows } = await pool.query(
-      `UPDATE userAddress SET address = $1 WHERE id = $2 RETURNING *`,
+      `UPDATE useraddress SET address = $1 WHERE id = $2 RETURNING *`,
       [address, addressId]
     )
     return { updatedUserAddress: rows }

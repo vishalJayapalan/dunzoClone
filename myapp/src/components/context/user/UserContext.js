@@ -79,11 +79,10 @@ export const UserContextProvider = props => {
               {
                 id: cartitem.item_id,
                 shop_id: cartitem.shop_id,
-                quantity: cartitem.quantity,
+                item_quantity: cartitem.item_quantity,
                 description: cartitem.description,
                 name: cartitem.name,
-                price: cartitem.price,
-                total_quantity: cartitem.total_quantity
+                price: cartitem.price
               },
               cartitem.shop_name
             )
@@ -105,20 +104,18 @@ export const UserContextProvider = props => {
   }
 
   async function addToCart (item, shopname) {
-    // console.log('ITEM', item)
     try {
       let jsonData = []
       if (isLoggedIn) {
         const data = await request('cart', 'POST', {
           itemId: item.id,
           shopId: item.shop_id,
-          itemQuantity: item.quantity ? item.quantity : 1
+          itemQuantity: 1
         })
         if (!data.ok) {
           throw data
         }
         jsonData = await data.json()
-        // console.log('JSONDATA', jsonData)
         localStorage.setItem('Donesooo-cartid', jsonData[0].id)
         jsonData[0].description = item.description
         jsonData[0].name = item.name
@@ -132,7 +129,7 @@ export const UserContextProvider = props => {
           ...item,
           shop_name: shopname,
           id,
-          quantity: 1,
+          item_quantity: 1,
           item_id: item.id
         }
 
@@ -149,7 +146,7 @@ export const UserContextProvider = props => {
 
   async function updateCart (updateItem, incOrDec) {
     try {
-      if (+updateItem.quantity === 1 && incOrDec === '-') {
+      if (+updateItem.item_quantity === 1 && incOrDec === '-') {
         if (isLoggedIn) {
           const data = await request(`cart/${updateItem.id}`, 'DELETE')
           if (!data.ok) {
@@ -178,7 +175,7 @@ export const UserContextProvider = props => {
         dispatch({ type: 'DECREMENT_ITEMCOUNT_FROM_CART', payload: updateItem })
       if (isLoggedIn) {
         await request(`cart/${updateItem.id}`, 'PUT', {
-          quantity: updateItem.quantity,
+          item_quantity: updateItem.item_quantity,
           type: incOrDec
         })
       } else {
@@ -187,11 +184,10 @@ export const UserContextProvider = props => {
           'Donesooo-cart',
           JSON.stringify(
             cart.map(cartItem => {
-              console.log(cartItem.id, ' ', updateItem.id)
               if (cartItem.id === updateItem.id) {
-                if (incOrDec === '+') cartItem.quantity += 1
+                if (incOrDec === '+') cartItem.item_quantity += 1
                 else {
-                  cartItem.quantity -= 1
+                  cartItem.item_quantity -= 1
                 }
               }
               return cartItem

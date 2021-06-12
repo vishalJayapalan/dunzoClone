@@ -77,7 +77,6 @@ export default function Map (props) {
       })
       if (data.ok) {
         const jsonData = await data.json()
-        console.log('JSONDATA', jsonData)
         if (jsonData.length === 0) {
           setNoOrder(true)
           orderIdNotFound = true
@@ -107,8 +106,6 @@ export default function Map (props) {
     setPackingStatus(true)
     map()
     if (!partnerAlreadyAssigned) {
-      // console.log('PARTNERREQUIRED')
-      console.log('Order', order)
 
       socket.emit('deliveryPartnerRequired', {
         shopAddress,

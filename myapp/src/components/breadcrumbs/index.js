@@ -3,7 +3,6 @@ import { withRouter } from 'react-router-dom'
 
 const BreadCrumbs = ({ history, location: { pathname } }) => {
   const pathNames = pathname.split('/').filter(param => param)
-  console.log('PATHNAMES', pathNames)
   return (
     <div className='breadcrumps-container'>
       {/* <Link style={{ textDecoration: 'none' }} className='breadcrum'>

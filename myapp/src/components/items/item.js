@@ -6,7 +6,6 @@ import CartButton from '../cart/cartButton'
 
 export default function Item ({ item, shopName }) {
   const { cart, addToCart, setClearCartPopup } = useContext(UserContext)
-  // console.log(props.item)
   let inCart = null
   cart.forEach(cartItem => {
     if (cartItem.item_id === item.id) {

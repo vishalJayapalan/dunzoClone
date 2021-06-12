@@ -2,15 +2,15 @@ import React from 'react'
 
 import CartButton from './cartButton'
 
-export default function cartItem (props) {
+export default function cartItem ({cartItem}) {
   return (
     <div className='cart-item-container'>
       <div className='cart-item-description'>
-        <p>{props.cartItem.name}</p>
-        <p>{props.cartItem.description}</p>
+        <p>{cartItem.name}</p>
+        <p>{cartItem.description}</p>
       </div>
-      <CartButton inCart={props.cartItem} /> {/* can removeupdateCart */}
-      <p>₹ {(props.cartItem.price * props.cartItem.quantity).toFixed(2)}</p>
+      <CartButton inCart={cartItem} /> {/* can removeupdateCart */}
+      <p>₹ {(cartItem.price * cartItem.item_quantity).toFixed(2)}</p>
     </div>
   )
 }

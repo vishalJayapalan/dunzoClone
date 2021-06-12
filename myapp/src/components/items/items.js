@@ -12,7 +12,6 @@ import Breadcrumbs from '../breadcrumbs'
 
 export default function Items (props) {
   const { shopId, shopName } = props.match.params
-  // console.log('SHOPID', shopId, 'SHOPNAME', shopName)
   const { items, getItems, updateItems, clearCartPopup } = useContext(
     UserContext
   )

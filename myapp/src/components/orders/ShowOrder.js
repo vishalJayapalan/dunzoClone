@@ -2,9 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 export default function ShowOrder ({ userOrder }) {
-  // console.log(typeof userOrder.delivered)
-  // console.log(userOrder.delivered)
-  console.log('USERORDER', userOrder)
   return (
     <div className='user-order-container'>
       <div className='order-category-container'>

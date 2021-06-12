@@ -53,7 +53,7 @@ export default (state, action) => {
       const newCart = state.cart.map(cartItem => {
         if (cartItem.id === action.payload.id) {
           const newCartItem = { ...cartItem }
-          newCartItem.quantity--
+          newCartItem.item_quantity--
           return newCartItem
         }
         return cartItem
@@ -67,7 +67,7 @@ export default (state, action) => {
       const newCart = state.cart.map(cartItem => {
         if (cartItem.id === action.payload.id) {
           const newCartItem = { ...cartItem }
-          newCartItem.quantity++
+          newCartItem.item_quantity++
           return newCartItem
         }
         return cartItem

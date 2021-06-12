@@ -50,7 +50,6 @@ export default function AddUserAddress ({
                 if (event.keyCode === 13) {
                   geocoding(newAddress)
                 }
-                // console.log(event.keyCode)
               }}
               onChange={event => {
                 if (event.keycode !== 13) setNewAddress(event.target.value)

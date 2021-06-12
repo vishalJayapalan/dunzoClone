@@ -42,7 +42,7 @@ const addItemToCart = async (req, res) => {
     itemQuantity,
     userId
   )
-
+console.log(error)
   if (error) {
     return res.status(500).json({ Msg: error })``
   }
@@ -89,17 +89,17 @@ body: cartitemquantity
 */
 
 const updateCartItem = async (req, res) => {
-  let { quantity, type } = req.body
+  let { item_quantity, type } = req.body
   const { cartId } = req.params
   if (type === '+') {
-    quantity++
+    item_quantity++
   } else {
-    quantity--
+    item_quantity--
   }
   try {
     const updatedCartItem = await pool.query(
-      `UPDATE cart_item SET quantity = $1 WHERE id = $2 RETURNING *`,
-      [quantity, cartId]
+      `UPDATE cart_item SET item_quantity = $1 WHERE id = $2 RETURNING *`,
+      [item_quantity, cartId]
     )
     res.status(200).send(updatedCartItem.rows)
   } catch (err) {

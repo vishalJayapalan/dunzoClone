@@ -5,6 +5,7 @@ import CartItem from './cartItem'
 
 export default function CartItems () {
   const { cart } = useContext(UserContext)
+  
   return (
     <div className='cart-items-container'>
       {cart.map(cartItem => (

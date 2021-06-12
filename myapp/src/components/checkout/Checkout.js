@@ -56,7 +56,6 @@ export default function Checkout (props) {
   }
 
   useEffect(() => {
-    console.log('ISLOGGEDIN', isLoggedIn)
     if (isLoggedIn) getUserAddress()
   }, [isLoggedIn])
 
@@ -73,7 +72,6 @@ export default function Checkout (props) {
     })
     if (data.ok) {
       const order = await data.json()
-      console.log('JSONDATAORDER', order)
       setNewOrderId(order[0].id)
     } else {
       console.log(data.status)

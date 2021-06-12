@@ -10,7 +10,7 @@ export default function Cart (props) {
   const { cart } = useContext(UserContext)
   let totalPrice = 0
   cart.forEach(cartItem => {
-    totalPrice += cartItem.price * cartItem.quantity
+    totalPrice += cartItem.price * cartItem.item_quantity
   })
 
   return (

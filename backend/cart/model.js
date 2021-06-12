@@ -14,7 +14,7 @@ const getCartItemsFromDb = async userId => {
       i.id AS item_id,
       i.description AS description,
       i.price AS price,
-      c.quantity as quantity,
+      c.item_quantity as item_quantity,
       c.id as id
        FROM cart_item c JOIN item i ON c.item_id = i.id JOIN shop s ON i.shop_id = s.id where c.user_id= $1 ORDER BY c.id ASC`,
       [userId]
@@ -38,7 +38,7 @@ body: itemid,shopname
 const addItemToCartInDb = async (itemId, shopId, quantity, userId) => {
   try {
     const { rows } = await pool.query(
-      `INSERT INTO cart_item (item_id,shop_id,quantity,user_id) VALUES ($1,$2,$3,$4) RETURNING *`,
+      `INSERT INTO cart_item (item_id,shop_id,item_quantity,user_id) VALUES ($1,$2,$3,$4) RETURNING *`,
       [itemId, shopId, quantity, userId]
     )
     return { cartItem: rows }
