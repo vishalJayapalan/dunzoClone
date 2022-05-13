@@ -14,8 +14,10 @@ export default function Categories () {
         // 'x-auth-token': getCookie('x-auth-token')
       }
     })
-    const jsonData = await data.json()
-    setCategories(jsonData)
+    if(data.status === 200){
+      const jsonData = await data.json();
+      setCategories(jsonData)
+    }
   }
 
   useEffect(() => {
